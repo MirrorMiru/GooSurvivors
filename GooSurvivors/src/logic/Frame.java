@@ -52,52 +52,17 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener  {
 	
-	Sprite[] titleScreen = {
-			new Sprite("/imgs/titlePH2.png",0,0,600,600), new Sprite("/imgs/titlePH1.png",0,0,600,600)
-			};
-	
-	Sprite[] titleScreen2 = {
-			new Sprite("/imgs/title1.png",0,0,600,600), new Sprite("/imgs/title2.png",0,0,600,600)
-			};
-	
-	Sprite[] cutScene = {
-			new Sprite("/imgs/CS1.png",0,0,600,600), new Sprite("/imgs/CS2.png",0,0,600,600),
-			new Sprite("/imgs/CS3.png",0,0,600,600), new Sprite("/imgs/CS4.png",0,0,600,600),
-			new Sprite("/imgs/CS5.png",0,0,600,600), new Sprite("/imgs/CS6.png",0,0,600,600)
-			};
-	
-	Sprite over = new Sprite("/imgs/go.png",0,0,600,600);
-	Sprite win = new Sprite("/imgs/win.png",0,0,600,600);
-	
-	Sprite background = new Sprite("/imgs/bg.png",0,0,0,0);
-	
-	EnemyOne[] enemies = new EnemyOne[3]; //i am mandated by the rubric to use 1D arrays >:|
-	EnemyOne[] enemies2 = new EnemyOne[4]; //gross
-	EnemyOne[] enemies3 = new EnemyOne[3]; //ew
-	
-	Present pres = new Present(0,0);
+
+
+
 	
 	Player player = new Player();
-	
-	ArrayList<Tile> tiles = new ArrayList<Tile>(); //arraylists my beloved
-	
-	ArrayList<Border> borders = new ArrayList<Border>();
-	
-	ArrayList<Border> bouncersL = new ArrayList<Border>();
-	ArrayList<Border> bouncersR = new ArrayList<Border>();
-	
-	ArrayList<Border> breakers = new ArrayList<Border>();
-	ArrayList<Border> makers = new ArrayList<Border>();
-	
-	ArrayList<Sock> socks = new ArrayList<Sock>();
-	
-	ArrayList<Platform> moving = new ArrayList<Platform>();
    			
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	
 	//bgm, starts looping immediately and never stops
-	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
+	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
 	//frame width/height
 	int width = 780;
@@ -106,7 +71,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	int score = 0;//game score, this should be self explanatory
 	int lives = 3;//lives
 	
-	int gamestate = 0;//gamestate
+	int gamestate = 1;//gamestate
 	//0 = main menu
 	//2 = story cutscene
 	//1 = gameplay
@@ -114,19 +79,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//5 = victory screen
 	
 	int titleIndex = 0; //array index used for title screen cursor
-	int CSIndex = -1; //story cutscene index
 	
-	//global coordinates, everything rendered in the game world is translated by these values
-	// gX, -gY = stay rooted on screen
-	int globalX = -320;
-	int globalY = 400;
-	
-	int delay = 0; //delay timer for moving platform logic
+
 	boolean invunrebility = false; //player cannot die when true
 	
-	//timer and index for title screen animation
-	int timerT = 0;
-	int indexT = 0;
 	
 	/**
 	* Runs once per frame, executes all of the game logic. 
@@ -139,53 +95,34 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		super.paintComponent(g);//no clue what this dose
 
 		if(gamestate == 0) {
-			timerT++;//start timer for the title animation
-			
-			if(timerT%10==0) {
-				timerT = 0;
-				indexT++;//every 10 frames reset and change frames
-			}
-			
-			if(indexT > 1) {
-				indexT = 0;//loop title screen animation
-			}
-			
-			titleScreen2[indexT].paint(g);//title screen animation
-			
-			titleScreen[titleIndex].paint(g);//cursor
-			
-			//directions for playing the game
-			g.setFont(myFont.deriveFont(20.0f));
-			
-			g.drawString("ARROW KEYS to move", 50, 650);
-			g.drawString("SPACE to select", 50, 700);
+		//title screen logic
 		
 		}else if(gamestate == 2) {
 			
-			cutScene[CSIndex].paint(g);//le story thing	
+		//optional story images or game controlls
 			
 		}else if(gamestate == 1) {
 			
-			background.paint(g);//display background image
+			//background.paint(g);//display background image
 			//under everything
 			//never translates
 			
-		   	g.translate(globalX, globalY);//translate all tiles
+		  // 	g.translate(globalX, globalY);//translate all tiles
 		   	
-			drawGrid(g);//le tiles
+			//grid draw here
 			  
-			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
+		//	g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 
 			player.paint(g);
-			drawGui(g);//le gui
+			//drawGui(g);//le gui
 				  
 		}else if(gamestate == 4) {
 			
-			over.paint(g);//display game over image
+		//	over.paint(g);//display game over image
 		
 		}else if(gamestate == 5) {
 			
-			win.paint(g);//win screen
+		//	win.paint(g);//win screen
 			
 			//display score at end of game
 			g.setFont(myFont.deriveFont(40.0f));
@@ -212,7 +149,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	* @param none
 	*/
 	public Frame() {
-		JFrame f = new JFrame("Corporate Mandated Holiday");//create and name Jframe
+		JFrame f = new JFrame("Goo Survivors");//create and name Jframe
 		f.setSize(new Dimension(width, height));//set window size
 		f.setBackground(Color.white);
 		f.add(this);
@@ -220,11 +157,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
  		f.addMouseListener(this);
 		f.addKeyListener(this);
 	
-	    backgroundMusic.play();//play bgm
+	   // backgroundMusic.play();//play bgm
 	    
-		initTiles();//initialize first layer of tiles, game map
-		
-		initTilesL2();//initialize 2nd layer of tiles, enemies, collectibles and colliders
 		
 		Timer t = new Timer(16, this);
 		t.start();
@@ -247,69 +181,33 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		int movebyY = 64/4;
 
 		if(arg0.getKeyCode() == 38) {//up
-			if(titleIndex == 1 && gamestate == 0) {
-				titleIndex--;//move cursor
-			}
+			
 			
 			if(gamestate == 1 && player.getVy() == 0) {//player movement
 				player.jump(0);
-	
-				globalX -=movebyX;
-				globalY +=movebyY;
-				
-				score+=5;//+ score when moving up
 			}
 			
 		}else if(arg0.getKeyCode() == 40) {//down
-			if(titleIndex == 0 && gamestate == 0) {
-				titleIndex++;//move cursor
-			}	
 			
 			if(gamestate == 1 && player.getVy() == 0) {
 				player.jump(1);
 	
-				globalX +=movebyX;
-				globalY -=movebyY;
-				
-				score -= 5;//bring score back down to prevent score farming
 			}
 			
 		}else if(arg0.getKeyCode() == 37) {//left
 			if(gamestate == 1 && player.getVy() == 0) {//player movement 
 				player.jump(2);
 
-				globalX +=movebyX;
-				globalY +=movebyY;
 			}
 			
 		}else if(arg0.getKeyCode() == 39) {//right
 			if(gamestate == 1 &&  player.getVy() == 0) {//player movement
 				player.jump(3);
-		
-				globalX -=movebyX;
-				globalY -=movebyY;
+
 			}
 			
 		}else if(arg0.getKeyCode() == 32) {//spacebar
-			if(titleIndex == 0 && gamestate == 0) {
-				gamestate = 1;//start up game
-				playSfx("select.wav");//play the select sfx
-			}
-			else if(titleIndex == 1 && gamestate == 0) {
-				gamestate = 2;//enter story mode
-				playSfx("select.wav");
-			}
-			if(gamestate == 2 && CSIndex < 5) {
-				CSIndex++;//continue story
-			}else if(CSIndex == 5) {
-				gamestate = 0;//end story
-				playSfx("select.wav");
-				CSIndex = -1;
-			}
-			if(gamestate == 4 || gamestate == 5) {
-				playSfx("select.wav");
-				reset();//reset game if space is pressed after win or death
-			}
+		//select button
 		}
 	}
 

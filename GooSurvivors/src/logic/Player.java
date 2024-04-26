@@ -18,23 +18,25 @@ public class Player{
 	private Image forward, backward, left, right; 	
 	private AffineTransform tx;
 	
-	private int dir = 0; 					//0-forward, 1-backward, 2-left, 3-right
+	private int dir = 3; 
+	private int lastDir;//0-forward, 1-backward, 2-left, 3-right
 	private int width, height;
 	private int x, y;						//position of the object
 	private int vx, vy;						//movement variables
-	private double scaleWidth = .25;		//change to scale image
-	private double scaleHeight = .25; 		//change to scale image
-	private int groundLevel;
+
 	private int ay;
+	private int timer = 0;
+	private int timer2 = 0;
+	Sprite[] playerLeft = {new Sprite("/img/PL1.png",0,0,300,200,0.2),new Sprite("/img/PL2.png",0,0,300,200,0.2)
+			,new Sprite("/img/PL3.png",0,0,300,200,0.2),new Sprite("/img/PL2.png",0,0,300,200,0.2)};
 	
-	private boolean inAir;
+	Sprite[] playerRight = {new Sprite("/img/PR1.png",0,0,300,200,0.2),new Sprite("/img/PR2.png",0,0,300,200,0.2)
+			,new Sprite("/img/PR3.png",0,0,300,200,0.2),new Sprite("/img/PR2.png",0,0,300,200,0.2)};
+
 	
 	public Player() {
-		forward 	= getImage("/imgs/"+"player1.png"); //load the image for front
-		backward 	= getImage("/imgs/"+"player3.png"); //load the image for back
-		left 		= getImage("/imgs/"+"player4.png"); //load the image for left
-		right 		= getImage("/imgs/"+"player2.png"); //load the image for right
-
+		
+		
 		//hitbox size
 		width = 70;
 		height = 10;
@@ -42,8 +44,8 @@ public class Player{
 		y = 400;
 		
 		//jumping and physics
-		groundLevel = this.y;
-		inAir = false;
+	
+		
 		vx = 0;
 		vy = 0;
 		ay = 0;
@@ -127,20 +129,9 @@ public class Player{
 		this.ay = ay;
 	}
 
-	//jump function, make player bounce and change direction
-	public void jump(int dir) {
+
 	
-		if(y>=groundLevel) {
-			vy = -10;
-			this.dir = dir;
-			inAir = true;
-		}
-		
-	}
 	
-	public boolean getInAir() {
-		return this.inAir;
-	}
 	
 	//draw player image and apply physics
 	public void paint(Graphics g) {
@@ -149,39 +140,56 @@ public class Player{
 		x+=vx;
 		y+=vy;	
 		vy+=ay;
+		timer++;
 		
-		//jumping code
-		if(y < groundLevel-10) {
-			ay=3;
-		}else if(y>=groundLevel){
-			vy=0;
-			ay=0;
-			y=groundLevel;
-			inAir = false;
+		if(timer % 10 == 0) {
+			timer2++;
 		}
+		if(timer2 > 3) {
+			timer = 0;
+			timer2 = 0;
+		}
+		
+		System.out.println(vx);
 		
 		init(x,y);//whatever this is
 		
-		switch(dir) {//switch image
-		case 0:
-			g2.drawImage(forward, tx, null);
-			break;
-		case 1:
-			g2.drawImage(backward, tx, null);
-			break;
-		case 2:
-			g2.drawImage(left, tx, null);
-			break;
-		case 3:
-			g2.drawImage(right, tx, null);
-			break;
+		direction();
+		
+		if(dir == 0) {
+			lastDir = 2;
+			
+			playerLeft[timer2].paint(g);
+		}
+		else if(dir == 1) {
+			lastDir = 3;
+			
+			playerRight[timer2].paint(g);
+		}
+		else if(dir == 2) {
+			playerLeft[1].paint(g);
+		}
+		else if(dir == 3) {
+			playerRight[1].paint(g);
+		
+		}
+	}
+	
+	private void direction() {
+		if(this.vx > 0 || this.vy != 0) {
+			dir = 1;
+		} 
+		if(this.vx < 0 || this.vy != 0) {
+			dir = 0;
+		}else {
+			dir = lastDir;
 		}
 	}
 	
 	//image code
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);
-		tx.scale(scaleWidth, scaleHeight);
+	
 	}
 
 	private Image getImage(String path) {

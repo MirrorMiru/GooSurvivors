@@ -19,8 +19,8 @@ public class Sprite{
 	
 	int width, height;
 	int x, y;						//position of the object
-	double scaleWidth = 0.77;		//scale to screen size
-	double scaleHeight = 0.77; 		
+	double scaleWidth = 1;		//scale to screen size
+	double scaleHeight = 1; 		
 
 	public Sprite(String location, int x, int y, int w, int h) {
 		image 	= getImage(location); //load the image for any image 
@@ -29,6 +29,20 @@ public class Sprite{
 		height = h;
 		this.x = x;
 		this.y = x;
+		tx = AffineTransform.getTranslateInstance(0, 0);
+		init(x, y); 				//initialize the location of the image
+									//use your variables
+	}
+	
+	public Sprite(String location, int x, int y, int w, int h, double scale) {
+		image 	= getImage(location); //load the image for any image 
+		//alter these
+		width = w;
+		height = h;
+		this.x = x;
+		this.y = x;
+		scaleWidth = scale;
+		scaleHeight = scale;
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
 									//use your variables

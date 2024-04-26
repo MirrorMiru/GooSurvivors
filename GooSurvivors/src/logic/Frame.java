@@ -58,6 +58,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	Player player = new Player();
    			
+	//le title screen
+	Sprite[] titleScreen = {new Sprite("/img/title1.png",0,0,800,700), new Sprite("/img/title2.png",0,0,800,700),  new Sprite("/img/title3.png",0,0,800,700)};
+	
+	
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	
@@ -65,13 +69,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
 	//frame width/height
-	int width = 780;
-	int height = 800;	
+	int width = 800;
+	int height = 700;	
 	
 	int score = 0;//game score, this should be self explanatory
 	int lives = 3;//lives
 	
-	int gamestate = 1;//gamestate
+	int gamestate = 0;//gamestate
 	//0 = main menu
 	//2 = story cutscene
 	//1 = gameplay
@@ -95,7 +99,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		super.paintComponent(g);//no clue what this dose
 
 		if(gamestate == 0) {
-		//title screen logic
+			
+			titleScreen[titleIndex].paint(g);
 		
 		}else if(gamestate == 2) {
 			
@@ -176,39 +181,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 
-		//how much everything gets moved by
-		int movebyX = 128/2;
-		int movebyY = 64/4;
-
-		if(arg0.getKeyCode() == 38) {//up
-			
-			
-			if(gamestate == 1 && player.getVy() == 0) {//player movement
-				player.jump(0);
-			}
-			
-		}else if(arg0.getKeyCode() == 40) {//down
-			
-			if(gamestate == 1 && player.getVy() == 0) {
-				player.jump(1);
 	
-			}
-			
-		}else if(arg0.getKeyCode() == 37) {//left
-			if(gamestate == 1 && player.getVy() == 0) {//player movement 
-				player.jump(2);
-
-			}
-			
-		}else if(arg0.getKeyCode() == 39) {//right
-			if(gamestate == 1 &&  player.getVy() == 0) {//player movement
-				player.jump(3);
-
-			}
-			
-		}else if(arg0.getKeyCode() == 32) {//spacebar
-		//select button
-		}
+	
 	}
 
 	/**
@@ -303,14 +277,58 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+	
 		// TODO Auto-generated method stub
-		
+	
 	}
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+	if(arg0.getKeyCode() == 38) {//up
+		if(gamestate == 0) {
+			if(titleIndex > 0) {
+				titleIndex--;
+			}
+		}	if(gamestate == 1) {
+			player.setVy(-2);
+		}
 		
+		}
+		
+	else if(arg0.getKeyCode() == 40) {//down
+if(gamestate == 0) {
+	if(titleIndex < 2) {
+		titleIndex++;
+	}	if(gamestate == 1) {
+		player.setVy(2);
+	}
+		}
+		
+			
+		}else if(arg0.getKeyCode() == 37) {//left
+			if(gamestate == 1) {
+				player.setVx(-2);
+			}
+		
+			
+		}else if(arg0.getKeyCode() == 39) {//right
+			if(gamestate == 1) {
+				player.setVx(2);
+			}
+	}
+	
+	 if(arg0.getKeyCode() == 32) {//spacebar
+		//select button
+		 if(gamestate == 0) {
+				if(titleIndex == 0) {
+					gamestate = 1;
+				}
+	 }
+	 }
 	}
 	
 	@Override

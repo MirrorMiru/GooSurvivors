@@ -1,8 +1,8 @@
 package logic;
 
-public class pathfinder {
-
-	public pathfinder() {
+public class Pathfinder {
+	private boolean[][] board = new boolean[1000][1000];
+	public Pathfinder() {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -176,10 +176,10 @@ public class Player{
 	}
 	
 	private void direction() {
-		if(this.vx > 0 || this.vy != 0) {
+		if(this.vx > 0) {
 			dir = 1;
 		} 
-		if(this.vx < 0 || this.vy != 0) {
+		else if(this.vx < 0) {
 			dir = 0;
 		}else {
 			dir = lastDir;

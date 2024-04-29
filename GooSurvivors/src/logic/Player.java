@@ -27,11 +27,11 @@ public class Player{
 	private int ay;
 	private int timer = 0;
 	private int timer2 = 0;
-	Sprite[] playerLeft = {new Sprite("/img/PL1.png",0,0,300,200,0.2),new Sprite("/img/PL2.png",0,0,300,200,0.2)
-			,new Sprite("/img/PL3.png",0,0,300,200,0.2),new Sprite("/img/PL2.png",0,0,300,200,0.2)};
+	Sprite[] playerLeft = {new Sprite("/img/PL1.png",x,y,300,200,0.2),new Sprite("/img/PL2.png",x,y,300,200,0.2)
+			,new Sprite("/img/PL3.png",x,y,300,200,0.2),new Sprite("/img/PL2.png",x,y,300,200,0.2)};
 	
-	Sprite[] playerRight = {new Sprite("/img/PR1.png",0,0,300,200,0.2),new Sprite("/img/PR2.png",0,0,300,200,0.2)
-			,new Sprite("/img/PR3.png",0,0,300,200,0.2),new Sprite("/img/PR2.png",0,0,300,200,0.2)};
+	Sprite[] playerRight = {new Sprite("/img/PR1.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)
+			,new Sprite("/img/PR3.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)};
 
 	
 	public Player() {
@@ -150,7 +150,7 @@ public class Player{
 			timer2 = 0;
 		}
 		
-		System.out.println(vx);
+		System.out.println("vx: "+vx+" vy: "+vy);
 		
 		init(x,y);//whatever this is
 		
@@ -176,13 +176,15 @@ public class Player{
 	}
 	
 	private void direction() {
-		if(this.vx > 0) {
-			dir = 1;
-		} 
-		else if(this.vx < 0) {
-			dir = 0;
-		}else {
+		if(this.vy == 0 && this.vx == 0) {
 			dir = lastDir;
+		}else {
+			if(this.vx < 0 ) {
+				dir = 0;
+			} 
+			else if(this.vx > 0 ) {
+				dir = 1;
+			}
 		}
 	}
 	

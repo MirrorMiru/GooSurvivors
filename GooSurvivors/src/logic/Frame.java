@@ -84,6 +84,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	int titleIndex = 0; //array index used for title screen cursor
 	
+	int globalX = 300;
+	int globalY = 200;
+	
 
 	boolean invunrebility = false; //player cannot die when true
 	
@@ -111,21 +114,28 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			//background.paint(g);//display background image
 			//under everything
 			//never translates
+			for (int i = 0; i <= 100; i++) {
+			    int y = i * 50; // Adjust cellHeight as needed
+			    g.drawLine(0, y, 100 * 50, y); // Assuming cellWidth is the width of each cell
+			}
+
+			// Drawing vertical lines
+			for (int i = 0; i <= 100; i++) {
+			    int x = i * 50; // Adjust cellWidth as needed
+			    g.drawLine(x, 0, x, 100 * 50); // Assuming cellHeight is the height of each cell
+			}
 			
 		  // 	g.translate(globalX, globalY);//translate all tiles
 		   	
 			//grid draw here
 			  
-		//	g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
+			g.translate(globalX, globalY);//translate gui and player back to stay rooted
 
 			
 			player.paint(g);
-			if(player.getVx() > 0) {
-				player.setVx(player.getVx()-1);
-			}
-			else if(player.getVx() < 0) {
-				player.setVx(player.getVx()+1);
-			}
+			globalX +=player.getVx();
+			globalY +=player.getVy();
+			
 			//drawGui(g);//le gui
 				  
 		}else if(gamestate == 4) {
@@ -295,47 +305,40 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-	if(arg0.getKeyCode() == 38) {//up
-		if(gamestate == 0) {
-			if(titleIndex > 0) {
-				titleIndex--;
+		if(arg0.getKeyCode() == 38) {//up
+			if(gamestate == 0) {
+				if(titleIndex > 0) {
+					titleIndex--;
+				}
+			}else if(gamestate == 1) {
+				player.setVy(-2);
 			}
-		}	if(gamestate == 1) {
-			player.setVy(-2);
-		}
-		
-		}
-		
-	else if(arg0.getKeyCode() == 40) {//down
-if(gamestate == 0) {
-	if(titleIndex < 2) {
-		titleIndex++;
-	}	if(gamestate == 1) {
-		player.setVy(2);
-	}
-		}
-		
-			
-		}else if(arg0.getKeyCode() == 37) {//left
+		}  if(arg0.getKeyCode() == 40) {//down
+			if(gamestate == 0) {
+				if(titleIndex < 2) {
+					titleIndex++;
+				}
+	
+			}else	if(gamestate == 1) {
+				player.setVy(2);
+			}
+		}  if(arg0.getKeyCode() == 37) {//left
 			if(gamestate == 1) {
 				player.setVx(-2);
 			}
-		
-			
-		}else if(arg0.getKeyCode() == 39) {//right
+		}  if(arg0.getKeyCode() == 39) {//right
 			if(gamestate == 1) {
 				player.setVx(2);
 			}
-	}
-	
+		}
 	 if(arg0.getKeyCode() == 32) {//spacebar
 		//select button
 		 if(gamestate == 0) {
 				if(titleIndex == 0) {
 					gamestate = 1;
 				}
-	 }
-	 }
+		 	}
+	 	}
 	}
 	
 	@Override

@@ -118,6 +118,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			  
 		//	g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 
+			
 			player.paint(g);
 			if(player.getVx() > 0) {
 				player.setVx(player.getVx()-1);

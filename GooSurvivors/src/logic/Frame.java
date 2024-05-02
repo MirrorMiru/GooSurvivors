@@ -188,19 +188,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		f.setVisible(true);
 	}
 	
-	/**
-	* key released
-	* controlls everything in the game
-	* key released instead of key pressed so you can't keep key pushed
-	*
-	* @param KeyEvent arg0 - key currently pushed
-	*/
-	@Override
-	public void keyReleased(KeyEvent arg0) {
 
-	
-	
-	}
 
 	/**
 	* draw the gui on screen
@@ -295,11 +283,46 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	
-		// TODO Auto-generated method stub
+	
 	
 	}
 	
-	
+	/**
+	* key released
+	* controlls everything in the game
+	* key released instead of key pressed so you can't keep key pushed
+	*
+	* @param KeyEvent arg0 - key currently pushed
+	*/
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+
+		if(arg0.getKeyCode() == 38) {//up
+			
+				if(gamestate == 1) {
+				player.setVy(0);
+			}
+		}
+		 if(arg0.getKeyCode() == 40) {//down
+			if(gamestate == 1) {
+				player.setVy(0);
+			}
+		 }
+		  if(arg0.getKeyCode() == 37) {//left
+			if(gamestate == 1) {
+				player.setVx(0);
+			}
+		}
+		  if(arg0.getKeyCode() == 39) {//right
+			if(gamestate == 1) {
+				player.setVx(0);
+			}
+		}
+	 if(arg0.getKeyCode() == 32) {//spacebar
+		
+	 	}
+		
+	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
@@ -340,6 +363,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		 	}
 	 	}
 	}
+	
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {

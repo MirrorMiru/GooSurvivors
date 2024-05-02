@@ -184,6 +184,10 @@ public class Player{
 			} 
 			else if(this.vx > 0 ) {
 				dir = 1;
+			}else if(this.vy > 0){
+				dir = 0;
+			}else {
+				dir = 1;
 			}
 		}
 	}

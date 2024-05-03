@@ -66,6 +66,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	
+	Sprite map = new Sprite("/img/map.png",-400,-350,2000,2000);
+	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
@@ -137,7 +139,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 						
 		   	g.translate(globalX, globalY);//translate all tiles
 		   	
-			for (int i = 0; i <= 100; i++) {
+			/*for (int i = 0; i <= 100; i++) {
 			    int y = i * 50; // Adjust cellHeight as needed
 			    g.drawLine(0, y, 100 * 50, y); // Assuming cellWidth is the width of each cell
 			}
@@ -146,7 +148,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			for (int i = 0; i <= 100; i++) {
 			    int x = i * 50; // Adjust cellWidth as needed
 			    g.drawLine(x, 0, x, 100 * 50); // Assuming cellHeight is the height of each cell
-			}
+			}*/
+		   	map.paint(g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	

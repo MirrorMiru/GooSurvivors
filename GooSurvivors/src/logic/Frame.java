@@ -59,9 +59,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Player player = new Player();
    			
 	//le title screen
-	Sprite[] titleScreen = {new Sprite("/img/title1.png",0,0,800,700), new Sprite("/img/title2.png",0,0,800,700),  new Sprite("/img/title3.png",0,0,800,700)};
+	Sprite[] titleScreen = {new Sprite("/img/ts1.png",0,0,800,700), new Sprite("/img/ts2.png",0,0,800,700),new Sprite("/img/ts3.png",0,0,800,700),new Sprite("/img/ts4.png",0,0,800,700)};
+	Sprite[] cursor = {new Sprite("/img/title1.png",0,0,800,700), new Sprite("/img/title2.png",0,0,800,700),new Sprite("/img/title3.png",0,0,800,700)};
 	
-	
+	Sprite[] GUI = {new Sprite("/img/gui1.png",0,0,800,700), new Sprite("/img/gui2.png",0,0,800,700),new Sprite("/img/gui3.png",0,0,800,700),new Sprite("/img/gui4.png",0,0,800,700),new Sprite("/img/gui5.png",0,0,800,700)};
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	
@@ -69,8 +70,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
 	//frame width/height
-	int width = 800;
-	int height = 700;	
+	int width = 815;
+	int height = 735;	
 	
 	int score = 0;//game score, this should be self explanatory
 	int lives = 3;//lives
@@ -83,6 +84,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//5 = victory screen
 	
 	int titleIndex = 0; //array index used for title screen cursor
+	int titleAnim = 0;
+	int titleAnim2 = 0;
+	
+	int UIanim = 0;
+	int UIanim2 = 0;
+
 	
 	int globalX = 300;
 	int globalY = 200;
@@ -102,8 +109,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		super.paintComponent(g);//no clue what this dose
 
 		if(gamestate == 0) {
+			titleAnim++;
 			
-			titleScreen[titleIndex].paint(g);
+			if(titleAnim % 8 == 0) {
+				titleAnim2++;
+			}
+			if(titleAnim2 > 3) {
+				titleAnim = 0;
+				titleAnim2 = 0;
+			}
+
+			titleScreen[titleAnim2].paint(g);
+			cursor[titleIndex].paint(g);
+		
 		
 		}else if(gamestate == 2) {
 			
@@ -114,6 +132,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			//background.paint(g);//display background image
 			//under everything
 			//never translates
+		
+			
+						
+		   	g.translate(globalX, globalY);//translate all tiles
+		   	
 			for (int i = 0; i <= 100; i++) {
 			    int y = i * 50; // Adjust cellHeight as needed
 			    g.drawLine(0, y, 100 * 50, y); // Assuming cellWidth is the width of each cell
@@ -125,18 +148,27 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			    g.drawLine(x, 0, x, 100 * 50); // Assuming cellHeight is the height of each cell
 			}
 			
-		  // 	g.translate(globalX, globalY);//translate all tiles
-		   	
-			//grid draw here
-			  
-			g.translate(globalX, globalY);//translate gui and player back to stay rooted
-
-			
+			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
+	
 			player.paint(g);
-			globalX +=player.getVx();
-			globalY +=player.getVy();
+			globalX -=player.getVx();
+			globalY -=player.getVy();
+			g.translate(0, 100);
+			UIanim2++;
 			
-			//drawGui(g);//le gui
+			if(UIanim2 % 5 == 0) {
+				UIanim++;
+			}
+			
+			if(UIanim > 4) {
+				UIanim2 = 0;
+				UIanim = 0;
+			}
+			GUI[UIanim].paint(g);
+	
+			drawGui(g);//le gui
+			
+			
 				  
 		}else if(gamestate == 4) {
 			
@@ -200,18 +232,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		//square and border for score text
 	    g.setFont(myFont.deriveFont(25.0f));
-	    g.setColor(Color.WHITE);
-	    g.fillRect(0,0,200,50);
-	    g.setColor(Color.BLACK);
-	    g.drawRect(0,0,200,50);
-	    g.drawString("SCORE: "+score, 20,30);
-	    
-	    //same thing but with lives
-	    g.setColor(Color.WHITE);
-	    g.fillRect(600,0,200,50);
-	    g.setColor(Color.BLACK);
-	    g.drawRect(600,0,200,50);
-	    g.drawString("LIVES: "+lives, 620,30);
+	    g.setColor(Color.GREEN);
+	    g.drawString(Integer.toString(player.getHp()), 35,50);
+	    g.drawString(Integer.toString(player.getXp()), 740,50);
 	}
 	
 	/**

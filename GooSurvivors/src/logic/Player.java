@@ -21,12 +21,16 @@ public class Player{
 	private int dir = 3; 
 	private int lastDir;//0-forward, 1-backward, 2-left, 3-right
 	private int width, height;
-	private int x, y;						//position of the object
+	private int x = 320;
+	private int y = 0;						//position of the object
 	private int vx, vy;						//movement variables
 
 	private int ay;
 	private int timer = 0;
 	private int timer2 = 0;
+	
+	private int xp = 0;
+	private int hp = 100;
 	Sprite[] playerLeft = {new Sprite("/img/PL1.png",x,y,300,200,0.2),new Sprite("/img/PL2.png",x,y,300,200,0.2)
 			,new Sprite("/img/PL3.png",x,y,300,200,0.2),new Sprite("/img/PL2.png",x,y,300,200,0.2)};
 	
@@ -40,8 +44,7 @@ public class Player{
 		//hitbox size
 		width = 70;
 		height = 10;
-		x = 350;
-		y = 400;
+	
 		
 		//jumping and physics
 	
@@ -73,22 +76,7 @@ public class Player{
 	}
 	
 	//getters and setter for instance variables
-	public int getX() {
-		return this.x;
-	}
-	
-	public int getY() {
-		return this.y;
-	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
 	public int getDir() {
 		return dir;
 	}
@@ -129,17 +117,31 @@ public class Player{
 		this.ay = ay;
 	}
 
+	public void addXp(int xp) {
+		this.xp += xp;
+	}
+	
+	public void getHurt(int dmg) {
+		this.hp -= dmg;
+	}
+	
+	public int getXp() {
+		return xp;
+	}
+
+
+
+	public int getHp() {
+		return hp;
+	}
 
 	
-	
-	
+
 	//draw player image and apply physics
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-		x+=vx;
-		y+=vy;	
-		vy+=ay;
+		
 		timer++;
 		
 		if(timer % 10 == 0) {
@@ -150,11 +152,12 @@ public class Player{
 			timer2 = 0;
 		}
 		
-		System.out.println("vx: "+vx+" vy: "+vy);
+	//	System.out.println("vx: "+vx+" vy: "+vy);
 		
 		init(x,y);//whatever this is
 		
 		direction();
+		g.translate(0, -100);
 		
 		if(dir == 0) {
 			lastDir = 2;

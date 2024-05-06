@@ -96,6 +96,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	int globalX = 300;
 	int globalY = 200;
 	
+	//enemy arraylsts
+	ArrayList<Skeleton> skellyBois = new ArrayList<Skeleton>();
+	
 
 	boolean invunrebility = false; //player cannot die when true
 	
@@ -130,30 +133,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		//optional story images or game controlls
 			
 		}else if(gamestate == 1) {
-			
-			//background.paint(g);//display background image
-			//under everything
-			//never translates
-		
-			
 						
 		   	g.translate(globalX, globalY);//translate all tiles
 		   	
-			/*for (int i = 0; i <= 100; i++) {
-			    int y = i * 50; // Adjust cellHeight as needed
-			    g.drawLine(0, y, 100 * 50, y); // Assuming cellWidth is the width of each cell
-			}
-
-			// Drawing vertical lines
-			for (int i = 0; i <= 100; i++) {
-			    int x = i * 50; // Adjust cellWidth as needed
-			    g.drawLine(x, 0, x, 100 * 50); // Assuming cellHeight is the height of each cell
-			}*/
+			
 		   	map.paint(g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
 			player.paint(g);
+			
+			skellyLogic(skellyBois, g);
+			
+			
+			
 			globalX -=player.getVx();
 			globalY -=player.getVy();
 			g.translate(0, 100);
@@ -166,6 +159,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if(UIanim > 4) {
 				UIanim2 = 0;
 				UIanim = 0;
+				spawnSkell(1, skellyBois);
 			}
 			GUI[UIanim].paint(g);
 	
@@ -260,7 +254,34 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	*
 	* @param none
 	*/
+	private void spawnSkell(int amnt, ArrayList<Skeleton> skels) {
+		for(int i = 0; i< amnt; i++) {
+			skels.add(new Skeleton());
+		}
+	}
 	
+	private void skellyLogic( ArrayList<Skeleton> skels, Graphics g) {
+		if(skels.size() > 0) {
+		for(Skeleton s : skels) {
+			s.paint(g);
+			if(s.getX() < 400) {
+				s.setVx(2);
+			}else {
+				s.setVx(-2);
+			}
+			if(s.getY() < 300) {
+				s.setVy(2);
+			}else {
+				s.setVy(-2);
+			}
+		}
+		for(int i = 0; i< skels.size(); i++) {
+			//if(skels.get(i).getHp() <= 0) {
+			///	skels.remove(i);
+			//}
+		}
+		}
+	}
 	
 	
 	/**

@@ -28,7 +28,7 @@ public class Sprite{
 		width = w;
 		height = h;
 		this.x = x;
-		this.y = x;
+		this.y = y;
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
 									//use your variables
@@ -40,7 +40,7 @@ public class Sprite{
 		width = w;
 		height = h;
 		this.x = x;
-		this.y = x;
+		this.y = y;
 		scaleWidth = scale;
 		scaleHeight = scale;
 		tx = AffineTransform.getTranslateInstance(0, 0);

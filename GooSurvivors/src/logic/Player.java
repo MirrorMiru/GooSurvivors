@@ -22,7 +22,7 @@ public class Player{
 	private int lastDir;//0-forward, 1-backward, 2-left, 3-right
 	private int width, height;
 	private int x = 320;
-	private int y = 0;						//position of the object
+	private int y = 320;						//position of the object
 	private int vx, vy;						//movement variables
 
 	private int ay;

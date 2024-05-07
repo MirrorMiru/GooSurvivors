@@ -1,11 +1,24 @@
 package logic;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 public class Enemydrops {
 	private int power;
 	private Image picture;
 	private int x; private int y;
+	private int width; private int height;
+	
+	public Enemydrops(){
+		power = 0;
+		//picture = getImage(null);
+		x= 0;
+		y= 0;
+		width = 0;
+		height = 0;
+	}
 	public Enemydrops(int p, Image pi, int a, int b) {
 		// TODO Auto-generated constructor stub
 		setPower(p);
@@ -43,4 +56,26 @@ public class Enemydrops {
 		this.y = y;
 	}
 
+
+
+	public void drop (int powerType, int xLocation, int yLocation) {
+		if( powerType == 0 ) {
+			Enemydrops repel = new Enemydrops( 0 , CUSTOMDROPSPRITE, xLocation, yLocation);
+			//make the repel object at the x and y location; 
+		}
+		if( powerType == 1) {
+			//healing powerUp
+		}
+	}
+	
+	public void paint(Graphics g) {
+		
+		//these are the 2 lines of code needed draw an image on the screen
+		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.green);
+		g.drawRect(x, y, width, height);
+		
+	}
+	
 }
+

@@ -273,6 +273,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		for(int i = 0; i< skels.size(); i++) {
 			//if(skels.get(i).getHp() <= 0) {
 			///	skels.remove(i);
+			/// player.addXp(10);
 			//}
 		}
 		}

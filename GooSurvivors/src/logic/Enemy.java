@@ -14,18 +14,13 @@ public class Enemy {
 	private int health;
 	private int damage; 
 	
-	
-	
-
-	//stuff thats outdated
-	
 	public Enemy() {
 		health = -1;
 		damage = 0;
 		width = 0;
 		height = 0;
 	}
-	public Enemy(int hp, int dmg, int w, int h, String link) {
+	public Enemy(int hp, int dmg, int w, int h) {
 		health = hp;
 		damage = dmg;
 		width  = w;
@@ -59,11 +54,6 @@ public class Enemy {
 	public void setDamage(int thisDamage) {
 		health = thisDamage;
 	}	
-	
-	
-		
-	
-	
 
 	public void paint(Graphics g) {
 		

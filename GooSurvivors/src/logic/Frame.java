@@ -138,14 +138,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		   	
 			
 		   	map.paint(g);
+		   	
+			skellyLogic(skellyBois, g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
-			player.paint(g);
-			
-			skellyLogic(skellyBois, g);
-			
-			
+			player.paint(g);		
 			
 			globalX -=player.getVx();
 			globalY -=player.getVy();
@@ -159,7 +157,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			if(UIanim > 4) {
 				UIanim2 = 0;
 				UIanim = 0;
-				spawnSkell(1, skellyBois);
 			}
 			GUI[UIanim].paint(g);
 	
@@ -264,15 +261,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(skels.size() > 0) {
 		for(Skeleton s : skels) {
 			s.paint(g);
-			if(s.getX() < 400) {
-				s.setVx(2);
+			if(s.getX() < -globalX+300) {
+				s.setVx(1);
 			}else {
-				s.setVx(-2);
+				s.setVx(-1);
 			}
-			if(s.getY() < 300) {
-				s.setVy(2);
+			if(s.getY() < -globalY+300) {
+				s.setVy(1);
 			}else {
-				s.setVy(-2);
+				s.setVy(-1);
 			}
 		}
 		for(int i = 0; i< skels.size(); i++) {

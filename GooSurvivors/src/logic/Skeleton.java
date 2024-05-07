@@ -59,8 +59,8 @@ public class Skeleton{
 		//super.logic();
 		//this.x += super.getVx();
 		//this.y -= super.getVy();
-		x++;
-		y-=Vy;
+		x+=Vx;
+		y+=Vy;
 		
 		timer++;
 		
@@ -78,11 +78,13 @@ public class Skeleton{
 		
 		
 		if(dir == 0) {
-			
+			left[timer2].setX(x);
+			left[timer2].setY(y);
 			left[timer2].paint(g);
 		}
 		else if(dir == 1) {
-			
+			right[timer2].setX(x);
+			right[timer2].setY(y);
 			right[timer2].paint(g);
 		}
 	

@@ -50,7 +50,7 @@ import javax.swing.Timer;
  *        |        |                                              *
  ******************************************************************/
 
-public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener  {
+public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 
 
@@ -61,6 +61,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	//le title screen
 	Sprite[] titleScreen = {new Sprite("/img/ts1.png",0,0,800,700), new Sprite("/img/ts2.png",0,0,800,700),new Sprite("/img/ts3.png",0,0,800,700),new Sprite("/img/ts4.png",0,0,800,700)};
 	Sprite[] cursor = {new Sprite("/img/title1.png",0,0,800,700), new Sprite("/img/title2.png",0,0,800,700),new Sprite("/img/title3.png",0,0,800,700)};
+	//le how to screen
+	Sprite[] inst = {new Sprite("/img/inst1.png",0,0,800,700), new Sprite("/img/inst2.png",0,0,800,700),new Sprite("/img/inst3.png",0,0,800,700),new Sprite("/img/inst4.png",0,0,800,700)};
 	
 	Sprite[] GUI = {new Sprite("/img/gui1.png",0,0,800,700), new Sprite("/img/gui2.png",0,0,800,700),new Sprite("/img/gui3.png",0,0,800,700),new Sprite("/img/gui4.png",0,0,800,700),new Sprite("/img/gui5.png",0,0,800,700)};
 	//le font
@@ -80,7 +82,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	int gamestate = 0;//gamestate
 	//0 = main menu
-	//2 = story cutscene
+	//2 = how to play
 	//1 = gameplay
 	//4 = game over
 	//5 = victory screen
@@ -131,6 +133,17 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}else if(gamestate == 2) {
 			
 		//optional story images or game controlls
+			titleAnim++;
+			
+			if(titleAnim % 8 == 0) {
+				titleAnim2++;
+			}
+			if(titleAnim2 > 3) {
+				titleAnim = 0;
+				titleAnim2 = 0;
+			}
+			
+			inst[titleAnim2].paint(g);
 			
 		}else if(gamestate == 1) {
 						
@@ -199,16 +212,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public Frame() {
 		JFrame f = new JFrame("Goo Survivors");//create and name Jframe
 		f.setSize(new Dimension(width, height));//set window size
-		f.setBackground(Color.white);
 		f.add(this);
 		f.setResizable(false);
- 		f.addMouseListener(this);
 		f.addKeyListener(this);
-	
+		f.getContentPane().setBackground(Color.BLACK); 
 	   // backgroundMusic.play();//play bgm
 	    
 		
-		Timer t = new Timer(16, this);
+		Timer t = new Timer(16, this);//decrease number to make loop faster
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
@@ -229,19 +240,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    g.setColor(Color.GREEN);
 	    g.drawString(Integer.toString(player.getHp()), 35,50);
 	    g.drawString(Integer.toString(player.getXp()), 740,50);
-	}
-	
-	/**
-	* draw grid
-	* paints: enemies, tiles, moving platforms, socks, colliders
-	* runs all collsion code
-	* runs all object logic code
-	* pretty much contains major game logic
-	*
-	* @param Graphics g - for object paint functions
-	*/
-	private void drawGrid(Graphics g) {
-
 	}
 	
 	/**
@@ -291,9 +289,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	*/
 	public void getHurt() {
 		if(lives > 1) {
-			playSfx("hit.wav");
-		lives--;
-		score -= 10;
+			//playSfx("hit.wav");
+			player.getHurt(1);
 		}else {
 			gamestate = 4;
 		}
@@ -307,8 +304,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	*/
 	public void reset(){
 		gamestate = 0;
-		score = 0;
-		lives = 3;
 	}
 	
 	/**
@@ -320,9 +315,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		SimpleAudioPlayer sfx = new SimpleAudioPlayer(filename, false);//make new obj
 		sfx.play();//play it
 	}
-
-	//ignore all code beyond this
-	//must be present for frame to compile
 	
 	@Override
 	public void keyTyped(KeyEvent arg0) {
@@ -403,42 +395,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		 if(gamestate == 0) {
 				if(titleIndex == 0) {
 					gamestate = 1;
+					titleAnim = 0;
+					titleAnim2 = 0;
+				}else if(titleIndex == 2) {
+					gamestate = 2;
+					titleAnim = 0;
+					titleAnim2 = 0;
 				}
 		 	}
 	 	}
 	}
 	
 	
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

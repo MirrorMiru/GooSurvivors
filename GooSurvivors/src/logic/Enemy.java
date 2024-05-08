@@ -54,6 +54,8 @@ public class Enemy {
 	public void setDamage(int thisDamage) {
 		health = thisDamage;
 	}	
+	
+	
 
 	public void paint(Graphics g) {
 		

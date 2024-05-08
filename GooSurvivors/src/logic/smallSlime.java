@@ -10,7 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 
-public class Skeleton extends Enemy{
+public class smallSlime extends Enemy{
 	
 	private int timer = 0;
 	private int timer2 = 0;
@@ -21,13 +21,11 @@ public class Skeleton extends Enemy{
 	int dir = 0;
 	
 	
-	Sprite[] left = {new Sprite("/img/SK1L.png",x,y,300,200,0.2),new Sprite("/img/SK2L.png",x,y,300,200,0.2)};
-	
-	Sprite[] right = {new Sprite("/img/SK1R.png",x,y,300,200,0.2),new Sprite("/img/SK2R.png",x,y,300,200,0.2)};
+	Sprite[] anim = {new Sprite("/img/SS1.png",x,y,300,200,0.2),new Sprite("/img/SS1.png",x,y,300,200,0.2)};
 
 	
-	public Skeleton() {
-		super(100,10,200,300);
+	public smallSlime() {
+		super(50,1,50,50);
 		this.x = 0;
 		this.y = 0;
 	}
@@ -62,7 +60,7 @@ public class Skeleton extends Enemy{
 		
 		timer++;
 		
-		if(timer % 10 == 0) {
+		if(timer % 15 == 0) {
 			timer2++;
 		}
 		if(timer2 > 1) {
@@ -71,22 +69,15 @@ public class Skeleton extends Enemy{
 		}
 		
 		//System.out.println("vx: "+super.getVx()+" vy: "+super.getVy());
-			
-		direction();
 		
 		
-		if(dir == 0) {
-			left[timer2].setX(x);
-			left[timer2].setY(y);
-			left[timer2].paint(g);
-		}
-		else if(dir == 1) {
-			right[timer2].setX(x);
-			right[timer2].setY(y);
-			right[timer2].paint(g);
-		}
 	
+			anim[timer2].setX(x);
+			anim[timer2].setY(y);
+			anim[timer2].paint(g);
 	}
+	
+	
 	
 	public int getX() {
 		return x;

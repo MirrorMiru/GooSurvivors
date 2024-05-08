@@ -55,6 +55,9 @@ public class smallSlime extends Enemy{
 		//super.logic();
 		//this.x += super.getVx();
 		//this.y -= super.getVy();
+		super.x = this.x;
+		super.y = this.y;
+		
 		x+=Vx;
 		y+=Vy;
 		

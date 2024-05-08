@@ -74,7 +74,13 @@ public class Enemy {
 		return speed;
 	}
 	
+	public int getX() {
+		return x;
+	}
 	
+	public int getY() {
+		return y;
+	}
 
 	public void paint(Graphics g) {
 		

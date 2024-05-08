@@ -54,6 +54,10 @@ public class bigSlime extends Enemy{
 		
 		//super.logic();
 		//this.x += super.getVx();
+		
+		super.x = this.x;
+		super.y = this.y;
+		
 		//this.y -= super.getVy();
 		x+=Vx;
 		y+=Vy;

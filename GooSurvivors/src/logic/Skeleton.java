@@ -16,7 +16,7 @@ public class Skeleton extends Enemy{
 	private int timer2 = 0;
 	
 	private int x, y;
-
+	private int Vx, Vy;
 	
 	int dir = 0;
 	
@@ -57,6 +57,9 @@ public class Skeleton extends Enemy{
 		//super.logic();
 		//this.x += super.getVx();
 		//this.y -= super.getVy();
+		super.x = this.x;
+		super.y = this.y;
+		
 		x+=super.Vx;
 		y+=super.Vy;
 		

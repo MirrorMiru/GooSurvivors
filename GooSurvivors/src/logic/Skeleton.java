@@ -109,12 +109,12 @@ public class Skeleton extends Enemy{
 
 
 	private void direction() {
-			if(Vx < 0 ) {
+			if(super.Vx < 0 ) {
 				dir = 0;
 			} 
-			else if(Vx > 0 ) {
+			else if(super.Vx > 0 ) {
 				dir = 1;
-			}else if(Vy > 0){
+			}else if(super.Vy > 0){
 				dir = 0;
 			}else {
 				dir = 1;

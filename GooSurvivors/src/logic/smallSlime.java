@@ -21,7 +21,7 @@ public class smallSlime extends Enemy{
 	int dir = 0;
 	
 	
-	Sprite[] anim = {new Sprite("/img/SS1.png",x,y,300,200,0.2),new Sprite("/img/SS1.png",x,y,300,200,0.2)};
+	Sprite[] anim = {new Sprite("/img/SS1.png",x,y,300,200,0.2),new Sprite("/img/SS2.png",x,y,300,200,0.2)};
 
 	
 	public smallSlime() {

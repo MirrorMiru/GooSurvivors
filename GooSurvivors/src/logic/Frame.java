@@ -157,7 +157,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 		   	map.paint(g);
 		   	
-			//skellyLogic(skellyBois, g);
+			enemyLogic(skells, g);
+			enemyLogic(bSlimes, g);
+			enemyLogic(sSlimes, g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -180,6 +182,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 			drawGui(g);//le gui
 			
+			startWaves();
 			
 				  
 		}else if(gamestate == 4) {
@@ -290,6 +293,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 	}
 	
+	private void startWaves() {
+		waveTimer++;
+		
+		if(waveTimer == 20) {
+			spawnEnemies(5, sSlimes, "small slimes");
+		}
+		if(waveTimer == 220) {
+			spawnEnemies(1, bSlimes, "big slimes");
+		}
+		if(waveTimer == 500) {
+			spawnEnemies(1, skells, "skeletons");
+		}
+	}
+	
 	
 	/**
 	* get hurt
@@ -382,7 +399,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleIndex--;
 				}
 			}else if(gamestate == 1) {
-				player.setVy(-2);
+				player.setVy(-4);
 			}
 		}  if(arg0.getKeyCode() == 40) {//down
 			if(gamestate == 0) {
@@ -391,15 +408,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				}
 	
 			}else	if(gamestate == 1) {
-				player.setVy(2);
+				player.setVy(4);
 			}
 		}  if(arg0.getKeyCode() == 37) {//left
 			if(gamestate == 1) {
-				player.setVx(-2);
+				player.setVx(-4);
 			}
 		}  if(arg0.getKeyCode() == 39) {//right
 			if(gamestate == 1) {
-				player.setVx(2);
+				player.setVx(4);
 			}
 		}
 	 if(arg0.getKeyCode() == 32) {//spacebar

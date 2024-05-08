@@ -13,18 +13,25 @@ public class Enemy {
 	private int height;
 	private int health;
 	private int damage; 
+	protected int Vx;
+	protected int Vy;
+	protected int x;
+	protected int y;
+	private int speed;
 	
 	public Enemy() {
 		health = -1;
 		damage = 0;
 		width = 0;
 		height = 0;
+		speed = 0;
 	}
-	public Enemy(int hp, int dmg, int w, int h) {
+	public Enemy(int hp, int dmg, int w, int h, int s) {
 		health = hp;
 		damage = dmg;
 		width  = w;
 		height = h;
+		speed = s;
 	}
 	
 	
@@ -54,6 +61,18 @@ public class Enemy {
 	public void setDamage(int thisDamage) {
 		health = thisDamage;
 	}	
+	
+	public void setVx(int speed) {
+		this.Vx = speed;
+	}
+	
+	public void setVy(int speed) {
+		this.Vy = speed;
+	}
+	
+	public int getSpeed() {
+		return speed;
+	}
 	
 	
 

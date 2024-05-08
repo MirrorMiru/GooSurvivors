@@ -25,7 +25,7 @@ public class smallSlime extends Enemy{
 
 	
 	public smallSlime() {
-		super(50,1,50,50);
+		super(50,1,50,50,2);
 		this.x = 0;
 		this.y = 0;
 	}

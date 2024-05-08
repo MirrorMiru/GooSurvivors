@@ -77,6 +77,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int width = 815;
 	int height = 735;	
 	
+	int waveTimer = 0;
+	
+	
 	int score = 0;//game score, this should be self explanatory
 	int lives = 3;//lives
 	
@@ -99,7 +102,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int globalY = 200;
 	
 	//enemy arraylsts
-	ArrayList<Skeleton> skellyBois = new ArrayList<Skeleton>();
+	ArrayList<Enemy> skells = new ArrayList<Enemy>();
+	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
+	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
 	
 
 	boolean invunrebility = false; //player cannot die when true
@@ -152,7 +157,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 		   	map.paint(g);
 		   	
-			skellyLogic(skellyBois, g);
+			//skellyLogic(skellyBois, g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -249,28 +254,34 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*
 	* @param none
 	*/
-	private void spawnSkell(int amnt, ArrayList<Skeleton> skels) {
+	private void spawnEnemies(int amnt, ArrayList<Enemy> enemies, String who) {
 		for(int i = 0; i< amnt; i++) {
-			skels.add(new Skeleton());
+			if(who.toLowerCase().equals("skeletons")) {
+				enemies.add(new Skeleton());
+			}else if(who.toLowerCase().equals("big slimes")) {
+				enemies.add(new bigSlime());
+			}else if(who.toLowerCase().equals("small slimes")) {
+				enemies.add(new smallSlime());
+			}
 		}
 	}
 	
-	private void skellyLogic( ArrayList<Skeleton> skels, Graphics g) {
-		if(skels.size() > 0) {
-		for(Skeleton s : skels) {
+	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
+		if(enemies.size() > 0) {
+		for(Enemy s : enemies) {
 			s.paint(g);
 			if(s.getX() < -globalX+300) {
-				s.setVx(1);
+				s.setVx(s.getSpeed());
 			}else {
-				s.setVx(-1);
+				s.setVx(-1*s.getSpeed());
 			}
 			if(s.getY() < -globalY+300) {
-				s.setVy(1);
+				s.setVy(s.getSpeed());
 			}else {
-				s.setVy(-1);
+				s.setVy(-1*s.getSpeed());
 			}
 		}
-		for(int i = 0; i< skels.size(); i++) {
+		for(int i = 0; i< enemies.size(); i++) {
 			//if(skels.get(i).getHp() <= 0) {
 			///	skels.remove(i);
 			/// player.addXp(10);

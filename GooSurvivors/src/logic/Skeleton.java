@@ -16,7 +16,7 @@ public class Skeleton extends Enemy{
 	private int timer2 = 0;
 	
 	private int x, y;
-	private int Vx, Vy;
+
 	
 	int dir = 0;
 	
@@ -27,7 +27,7 @@ public class Skeleton extends Enemy{
 
 	
 	public Skeleton() {
-		super(100,10,200,300);
+		super(100,10,200,300,1);
 		this.x = 0;
 		this.y = 0;
 	}
@@ -57,8 +57,8 @@ public class Skeleton extends Enemy{
 		//super.logic();
 		//this.x += super.getVx();
 		//this.y -= super.getVy();
-		x+=Vx;
-		y+=Vy;
+		x+=super.Vx;
+		y+=super.Vy;
 		
 		timer++;
 		
@@ -104,21 +104,6 @@ public class Skeleton extends Enemy{
 		this.y = y;
 	}
 
-	public int getVx() {
-		return Vx;
-	}
-
-	public void setVx(int vx) {
-		Vx = vx;
-	}
-
-	public int getVy() {
-		return Vy;
-	}
-
-	public void setVy(int vy) {
-		Vy = vy;
-	}
 
 	private void direction() {
 			if(Vx < 0 ) {

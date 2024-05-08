@@ -1,4 +1,9 @@
-package logic;
+
+//DEPRECATED
+
+//USE ITEM CLASS
+
+/*package logic;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -60,7 +65,7 @@ public class Enemydrops {
 
 	public void drop (int powerType, int xLocation, int yLocation) {
 		if( powerType == 0 ) {
-			Enemydrops repel = new Enemydrops( 0 , CUSTOMDROPSPRITE, xLocation, yLocation);
+			Enemydrops repel = new Enemydrops( 0 , new Image("./img/greenVial.png"), xLocation, yLocation);
 			//make the repel object at the x and y location; 
 		}
 		if( powerType == 1) {
@@ -78,4 +83,4 @@ public class Enemydrops {
 	}
 	
 }
-
+*/

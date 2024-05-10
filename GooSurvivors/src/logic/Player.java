@@ -134,6 +134,14 @@ public class Player{
 	public int getHp() {
 		return hp;
 	}
+	
+	public void setXp(int n) {
+		xp = n;
+	}
+	
+	public void setHp(int n) {
+		hp = n;
+	}
 
 	
 

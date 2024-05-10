@@ -78,6 +78,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int height = 735;	
 	
 	int waveTimer = 0;
+	int wave = 0;
 	
 	
 	int score = 0;//game score, this should be self explanatory
@@ -105,6 +106,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
+	
+	GameLoader load = new GameLoader();
 	
 
 	boolean invunrebility = false; //player cannot die when true
@@ -419,6 +422,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				player.setVx(4);
 			}
 		}
+		
+		if(arg0.getKeyCode() == 112) {//right
+			if(gamestate == 1) {
+				ArrayList<Integer> TEMP = new ArrayList<Integer>();
+				TEMP.add(1);
+				TEMP.add(2);
+				load.save(player.getHp(),wave,player.getXp(),TEMP);
+				System.out.println("save");
+			}
+		}
 	 if(arg0.getKeyCode() == 32) {//spacebar
 		//select button
 		 if(gamestate == 0) {
@@ -426,6 +439,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					gamestate = 1;
 					titleAnim = 0;
 					titleAnim2 = 0;
+				}else if(titleIndex == 1) {
+					load.load();
+					player.setHp(load.getPlayerHp());
+					player.setXp(load.getPlayerXp());
 				}else if(titleIndex == 2) {
 					gamestate = 2;
 					titleAnim = 0;

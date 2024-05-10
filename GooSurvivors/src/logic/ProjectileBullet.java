@@ -72,6 +72,7 @@ public class ProjectileBullet{
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.green);
 		//g.drawRect(x, y, width, height);
+		g.drawOval(x, y, width, height);
 	}
 	
 	public boolean collided(int x, int y, int width, int height) {

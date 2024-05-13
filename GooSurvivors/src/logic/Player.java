@@ -36,6 +36,8 @@ public class Player{
 	
 	Sprite[] playerRight = {new Sprite("/img/PR1.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)
 			,new Sprite("/img/PR3.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)};
+	
+	//WhipType starter = new WhipType(10,100,x,y);
 
 	
 	public Player() {
@@ -134,6 +136,14 @@ public class Player{
 	public int getHp() {
 		return hp;
 	}
+	
+	public void setXp(int n) {
+		xp = n;
+	}
+	
+	public void setHp(int n) {
+		hp = n;
+	}
 
 	
 
@@ -151,6 +161,8 @@ public class Player{
 			timer = 0;
 			timer2 = 0;
 		}
+		
+		//starter.paint(g);
 		
 	//	System.out.println("vx: "+vx+" vy: "+vy);
 		

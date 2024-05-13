@@ -70,6 +70,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite map = new Sprite("/img/map.png",-400,-350,2000,2000);
 	
+	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
+	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
@@ -78,6 +80,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int height = 735;	
 	
 	int waveTimer = 0;
+	int wave = 0;
 	
 	
 	int score = 0;//game score, this should be self explanatory
@@ -105,6 +108,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
+	
+	GameLoader load = new GameLoader();
+	
+	Tile[][] tiles = new Tile[27][27];
+	
 	
 
 	boolean invunrebility = false; //player cannot die when true
@@ -151,15 +159,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			inst[titleAnim2].paint(g);
 			
 		}else if(gamestate == 1) {
-						
+				
+			bg.paint(g);
+			
 		   	g.translate(globalX, globalY);//translate all tiles
 		   	
 			
 		   	map.paint(g);
+		   	drawTiles(g);
 		   	
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
+			
+			
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -307,6 +320,87 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 	}
 	
+	/**
+	* initilaize 1t layer of tiles
+	* traverses a array of strings, each letter is assigned a tile
+	* the tile is added to arraylists that are processed in the drawGrid function
+	*
+	* @param none
+	*/
+	public void initTiles() {//initialize 1st layer of tiles
+		  String[] lines = {//game map 27x27
+				  "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+		  };
+		  
+		  for(int row = lines.length -1; row >= 0; row--){//traverse rows of strings
+		    String[] values = lines[row].split(",");//split each into individual letters
+		    for(int col = 0; col < values.length ; col++){///traverse collumns of string
+		    	
+		    	
+		    	//read string and create object in arraylist based on letter or number
+		    	if(values[col].equals("1")){
+		    		Tile s = new Tile(0,0,Integer.parseInt(values[col]));
+		    		s.setX((row*75)-400);
+		    		s.setY((col*75)-350);
+		    		tiles[row][col] = s;
+		    	}
+		    }
+		  }	
+	}
+	
+	public void drawTiles(Graphics g) {
+		g.setColor(Color.RED);
+		g.drawRect(-globalX+380, -globalY+250, 50, 200);
+		for(int r = 0; r < tiles.length; r++) {
+			for(int c = 0; c<tiles[0].length; c++) {
+				if(tiles[r][c] != null) {
+					tiles[r][c].paint(g);
+					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
+					
+						player.setVx(0);
+						player.setVy(0);
+						if(globalX < 0) {
+						globalX++;
+						}else {
+							globalX--;
+						}
+						if(globalY < 0) {
+						globalY ++;
+						}else {
+							globalY--;
+						}
+					}
+
+				}
+			}
+		}
+	}
 	
 	/**
 	* get hurt
@@ -419,6 +513,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				player.setVx(4);
 			}
 		}
+		
+		if(arg0.getKeyCode() == 112) {//right
+			if(gamestate == 1) {
+				ArrayList<Integer> TEMP = new ArrayList<Integer>();
+				TEMP.add(1);
+				TEMP.add(2);
+				load.save(player.getHp(),wave,player.getXp(),TEMP);
+				System.out.println("save");
+			}
+		}
 	 if(arg0.getKeyCode() == 32) {//spacebar
 		//select button
 		 if(gamestate == 0) {
@@ -426,11 +530,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					gamestate = 1;
 					titleAnim = 0;
 					titleAnim2 = 0;
+				}else if(titleIndex == 1) {
+					load.load();
+					player.setHp(load.getPlayerHp());
+					player.setXp(load.getPlayerXp());
 				}else if(titleIndex == 2) {
 					gamestate = 2;
 					titleAnim = 0;
 					titleAnim2 = 0;
 				}
+				initTiles();
 		 	}
 	 	}
 	}

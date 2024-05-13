@@ -14,87 +14,57 @@ import javax.swing.text.Position;
 
 public class pathfinding {
 	private ArrayList<Enemy> enemy;
+	private int[][] board;
 	
 	public pathfinding(Player p) {
 		// TODO Auto-generated constructor stub
 		enemy = new ArrayList<Enemy>();
+		board = new int[815][735];
 	}
-    public static Queue<Position> findPath(List<Level> maze, int rows, int cols) throws IOException {
-        Position start = null, goal = null;
-        Queue<Position> path = new LinkedList<Position>(); 
-        for (Level level : maze) {
-        	for (Position position: level.positions) {
-        		if (position.type == CHARACTER) {
-        			start = position;
-        		} else if (position.type == GOAL) {
-        			goal = position;
-        		}
-        		else if (position.type == DOOR) {
-        			goal = position;
-        		}	
-        	}
-        	Queue<Position> p = findPathInLevel(level.positions, start, goal, rows, cols);
-        	if (p.isEmpty()) {
-        		// even if one level is not solved, maze is not solved
-        		return null;
-        	}
-        	while (!p.isEmpty()) {
-                Position q = p.poll();
-                path.offer(q);
-            }
-        }
-        return path;
-	
-}
-public static Queue<Position> findPathInLevel(List<Position> maze, Position start, Position goal, int rows, int cols) {
-	
+	public void addEnemy(Enemy e) {
+		enemy.add(e);
+	}
+	public static List<Position> findPath(List<Level> levels, int rows, int columns) {
+		List<Position> path = new ArrayList<>();
+		boolean[][] visited = new boolean[rows][columns];
 
-    Queue<Position> queue = new LinkedList<>();
-    queue.offer(start); // Enqueue the starting cell
+		// Start from the entrance position of the first level
+		search(levels, 0, levels.get(0).intValue(), visited, path, rows, columns);
+		return path;
+	}
 
-    Map<Position, Position> parentMap = new HashMap<>();
-    parentMap.put(start, null); // Mark the starting cell's parent as null
+	private static boolean search(List<Level> levels, int levelIndex, Position pos,
+			List<Position> path, int rows, int columns) {
+		int row = pos.row;
+		int col = pos.col;
+		int level = levelIndex;
+		int posIndex = row * columns + col;
 
-    while (!queue.isEmpty()) {
-        Position current = queue.poll(); // Dequeue a cell
+		// Check if the position is valid and not visited
+		if (row < 0 || col < 0 || level < 0 || row >= rows || col >= columns || visited[levelIndex][row][col]) {
+			return false;
+		}
 
-        if (current.row == goal.row && current.col == goal.col) {
-            // If the goal is reached, reconstruct and return the path
-            return reconstructPath(parentMap, goal);
-        }
+		// Mark the position as visited
 
-        // Explore neighbors
-        for (int[] dir : DIRECTIONS) {
-            int newRow = current.row + dir[0];
-            int newCol = current.col + dir[1];
+		// Explore adjacent positions
+		int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // Up, down, left, right
+		for (int[] dir : dirs) {
+			int newRow = row + dir[0];
+			int newCol = col + dir[1];
+			Position newPos = new Position(newRow, newCol, levelIndex,
+					levels.get(levelIndex).positions.get(posIndex).type);
+			if (search(levels, levelIndex, newPos, path, rows, columns)) {
+				return true;
+			}
+		}
 
-            if (isValid(newRow, newCol, rows, cols)) {
-                Position neighbor = maze.get(newRow * cols + newCol);
-                if (neighbor != null && neighbor.row == newRow && neighbor.col == newCol && neighbor.type != WALL) {
-                    if (!parentMap.containsKey(neighbor)) {
-                        queue.offer(neighbor);
-                        parentMap.put(neighbor, current);
-                    }
-                }
-            }
-        }
-    }
+		// If the position is a prize, keep exploring without changing level
 
-    return new LinkedList<>(); // No path found
-}
-//reconstruct the path that was determined by the method
-private static Queue<Position> reconstructPath(Map<Position, Position> parentMap, Position goal) {
-    Queue<Position> path = new LinkedList<>();//create a new queue to return the information
-    Position current = goal;
-    while (current != null) {//add to the new queue what was in the list
-        path.offer(current);
-        current = parentMap.get(current);
-    }
-    return path;
-}
-//Used to check if the boundaries of the place that the maze is going through is valid
-private static boolean isValid(int row, int col, int numRows, int numCols) {
-    return row >= 0 && row < numRows && col >= 0 && col < numCols;
-}
+		// If no path is found, backtrack
+		path.remove(path.size() - 1);
+		return false;
+	}
+
 
 }

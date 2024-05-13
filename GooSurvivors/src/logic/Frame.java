@@ -109,6 +109,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	GameLoader load = new GameLoader();
 	
+	Tile[][] tiles = new Tile[27][27];
+	
+	
 
 	boolean invunrebility = false; //player cannot die when true
 	
@@ -159,10 +162,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		   	
 			
 		   	map.paint(g);
+		   	drawTiles(g);
 		   	
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
+			
+			drawTiles(g);
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -310,6 +316,69 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 	}
 	
+	/**
+	* initilaize 1t layer of tiles
+	* traverses a array of strings, each letter is assigned a tile
+	* the tile is added to arraylists that are processed in the drawGrid function
+	*
+	* @param none
+	*/
+	public void initTiles() {//initialize 1st layer of tiles
+		  String[] lines = {//game map 27x27
+				  "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1",
+				  "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+		  };
+		  
+		  for(int row = lines.length -1; row >= 0; row--){//traverse rows of strings
+		    String[] values = lines[row].split(",");//split each into individual letters
+		    for(int col = 0; col < values.length ; col++){///traverse collumns of string
+		    	
+		    	
+		    	//read string and create object in arraylist based on letter or number
+		    	if(values[col].equals("1")){
+		    		Tile s = new Tile(0,0,Integer.parseInt(values[col]));
+		    		s.setX((row*75)-400);
+		    		s.setY((col*75)-350);
+		    		tiles[row][col] = s;
+		    	}
+		    }
+		  }	
+	}
+	
+	public void drawTiles(Graphics g) {
+		for(int r = 0; r < tiles.length; r++) {
+			for(int c = 0; c<tiles[0].length; c++) {
+				if(tiles[r][c] != null) {
+					tiles[r][c].paint(g);
+				}
+			}
+		}
+	}
 	
 	/**
 	* get hurt
@@ -448,6 +517,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleAnim = 0;
 					titleAnim2 = 0;
 				}
+				initTiles();
 		 	}
 	 	}
 	}

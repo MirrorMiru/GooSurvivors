@@ -99,7 +99,7 @@ public class ShootingSkeleton extends Enemy{
 	}
 	
 	public void shoot() {
-		sBullet.add()
+		//sBullet.add()
 	}
 	
 	public int getX() {

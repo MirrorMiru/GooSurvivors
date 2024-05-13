@@ -70,6 +70,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite map = new Sprite("/img/map.png",-400,-350,2000,2000);
 	
+	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
+	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
@@ -157,7 +159,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			inst[titleAnim2].paint(g);
 			
 		}else if(gamestate == 1) {
-						
+				
+			bg.paint(g);
+			
 		   	g.translate(globalX, globalY);//translate all tiles
 		   	
 			
@@ -168,7 +172,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
 			
-			drawTiles(g);
+			
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -371,10 +375,28 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	public void drawTiles(Graphics g) {
+		g.setColor(Color.RED);
+		g.drawRect(-globalX+380, -globalY+250, 50, 200);
 		for(int r = 0; r < tiles.length; r++) {
 			for(int c = 0; c<tiles[0].length; c++) {
 				if(tiles[r][c] != null) {
 					tiles[r][c].paint(g);
+					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
+					
+						player.setVx(0);
+						player.setVy(0);
+						if(globalX < 0) {
+						globalX++;
+						}else {
+							globalX--;
+						}
+						if(globalY < 0) {
+						globalY ++;
+						}else {
+							globalY--;
+						}
+					}
+
 				}
 			}
 		}

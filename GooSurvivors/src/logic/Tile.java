@@ -1,8 +1,10 @@
 package logic;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
@@ -33,8 +35,8 @@ public class Tile{
 			System.out.println("oops");//shoudl neevr happen
 		}
 
-		width = 100;
-		height = 100;
+		width = 75;
+		height = 75;
 		this.x = x;
 		this.y = x;
 		tx = AffineTransform.getTranslateInstance(0, 0);
@@ -49,6 +51,8 @@ public class Tile{
 		init(x,y);
 
 			g2.drawImage(image, tx, null);
+			g.setColor(Color.BLUE);
+			g.drawRect(x, y, width, height);
 	}
 	
 	//getters and setters
@@ -83,6 +87,14 @@ public class Tile{
 			e.printStackTrace();
 		}
 		return tempImage;
+	}
+
+	public boolean collided(int x, int y, int width, int height) {
+		//if scaling images with scale var, make sure w/h reflect what we see on screen
+		Rectangle otherObj = new Rectangle(x,y,width,height);
+		Rectangle thisObj = new Rectangle(this.x,this.y + this.height/2,this.width,this.height/2);
+
+	return thisObj.intersects(otherObj);
 	}
 
 }

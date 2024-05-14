@@ -35,8 +35,8 @@ public class pathfinding {
 
 	private static boolean search(List<Level> levels, int levelIndex, Position pos,
 			List<Position> path, int rows, int columns) {
-		int row = pos.row;
-		int col = pos.col;
+		int row = 0;
+		int col = 1;
 		int level = levelIndex;
 		int posIndex = row * columns + col;
 
@@ -52,11 +52,7 @@ public class pathfinding {
 		for (int[] dir : dirs) {
 			int newRow = row + dir[0];
 			int newCol = col + dir[1];
-			Position newPos = new Position(newRow, newCol, levelIndex,
-					levels.get(levelIndex).positions.get(posIndex).type);
-			if (search(levels, levelIndex, newPos, path, rows, columns)) {
-				return true;
-			}
+			
 		}
 
 		// If the position is a prize, keep exploring without changing level

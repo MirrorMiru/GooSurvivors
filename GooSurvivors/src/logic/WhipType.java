@@ -18,23 +18,28 @@ public class WhipType{
 	
 	private int width, height;
 	private int x, y;						//position of the object
-	private double scaleWidth = 0.25;		//scaled to half of original sprite
-	private double scaleHeight = 0.25; 		
+	private int reverseX;
+	private int initialX;
+	private double scaleWidth = 0.5;		//scaled to half of original sprite
+	private double scaleHeight = 0.5; 		
 	private int timer = 0;
+	private int timer2 = 0;
 	private int dmg;
 	private int cool;
 
 	public WhipType(int cooldown, int damage, int x, int y) {
 		
 			image1 	= getImage("/img/whip.png");
-			image1 	= getImage("/img/whip2.png");
+			image2 	= getImage("/img/whip2.png");
 
 		width = 0;
-		height = 50;
-		this.x = x;
-		this.y = x;
+		height = 0;
+		this.x = x-100;
+		this.initialX = x-100;
+		this.y = y;
+		this.reverseX = x + 120;
 		this.dmg = damage;
-		cool = cooldown+200;
+		cool = cooldown;
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
 									//use your variables
@@ -45,9 +50,9 @@ public class WhipType{
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		init(x,y);
-			if(width > 0) {
+			if(x == initialX && width > 0) {
 			g2.drawImage(image1, tx, null);
-			}else if(width < 0) {
+			}else if(x == reverseX && width > 0) {
 				g2.drawImage(image2, tx, null);
 			}
 			g.setColor(Color.RED);
@@ -55,33 +60,39 @@ public class WhipType{
 			
 			timer++;
 			if(timer % cool == 0) {
-				timer = 1;
-				attack();	
+				timer2++;
+				timer  = 0;
 			}
+		System.out.println(timer2);
+			
+				if(timer2 > 4 && timer2 <= 6) {
+					this.x = initialX;
+					width = 100;
+					height = 50;
+					
+					
+				}else if(timer2 > 6 && timer2 <= 10) {
+					width = 0;
+					height = 0;
+					
+				}else if(timer2 > 10 && timer2 <=12) {
+					this.x = reverseX;
+					width = 100;
+					height = 50;
+					
+				}else if(timer2 == 13) {
+					width = 0;
+					height = 0;
+					timer2 = 0;
+				}
+			
+
+				
+			
 			
 	}
 	
-	public void attack() {
-		int timer2 = 0;
-		while(timer < 200) {
-		timer2++;
-		if(timer < 100) {
-			width = 100;
-			height = 50;
-		}
-		if(timer > 100 && timer < 150) {
-			width = 0;
-			height = 0;
-		}
-		if(timer > 150) {
-			width = -100;
-			height = 50;
-		}
 	
-		}
-		width = 0;
-		height = 0;
-	}
 	
 	public int getDmg() {
 		return dmg;

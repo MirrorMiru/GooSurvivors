@@ -1,10 +1,11 @@
+
 package logic;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
+ 
 public class ProjectileBullet{
 	private int width;
 	private int height; 
@@ -13,6 +14,9 @@ public class ProjectileBullet{
 	protected int Vy;
 	protected int x;
 	protected int y; //these initial positions are so that (with some help), it'll spawn on the enemy
+	private int playerX;
+	private int playerY;
+
 	private int speed;
 	
 	public ProjectileBullet() {
@@ -22,10 +26,12 @@ public class ProjectileBullet{
 		speed = 0;
 	}
 	
-	public ProjectileBullet(int dmg, int w, int h, int s) {
+	public ProjectileBullet(int dmg, int w, int h, int pX, int pY, int s) {
 		damage = dmg;
 		width = w;
 		height = h;
+		playerX = pX;
+		playerY = pY;
 		speed = s;
 	}
 	
@@ -84,3 +90,4 @@ public class ProjectileBullet{
 		return thisObj.intersects(otherObj);
 	}
 }
+

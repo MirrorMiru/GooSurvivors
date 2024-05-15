@@ -1,5 +1,4 @@
 package logic;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,8 +7,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
-
-
+import java.util.ArrayList;
 public class ShootingSkeleton extends Enemy{
 	
 	private int timer = 0;
@@ -25,16 +23,15 @@ public class ShootingSkeleton extends Enemy{
 	Sprite[] left = {new Sprite("/img/SK1L.png",x,y,300,200,0.2),new Sprite("/img/SK2L.png",x,y,300,200,0.2)};
 	
 	Sprite[] right = {new Sprite("/img/SK1R.png",x,y,300,200,0.2),new Sprite("/img/SK2R.png",x,y,300,200,0.2)};
-
+	
 	
 	public ShootingSkeleton() {
 		super(100,10,200,300,1);
 		this.x = 0;
 		this.y = 0;
-	}
-
+	} 
 	/**
-	* return true if an object represented by x, y , w , h occupies 
+	* return true if an object represented by x, y , w , h occupies
 	* any space occupied by object
 	*
 	* @param none
@@ -45,11 +42,9 @@ public class ShootingSkeleton extends Enemy{
 	//if scaling images with scale var, make sure w/h reflect what we see on screen
 	Rectangle otherObj = new Rectangle(x,y,width,height);
 	Rectangle thisObj = new Rectangle(this.x+55,this.y+55,super.getWidth(),super.getHeight());
-
 	return thisObj.intersects(otherObj);
 	}
 	
-
 	//draw player image and apply physics
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
@@ -75,8 +70,7 @@ public class ShootingSkeleton extends Enemy{
 			timer2 = 0;
 		}
 		
-		if( shootingTimer % 120 == 0) {
-			shoot();
+		if( shootingTimer % 180 == 0) {
 			shootingTimer = 0;
 		}
 		
@@ -98,31 +92,26 @@ public class ShootingSkeleton extends Enemy{
 	
 	}
 	
-	public void shoot() {
-		//sBullet.add()
-	}
-	
 	public int getX() {
 		return x;
 	}
-
 	public void setX(int x) {
 		this.x = x;
 	}
-
 	public int getY() {
 		return y;
 	}
-
+	public int getShootingTimer() {
+		return shootingTimer;
+	}
+	
 	public void setY(int y) {
 		this.y = y;
 	}
-
-
 	private void direction() {
 			if(super.Vx < 0 ) {
 				dir = 0;
-			} 
+			}
 			else if(super.Vx > 0 ) {
 				dir = 1;
 			}else if(super.Vy > 0){
@@ -135,8 +124,4 @@ public class ShootingSkeleton extends Enemy{
 	
 	//image code
 
-
-
-
-}
-
+	

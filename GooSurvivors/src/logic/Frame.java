@@ -106,7 +106,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int globalX = 300;
 	int globalY = 200;
 	
-	//enemy arraylsts
+	//enemy arraylists
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();

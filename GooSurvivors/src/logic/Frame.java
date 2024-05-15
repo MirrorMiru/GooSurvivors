@@ -115,6 +115,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Tile[][] tiles = new Tile[27][27];
 	
+	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
+	
 	
 
 	boolean invunrebility = false; //player cannot die when true
@@ -329,18 +331,21 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*
 	* @param none
 	*/
-	public void initTiles() {//initialize 1st layer of tiles
+	public void initTiles(File map) {//initialize 1st layer of tiles
 		String[] lines = new String[27];
-		int i = 0;
-		 File file = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
+		String tot = "";
+		 
 		 try {
-			Scanner sc = new Scanner(file);
+			Scanner sc = new Scanner(map);
 			
-			 while (sc.hasNextLine() && i < 27) {
+			 while (sc.hasNextLine()) {
 		            String l = sc.nextLine();
-		            lines[i] = l;
-		            i++;
+		            tot+= l;
+		           
 			 }
+			 lines = tot.split("/n");
+			
+			 System.out.println(Arrays.toString(lines));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -529,7 +534,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleAnim = 0;
 					titleAnim2 = 0;
 				}
-				initTiles();
+				initTiles(tilemap);
 		 	}
 	 	}
 	}

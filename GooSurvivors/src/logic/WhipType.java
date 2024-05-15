@@ -63,7 +63,7 @@ public class WhipType{
 				timer2++;
 				timer  = 0;
 			}
-		System.out.println(timer2);
+		
 			
 				if(timer2 > 4 && timer2 <= 6) {
 					this.x = initialX;

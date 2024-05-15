@@ -29,3 +29,4 @@ public class Frame2 {
 		//this means that every single enemy with projectiles needs a shootingTimer variable and getter
 	}
 }
+ 

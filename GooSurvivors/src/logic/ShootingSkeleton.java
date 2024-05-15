@@ -29,7 +29,7 @@ public class ShootingSkeleton extends Enemy{
 		super(100,10,200,300,1);
 		this.x = 0;
 		this.y = 0;
-	}
+	} 
 	/**
 	* return true if an object represented by x, y , w , h occupies
 	* any space occupied by object

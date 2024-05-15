@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
+ 
 public class ProjectileBullet{
 	private int width;
 	private int height; 

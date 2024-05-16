@@ -70,7 +70,7 @@ public class ShootingSkeleton extends Enemy{
 			timer2 = 0;
 		}
 		
-		if( shootingTimer % 180 == 0) {
+		if( shootingTimer % 41 == 0) {
 			shootingTimer = 0;
 		}
 		
@@ -120,7 +120,7 @@ public class ShootingSkeleton extends Enemy{
 				dir = 1;
 			}
 		}
-	
+}	
 	
 	//image code
 

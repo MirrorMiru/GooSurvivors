@@ -29,8 +29,8 @@ public class WhipType{
 
 	public WhipType(int cooldown, int damage, int x, int y) {
 		
-			image1 	= getImage("/img/whip.png");
-			image2 	= getImage("/img/whip2.png");
+			image1 	= getImage("/img/flame.png");
+			image2 	= getImage("/img/flame2.png");
 
 		width = 0;
 		height = 0;
@@ -67,8 +67,8 @@ public class WhipType{
 			
 				if(timer2 > 4 && timer2 <= 6) {
 					this.x = initialX;
-					width = 100;
-					height = 50;
+					width = 150;
+					height = 70;
 					
 					
 				}else if(timer2 > 6 && timer2 <= 10) {
@@ -77,8 +77,8 @@ public class WhipType{
 					
 				}else if(timer2 > 10 && timer2 <=12) {
 					this.x = reverseX;
-					width = 100;
-					height = 50;
+					width = 150;
+					height = 70;
 					
 				}else if(timer2 == 13) {
 					width = 0;
@@ -91,6 +91,8 @@ public class WhipType{
 			
 			
 	}
+	
+	
 	
 	
 	
@@ -131,13 +133,21 @@ public class WhipType{
 		}
 		return tempImage;
 	}
-
+	
 	public boolean collided(int x, int y, int width, int height) {
 		//if scaling images with scale var, make sure w/h reflect what we see on screen
 		Rectangle otherObj = new Rectangle(x,y,width,height);
-		Rectangle thisObj = new Rectangle(this.x,this.y + this.height/2,this.width,this.height/2);
+		Rectangle thisObj = new Rectangle(this.x,this.y,this.width,this.height);
 
 	return thisObj.intersects(otherObj);
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 }

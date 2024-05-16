@@ -131,6 +131,13 @@ public class Player{
 		return xp;
 	}
 
+	public int[] hurtBox() {
+		return new int[] {starter.getX(), starter.getY(), starter.getWidth(), starter.getHeight()};
+	}
+	
+	public WhipType getWeapon() {
+		return starter;
+	}
 
 
 	public int getHp() {

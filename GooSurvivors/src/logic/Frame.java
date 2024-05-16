@@ -302,19 +302,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 		}
 		for(int i = 0; i< enemies.size(); i++) {
-			//if(skels.get(i).getHp() <= 0) {
-			///	skels.remove(i);
-			/// player.addXp(10);
-			//}
+			
+			if((player.getWeapon().collided(enemies.get(i).getX(),enemies.get(i).getY(),enemies.get(i).getWidth(),enemies.get(i).getHeight()))){ {
+				enemies.get(i).takeDamage(10, g);
+				System.out.println("enemy hit");
+			}
+			if(enemies.get(i).getHp() <= 0) {
+				enemies.remove(i);
+			 player.addXp(10);
+			}
+			
 		}
 		}
+	}
 	}
 	
 	private void startWaves() {
 		waveTimer++;
 		
 		if(waveTimer == 20) {
-			spawnEnemies(5, sSlimes, "small slimes");
+			spawnEnemies(1, sSlimes, "small slimes");
 		}
 		if(waveTimer == 220) {
 			spawnEnemies(1, bSlimes, "big slimes");

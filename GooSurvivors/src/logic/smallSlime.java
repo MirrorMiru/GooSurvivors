@@ -41,7 +41,7 @@ public class smallSlime extends Enemy{
 		
 	//if scaling images with scale var, make sure w/h reflect what we see on screen
 	Rectangle otherObj = new Rectangle(x,y,width,height);
-	Rectangle thisObj = new Rectangle(this.x+55,this.y+55,super.getWidth(),super.getHeight());
+	Rectangle thisObj = new Rectangle(this.x,this.y,super.getWidth(),super.getHeight());
 
 	return thisObj.intersects(otherObj);
 	}
@@ -72,7 +72,7 @@ public class smallSlime extends Enemy{
 		}
 		
 		//System.out.println("vx: "+super.getVx()+" vy: "+super.getVy());
-		
+		g.drawRect(this.x, this.y, super.getWidth(), super.getHeight());
 		
 	
 			anim[timer2].setX(x);

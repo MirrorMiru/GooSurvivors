@@ -22,14 +22,10 @@ public class Tile{
 
 	public Tile(int x, int y, int type) {
 		if(type == 1) {
-			image 	= getImage("/img/tile.png"); //load the image for tile based on comstructor
+			image 	= getImage("/img/tile"+((int)(Math.random()*9+1))+".png"); //load the image for tile based on comstructor
 		}else if(type == 2) {
 			image 	= getImage("/img/tile.png");
 		}else if(type == 3) {
-			image 	= getImage("/img/tile.png");
-		}else if(type == 4) {
-			image 	= getImage("/img/tile.png");
-		}else if(type == 5) {
 			image 	= getImage("/img/tile.png");
 		}else {
 			System.out.println("oops");//shoudl neevr happen
@@ -92,7 +88,7 @@ public class Tile{
 	public boolean collided(int x, int y, int width, int height) {
 		//if scaling images with scale var, make sure w/h reflect what we see on screen
 		Rectangle otherObj = new Rectangle(x,y,width,height);
-		Rectangle thisObj = new Rectangle(this.x,this.y + this.height/2,this.width,this.height/2);
+		Rectangle thisObj = new Rectangle(this.x,this.y,this.width,this.height);
 
 	return thisObj.intersects(otherObj);
 	}

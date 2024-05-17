@@ -180,7 +180,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
-			player.paint(g);		
+			player.paint(g);
+			
+			player.getWeapon().setX( -globalX+300);
 			
 			globalX -=player.getVx();
 			globalY -=player.getVy();
@@ -287,6 +289,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
+		g.drawRect(player.getWeapon().getX(), player.getWeapon().getY(), player.getWeapon().getWidth(), player.getWeapon().getHeight());
 		if(enemies.size() > 0) {
 		for(Enemy s : enemies) {
 			s.paint(g);
@@ -300,13 +303,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}else {
 				s.setVy(-1*s.getSpeed());
 			}
+			if (player.getWeapon().collidedWithEnemy(s)) {
+	                s.takeDamage(player.getWeapon().getDmg(), g);
+	                System.out.println("Enemy hit");
+	         }
+			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
+			
 		}
 		for(int i = 0; i< enemies.size(); i++) {
-			
-			if((player.getWeapon().collided(enemies.get(i).getX(),enemies.get(i).getY(),enemies.get(i).getWidth(),enemies.get(i).getHeight()))){ {
-				enemies.get(i).takeDamage(10, g);
-				System.out.println("enemy hit");
-			}
 			if(enemies.get(i).getHp() <= 0) {
 				enemies.remove(i);
 			 player.addXp(10);
@@ -315,7 +319,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		}
 	}
-	}
+	
+	
+	
 	
 	private void startWaves() {
 		waveTimer++;
@@ -352,7 +358,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			 }
 			 lines = tot.split("/n");
 			
-			 System.out.println(Arrays.toString(lines));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

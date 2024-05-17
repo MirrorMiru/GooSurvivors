@@ -37,7 +37,7 @@ public class Player{
 	Sprite[] playerRight = {new Sprite("/img/PR1.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)
 			,new Sprite("/img/PR3.png",x,y,300,200,0.2),new Sprite("/img/PR2.png",x,y,300,200,0.2)};
 	
-	WhipType starter = new WhipType(10,20,x,y);
+	Whip starter = new Whip(10,20,x,y);
 
 	
 	public Player() {
@@ -131,11 +131,9 @@ public class Player{
 		return xp;
 	}
 
-	public int[] hurtBox() {
-		return new int[] {starter.getX(), starter.getY(), starter.getWidth(), starter.getHeight()};
-	}
+
 	
-	public WhipType getWeapon() {
+	public Whip getWeapon() {
 		return starter;
 	}
 
@@ -172,6 +170,7 @@ public class Player{
 		starter.paint(g);
 		
 	//	System.out.println("vx: "+vx+" vy: "+vy);
+		
 		
 		init(x,y);//whatever this is
 		
@@ -229,6 +228,10 @@ public class Player{
 			e.printStackTrace();
 		}
 		return tempImage;
+	}
+
+	public boolean collidedWithEnemy(Enemy enemy) {
+	    return enemy.collided(this.x, this.y, this.width, this.height);
 	}
 
 }

@@ -38,7 +38,7 @@ public class bigSlime extends Enemy{
 	* @returns boolean- if rectanges collide
 	*/
 	public boolean collided(int x, int y, int width, int height) {
-		System.out.println("called");
+
 	//if scaling images with scale var, make sure w/h reflect what we see on screen
 	Rectangle otherObj = new Rectangle(x,y,width,height);
 	Rectangle thisObj = new Rectangle(this.x,this.y,super.getWidth(),super.getHeight());

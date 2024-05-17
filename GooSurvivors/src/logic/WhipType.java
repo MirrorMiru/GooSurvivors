@@ -27,6 +27,7 @@ public class WhipType{
 	private int dmg;
 	private int cool;
 
+
 	public WhipType(int cooldown, int damage, int x, int y) {
 		
 			image1 	= getImage("/img/flame.png");
@@ -55,8 +56,8 @@ public class WhipType{
 			}else if(x == reverseX && width > 0) {
 				g2.drawImage(image2, tx, null);
 			}
-			g.setColor(Color.RED);
-			g.drawRect(x, y, width, height);
+		g.setColor(Color.RED);
+		g.drawRect(x, y, width, height);
 			
 			timer++;
 			if(timer % cool == 0) {
@@ -77,7 +78,7 @@ public class WhipType{
 					
 				}else if(timer2 > 10 && timer2 <=12) {
 					this.x = reverseX;
-					width = 150;
+				    width = 150;
 					height = 70;
 					
 				}else if(timer2 == 13) {
@@ -134,12 +135,8 @@ public class WhipType{
 		return tempImage;
 	}
 	
-	public boolean collided(int x, int y, int width, int height) {
-		//if scaling images with scale var, make sure w/h reflect what we see on screen
-		Rectangle otherObj = new Rectangle(x,y,width,height);
-		Rectangle thisObj = new Rectangle(this.x,this.y,this.width,this.height);
-
-	return thisObj.intersects(otherObj);
+	public boolean collidedWithEnemy(Enemy enemy) {
+	    return enemy.collided(this.x, this.y, this.width, this.height);
 	}
 
 	public int getWidth() {

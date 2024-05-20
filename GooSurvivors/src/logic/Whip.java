@@ -20,14 +20,13 @@ public class Whip{
 	
 
 	private int width, height;
-	private int x = 320;
-	private int y = 320;						//position of the object
+	private int x = 220;
+	private int y = 400;						//position of the object
 
 	private int timer = 0;
 	private int timer2 = 0;
 	
-	private int reverseX;
-	private int initialX;
+
 	
 	private int dmg;
 	private int cool;
@@ -37,15 +36,12 @@ public class Whip{
 	
 
 	
-	public Whip(int cooldown, int damage, int x, int y) {
+	public Whip(int cooldown, int damage) {
 		
 		
 		width = 0;
 		height = 0;
-		this.x = x-100;
-		this.initialX = x-100;
-		this.y = y;
-		this.reverseX = x + 120;
+	
 		this.dmg = damage;
 		cool = cooldown;
 	
@@ -64,11 +60,38 @@ public class Whip{
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		
-			
+		if( width > 0) {
 			image1.paint(g);
+			
+			}else if( width < 0) {
+				image2.paint(g);
+			}
+			
 		
-		g.setColor(Color.RED);
-		g.drawRect(x, y, width, height);
+		
+			timer++;
+			if(timer % cool == 0) {
+				timer2++;
+				timer  = 0;
+			}
+
+			if(timer2 > 6 && timer2 <= 8) {
+				
+				width = 150;
+				height = 70;
+				
+				
+			}else if(timer2 > 9 && timer2 <= 15) {
+				width = 0;
+				height = 0;
+				
+			}else if(timer2 == 16) {
+				width = 0;
+				height = 0;
+				timer2 = 0;
+			}
+		
+
 			
 			
 	}

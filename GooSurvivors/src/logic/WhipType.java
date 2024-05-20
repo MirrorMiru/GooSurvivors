@@ -35,10 +35,8 @@ public class WhipType{
 
 		width = 0;
 		height = 0;
-		this.x = x-100;
-		this.initialX = x-100;
+		this.x =x;
 		this.y = y;
-		this.reverseX = x + 120;
 		this.dmg = damage;
 		cool = cooldown;
 		tx = AffineTransform.getTranslateInstance(0, 0);
@@ -51,9 +49,9 @@ public class WhipType{
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 		init(x,y);
-			if(x == initialX && width > 0) {
+			if( width > 0) {
 			g2.drawImage(image1, tx, null);
-			}else if(x == reverseX && width > 0) {
+			}else if( width < 0) {
 				g2.drawImage(image2, tx, null);
 			}
 		g.setColor(Color.RED);
@@ -67,7 +65,7 @@ public class WhipType{
 		
 			
 				if(timer2 > 4 && timer2 <= 6) {
-					this.x = initialX;
+					
 					width = 150;
 					height = 70;
 					
@@ -77,8 +75,8 @@ public class WhipType{
 					height = 0;
 					
 				}else if(timer2 > 10 && timer2 <=12) {
-					this.x = reverseX;
-				    width = 150;
+					
+				    width = -150;
 					height = 70;
 					
 				}else if(timer2 == 13) {

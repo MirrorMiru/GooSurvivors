@@ -117,7 +117,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
 	
-	
+	Whip starter = new Whip(10,1);
 
 	boolean invunrebility = false; //player cannot die when true
 	
@@ -182,7 +182,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 			player.paint(g);
 			
-			player.getWeapon().setX( -globalX+300);
+			starter.paint(g);
 			
 			globalX -=player.getVx();
 			globalY -=player.getVy();
@@ -289,11 +289,17 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
-		g.drawRect(player.getWeapon().getX(), player.getWeapon().getY(), player.getWeapon().getWidth(), player.getWeapon().getHeight());
+	//g.drawRect(-globalX+380, -globalY+250, 50, 200);
+	
+		g.drawRect(-globalX+230, -globalY+300, starter.getWidth(), starter.getHeight());
+		starter.setX(-globalX+230);
+		starter.setY(-globalY+300);
+		
+		
 		if(enemies.size() > 0) {
 		for(Enemy s : enemies) {
 			s.paint(g);
-			if(s.getX() < -globalX+300) {
+			if(s.getX() < -globalX+380) {
 				s.setVx(s.getSpeed());
 			}else {
 				s.setVx(-1*s.getSpeed());
@@ -303,8 +309,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}else {
 				s.setVy(-1*s.getSpeed());
 			}
-			if (player.getWeapon().collidedWithEnemy(s)) {
-	                s.takeDamage(player.getWeapon().getDmg(), g);
+			if (starter.collidedWithEnemy(s)) {
+	                s.takeDamage(starter.getDmg(), g);
 	                System.out.println("Enemy hit");
 	         }
 			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());

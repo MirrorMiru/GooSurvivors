@@ -1,7 +1,9 @@
 package logic;
 
 import java.awt.Graphics;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,14 +12,17 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.logging.Level;
 
-import javax.swing.text.Position;
-
 public class pathfinding {
 	private ArrayList<Tile> enemy;
+	private ArrayList<Position> map;
 	private boolean[][] board;
+	private String[][] xBoard;
 	private int startX;
 	private int startY;
 	private char[] types = {0, 1, 2, 3};
+	private int rows = 27;
+	private int cols = 27;
+	Tile goal = new Tile(13,13, 4);
 	private int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	
 	
@@ -59,46 +64,76 @@ public class pathfinding {
 	public void addTile(Tile e) {
 		enemy.add(e);
 	}
-	public void findPath(Tile start, Player p) {
+	public void finder() throws Exception {
+		String filename = "map1.txt";
+    	ClassLoader classLoader = Frame.class.getClassLoader();
+		InputStream inputStream = ClassLoader.getSystemResourceAsStream(filename);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		System.out.println(inputStream != null);
+		String[] dimensions = reader.readLine().split(" ");
+		map = loadMaze(reader,rows,cols);
+	}
+	public Queue<Tile> findPath(Tile start, Player p) {
 		Queue<Tile> queue = new LinkedList<>();
 		queue.offer(start);
 
         Map<Tile, Tile> parentMap = new HashMap<>();
         parentMap.put(start, null);
         
-        int goalX = 13;
-        int goalY = 13;
         
         while (!queue.isEmpty()) {
             Tile current = queue.poll(); // Dequeue a cell
+            
+            if (current.x == goal.x && current.y == goal.y) {
+                // If the goal is reached, reconstruct and return the path
+                return reconstructPath(parentMap, goal);
+            }
             
             for(int[] dir : dirs) {
             	int newX = current.x + dir[0];
             	int newY = current.y + dir[1];
             	
-            	/*if (isValid(newX, newY, rows, cols)) {
-                    Position neighbor = maze.get(newRow * cols + newCol);
-                    if (neighbor != null && neighbor.row == newRow && neighbor.col == newCol && neighbor.type != WALL) {
+            	if (isValid(newX, newY, goal.x, goal.y)) {
+                    Position n = map.get(newX * cols + newY);
+                    Tile neighbor = new Tile(n.row, n.col, Integer.parseInt(n.type));
+                    if (neighbor != null && neighbor.x == goal.x && neighbor.y == goal.y && current.type != 1 && current.type != 3 && current.type != 2) {
                         if (!parentMap.containsKey(neighbor)) {
-                            queue.offer(neighbor);
+                        	queue.offer(neighbor);
                             parentMap.put(neighbor, current);
                         }
                     }
-                }*/
+                }
             }
-		
         }
+		return queue;
 	}
-	private static Queue<Position> reconstructPath(Map<Position, Position> parentMap, Position goal) {
-        Queue<Position> path = new LinkedList<>();//create a new queue to return the information
-        Position current = goal;
+	private Queue<Tile> reconstructPath(Map<Tile,Tile> parentMap, Tile goal) {
+        Queue<Tile> path = new LinkedList<>();//create a new queue to return the information
+        Tile current = goal;
         while (current != null) {//add to the new queue what was in the list
             path.offer(current);
             current = parentMap.get(current);
         }
         return path;
     }
-    private static boolean isValid(int row, int col, int numRows, int numCols) {
+    private boolean isValid(int row, int col, int numRows, int numCols) {
         return row >= 0 && row < numRows && col >= 0 && col < numCols;
     }
+
+    private ArrayList<Position> loadMaze(BufferedReader reader, int rows, int cols) throws Exception {
+    	map = new ArrayList<Position>();
+    	for (int i = 0; i < rows; i++) {
+			String line = reader.readLine();
+			for (int j = 0; j < cols; j++) {
+				String c = line.substring(i,i+1);
+				if (c.equals(",")) {
+					Position p = new Position(i,j,c);
+					map.add(p);
+					xBoard[i][j] = c;
+				}
+			}
+		}
+		System.out.println("all positions loaded");
+		return map;
+	}
 }

@@ -113,6 +113,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
 	
+	ArrayList<Item> items = new ArrayList<Item>();
+	
 	GameLoader load = new GameLoader();
 	
 	Tile[][] tiles = new Tile[27][27];
@@ -178,6 +180,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
 			
+			itemLogic(g);
 			
 			
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
@@ -332,6 +335,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 	}
 	
+	private void itemLogic(Graphics g) {
+		if(items.size() >0) {
+			for(Item i: items) {
+				i.paint(g);
+			}
+		}
+	}
+	
 	
 	
 	
@@ -433,7 +444,22 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			                System.out.println("tile hit");
 			         }
 						if(((BreakableTile) tiles[r][c]).getHp()<=0) {
+							int rand = (int)(Math.random() * 4) + 1;
+							if(rand == 1) {
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								items.add(i);
+							}else if(rand == 2) {
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								items.add(i);
+							}else if(rand == 3) {
+							Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
+							items.add(i);
+							}else if(rand == 4) {
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								items.add(i);
+							}
 							tiles[r][c] = null;
+							
 						}
 					}
 					

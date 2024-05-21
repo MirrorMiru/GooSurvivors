@@ -16,8 +16,8 @@ public class Item{
 	
 	int width, height;
 	int x, y;						//position of the object
-	double scaleWidth = .5;		//change to scale image
-	double scaleHeight = .5; 		//change to scale image
+	double scaleWidth = .2;		//change to scale image
+	double scaleHeight = .2; 		//change to scale image
 	int type;
 	
 	public Item(int x, int y, int type) {

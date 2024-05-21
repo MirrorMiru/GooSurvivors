@@ -289,11 +289,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
-	//g.drawRect(-globalX+380, -globalY+250, 50, 200);
 	
+		if(starter.getDir()) {
 		g.drawRect(-globalX+230, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+230);
 		starter.setY(-globalY+300);
+		}else {
+		g.drawRect(-globalX+430, -globalY+300, starter.getWidth(), starter.getHeight());
+		starter.setX(-globalX+430);
+		}
 		
 		
 		if(enemies.size() > 0) {

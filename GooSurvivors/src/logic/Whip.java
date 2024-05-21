@@ -29,7 +29,7 @@ public class Whip{
 	boolean dir = true;
 	
 	Sprite image1 = new Sprite("/img/flame.png",x,y,width,height,0.5);
-	Sprite image2 = new Sprite("/img/flame2.png",x,y,width,height,0.5);
+	Sprite image2 = new Sprite("/img/flame2.png",x+220,y,width,height,0.5);
 	
 
 	
@@ -63,6 +63,7 @@ public class Whip{
 				image2.paint(g);
 			}
 			
+	
 		
 		
 			timer++;
@@ -130,7 +131,7 @@ public class Whip{
 	}
 	
 	public boolean getDir() {
-		
+		return dir;
 	}
 	
 	//getters and setters

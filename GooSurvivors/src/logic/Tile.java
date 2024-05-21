@@ -16,7 +16,9 @@ public class Tile{
 	private AffineTransform tx;
 	
 	int width, height;
-	int x, y;						//position of the object
+	int x, y;
+	//position of the object
+	int type;
 	double scaleWidth = 0.25;		//scaled to half of original sprite
 	double scaleHeight = 0.25; 		
 
@@ -33,12 +35,16 @@ public class Tile{
 			System.out.println("oops");//shoudl neevr happen
 		}
 		
+<<<<<<< HEAD
+=======
 		this.type = type;
+>>>>>>> branch 'main' of https://github.com/MirrorMiru/GooSurvivors.git
 
 		width = 75;
 		height = 75;
 		this.x = x;
 		this.y = x;
+		this.type = type;
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		init(x, y); 				//initialize the location of the image
 									//use your variables

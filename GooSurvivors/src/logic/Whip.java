@@ -77,7 +77,7 @@ public class Whip{
 				width = 150;
 				height = 70;
 				x = 220;
-				System.out.println("L");
+			
 				dir = true;
 				
 			}else if(timer2 > 13 && timer2 <= 20) {
@@ -85,7 +85,7 @@ public class Whip{
 				width = 150;
 				height = 70;
 				x = 520;
-				System.out.println("R");
+			
 				dir=false;
 				
 			}else if(timer2 > 21 && timer2 <= 22) {
@@ -107,6 +107,10 @@ public class Whip{
 	
 	public boolean collidedWithEnemy(Enemy enemy) {
 	    return enemy.collided(this.x, this.y, this.width, this.height);
+	}
+	
+	public boolean collidedWithEnemy(Tile tile) {
+	    return tile.collided(this.x, this.y, this.width, this.height);
 	}
 	
 	

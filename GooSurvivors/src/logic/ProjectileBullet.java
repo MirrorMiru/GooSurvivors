@@ -12,10 +12,8 @@ public class ProjectileBullet{
 	private int damage; 
 	protected int Vx;
 	protected int Vy;
-	protected int x;
-	protected int y; //these initial positions are so that (with some help), it'll spawn on the enemy
-	private int playerX;
-	private int playerY;
+	private int x;
+	private int y; //these initial positions are so that (with some help), it'll spawn on the enemy
 
 	private int speed;
 	
@@ -26,12 +24,12 @@ public class ProjectileBullet{
 		speed = 0;
 	}
 	
-	public ProjectileBullet(int dmg, int w, int h, int pX, int pY, int s) {
+	public ProjectileBullet(int dmg, int w, int h, int x, int y, int s) {
 		damage = dmg;
 		width = w;
 		height = h;
-		playerX = pX;
-		playerY = pY;
+		this.x = x;
+		this.y = y;
 		speed = s;
 	}
 	
@@ -53,6 +51,9 @@ public class ProjectileBullet{
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
+	public int getVx() {
+		return this.Vx;
+	}
 	public void setVx(int speed) {
 		this.Vx = speed;
 	}
@@ -60,7 +61,9 @@ public class ProjectileBullet{
 	public void setVy(int speed) {
 		this.Vy = speed;
 	}
-	
+	public int getVy() {
+		return this.Vy;
+	}
 	public int getSpeed() {
 		return speed;
 	}
@@ -76,9 +79,11 @@ public class ProjectileBullet{
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-		g.setColor(Color.green);
+		g.setColor(Color.red);
 		//g.drawRect(x, y, width, height);
-		g.drawOval(x, y, width, height);
+		this.x += getVx();
+		this.y -= getVy();
+		g.fillOval(this.x, this.y, width, height);
 	}
 	
 	public boolean collided(int x, int y, int width, int height) {

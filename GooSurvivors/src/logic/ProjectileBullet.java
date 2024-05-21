@@ -32,6 +32,7 @@ public class ProjectileBullet{
 		this.y = y;
 		speed = s;
 	}
+	//new annoyitng thing
 	
 	public int getWidth() {
 		return width;

@@ -74,6 +74,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
 	
+
+	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
@@ -367,6 +369,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		           
 			 }
 			 lines = tot.split("/n");
+			 
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -386,11 +389,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		    		s.setX((row*75)-400);
 		    		s.setY((col*75)-350);
 		    		tiles[row][col] = s;
+		    	}else if(values[col].equals("2")){
+		    		Tile s = new BreakableTile(0,0,Integer.parseInt(values[col]));
+		    		s.setX((row*75)-400);
+		    		s.setY((col*75)-350);
+		    		tiles[row][col] = s;
 		    	}
 		    }
 		  }	
 	}
-	
+
 	public void drawTiles(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect(-globalX+380, -globalY+250, 50, 200);
@@ -398,10 +406,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			for(int c = 0; c<tiles[0].length; c++) {
 				if(tiles[r][c] != null) {
 					tiles[r][c].paint(g);
+					
+				
+					
+					
 					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
 					
-						player.setVx(0);
-						player.setVy(0);
+						
 						if(globalX < 0) {
 						globalX++;
 						}else {
@@ -412,7 +423,22 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 						}else {
 							globalY--;
 						}
+						player.setVx(0);
+						player.setVy(0);
 					}
+					
+					if(tiles[r][c].getType() == 2) {
+						if (starter.collidedWithEnemy(tiles[r][c])) {
+							((BreakableTile) tiles[r][c]).takeDamage(starter.getDmg(), g);
+			                System.out.println("tile hit");
+			         }
+						if(((BreakableTile) tiles[r][c]).getHp()<=0) {
+							tiles[r][c] = null;
+						}
+					}
+					
+				
+				
 
 				}
 			}

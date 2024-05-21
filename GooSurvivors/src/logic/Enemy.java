@@ -40,7 +40,7 @@ public class Enemy {
 		health -= dmg;
 		g.setColor(Color.RED);
 		g.setFont(new Font("Sans", Font.PLAIN, 25)); 
-		g.drawString("-"+dmg, this.x, this.y-50-(this.width/2));
+		g.drawString("-"+dmg, this.x+(this.width/2), this.y-20);
 	}
 	
 	//we need to get the pathfinding for this before we can do much

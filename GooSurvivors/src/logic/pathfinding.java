@@ -22,7 +22,7 @@ public class pathfinding {
 	private char[] types = {0, 1, 2, 3};
 	private int rows = 27;
 	private int cols = 27;
-	Tile goal = new Tile(13,13, 4);
+	Position goal = new Position(13,13, "4");
 	private int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	
 	
@@ -73,30 +73,30 @@ public class pathfinding {
 		String[] dimensions = reader.readLine().split(" ");
 		map = loadMaze(reader,rows,cols);
 	}
-	public Queue<Tile> findPath(Tile start, Player p) {
-		Queue<Tile> queue = new LinkedList<>();
+	public Queue<Position> findPath(Position start, Player p) {
+		Queue<Position> queue = new LinkedList<>();
 		queue.offer(start);
 
-        Map<Tile, Tile> parentMap = new HashMap<>();
+        Map<Position,Position> parentMap = new HashMap<>();
         parentMap.put(start, null);
         
         
         while (!queue.isEmpty()) {
-            Tile current = queue.poll(); // Dequeue a cell
+            Position current = queue.poll(); // Dequeue a cell
             
-            if (current.x == goal.x && current.y == goal.y) {
+            if (current.row == goal.row && current.col == goal.col) {
                 // If the goal is reached, reconstruct and return the path
                 return reconstructPath(parentMap, goal);
             }
             
             for(int[] dir : dirs) {
-            	int newX = current.x + dir[0];
-            	int newY = current.y + dir[1];
+            	int newX = current.row + dir[0];
+            	int newY = current.col + dir[1];
             	
-            	if (isValid(newX, newY, goal.x, goal.y)) {
+            	if (isValid(newX, newY, goal.row, goal.col)) {
                     Position n = map.get(newX * cols + newY);
-                    Tile neighbor = new Tile(n.row, n.col, Integer.parseInt(n.type));
-                    if (neighbor != null && neighbor.x == goal.x && neighbor.y == goal.y && current.type != 1 && current.type != 3 && current.type != 2) {
+                    Position neighbor = new Position(n.row, n.col, n.type);
+                    if (neighbor != null && neighbor.row == goal.row && neighbor.col == goal.col && current.type.equals("1") && current.type.equals("3") && current.type.equals("2")) {
                         if (!parentMap.containsKey(neighbor)) {
                         	queue.offer(neighbor);
                             parentMap.put(neighbor, current);
@@ -107,9 +107,9 @@ public class pathfinding {
         }
 		return queue;
 	}
-	private Queue<Tile> reconstructPath(Map<Tile,Tile> parentMap, Tile goal) {
-        Queue<Tile> path = new LinkedList<>();//create a new queue to return the information
-        Tile current = goal;
+	private Queue<Position> reconstructPath(Map<Position, Position> parentMap, Position Position) {
+        Queue<Position> path = new LinkedList<>();//create a new queue to return the information
+        Position current = goal;
         while (current != null) {//add to the new queue what was in the list
             path.offer(current);
             current = parentMap.get(current);
@@ -126,7 +126,7 @@ public class pathfinding {
 			String line = reader.readLine();
 			for (int j = 0; j < cols; j++) {
 				String c = line.substring(i,i+1);
-				if (c.equals(",")) {
+				if (!c.equals(",")) {
 					Position p = new Position(i,j,c);
 					map.add(p);
 					xBoard[i][j] = c;
@@ -136,4 +136,11 @@ public class pathfinding {
 		System.out.println("all positions loaded");
 		return map;
 	}
+    
+    public void paint(Graphics g) {
+    	for (int i = 0;  i < map.size(); i++) {
+    		Tile t = new Tile(map.get(i).row, map.get(i).col, Integer.parseInt(map.get(i).type));
+    		t.paint(g);
+    	}
+    }
 }

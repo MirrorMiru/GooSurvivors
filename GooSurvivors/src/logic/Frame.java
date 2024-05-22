@@ -1,8 +1,6 @@
 package logic;
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -35,7 +32,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
 /******************************************************************
  * Program: Corporate Mandated Holliday                           *
  ******************************************************************
@@ -51,12 +47,8 @@ import javax.swing.Timer;
  *        |        | template. Just check the github repo.        *
  *        |        |                                              *
  ******************************************************************/
-
 public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
-
-
-
 	
 	Player player = new Player();
    			
@@ -74,7 +66,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
 	
-
 	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
@@ -103,7 +94,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	int UIanim = 0;
 	int UIanim2 = 0;
-
 	
 	int globalX = 300;
 	int globalY = 200;
@@ -112,17 +102,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
-	
+
 	ArrayList<Item> items = new ArrayList<Item>();
-	
+
 	GameLoader load = new GameLoader();
-	
+
 	Tile[][] tiles = new Tile[27][27];
 	
 	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
 	
 	Whip starter = new Whip(10,1);
-
 	boolean invunrebility = false; //player cannot die when true
 	
 	
@@ -135,7 +124,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	public void paint(Graphics g) {
 		
 		super.paintComponent(g);//no clue what this dose
-
 		if(gamestate == 0) {
 			titleAnim++;
 			
@@ -146,7 +134,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				titleAnim = 0;
 				titleAnim2 = 0;
 			}
-
 			titleScreen[titleAnim2].paint(g);
 			cursor[titleIndex].paint(g);
 		
@@ -179,10 +166,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
-			
+
 			itemLogic(g);
-			
-			
+
+
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
 			player.paint(g);
@@ -222,7 +209,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			g.drawString(Integer.toString(score), 250, 140);
 		}
 	}
-
 	/**
 	* main function 
 	* runs and updates Jframe
@@ -257,8 +243,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		f.setVisible(true);
 	}
 	
-
-
 	/**
 	* draw the gui on screen
 	* display lives and score
@@ -334,7 +318,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		}
 	}
-	
+
 	private void itemLogic(Graphics g) {
 		if(items.size() >0) {
 			for(Item i: items) {
@@ -342,10 +326,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	private void startWaves() {
 		waveTimer++;
 		
@@ -409,7 +393,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		    }
 		  }	
 	}
-
 	public void drawTiles(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect(-globalX+380, -globalY+250, 50, 200);
@@ -459,13 +442,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 								items.add(i);
 							}
 							tiles[r][c] = null;
-							
+
 						}
 					}
-					
-				
-				
 
+				
+				
 				}
 			}
 		}
@@ -524,7 +506,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-
 		if(arg0.getKeyCode() == 38) {//up
 			
 				if(gamestate == 1) {
@@ -551,7 +532,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	 	}
 		
 	}
-
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
@@ -621,5 +601,4 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		repaint();//this is important i think
 	}
 	
-
 }

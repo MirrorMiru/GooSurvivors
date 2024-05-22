@@ -28,8 +28,8 @@ public class Item{
 		}
 		this.type = type;
 		//hitbox values
-		width = 20;
-		height = 20;
+		width = 50;
+		height = 50;
 		this.x = x;
 		this.y = x;
 		//this stuff
@@ -45,6 +45,9 @@ public class Item{
 		init(x,y);
 
 		g2.drawImage(image, tx, null);
+		
+		g.setColor(Color.cyan);
+		g.drawRect(x, y, width, height);
 
 	}
 	
@@ -60,13 +63,13 @@ public class Item{
 		
 	//if scaling images with scale var, make sure w/h reflect what we see on screen
 	Rectangle otherObj = new Rectangle(x,y,width,height);
-	Rectangle thisObj = new Rectangle(this.x+55,this.y+55,this.width,this.height);
+	Rectangle thisObj = new Rectangle(this.x,this.y,this.width,this.height);
 
 	return thisObj.intersects(otherObj);
 	}
 	
 	public Rectangle getHitbox() {
-		return new Rectangle(this.x+55,this.y+55,this.width,this.height);//return own hitbox
+		return new Rectangle(this.x,this.y,this.width,this.height);//return own hitbox
 	}
 	
 	//getters and setters
@@ -100,6 +103,15 @@ public class Item{
 			e.printStackTrace();
 		}
 		return tempImage;
+	}
+
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
 	}
 
 }

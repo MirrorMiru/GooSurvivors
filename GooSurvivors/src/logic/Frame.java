@@ -304,7 +304,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 			if (starter.collidedWithEnemy(s)) {
 	                s.takeDamage(starter.getDmg(), g);
-	                System.out.println("Enemy hit");
+	               
 	         }
 			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
 			
@@ -321,8 +321,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 	private void itemLogic(Graphics g) {
 		if(items.size() >0) {
-			for(Item i: items) {
-				i.paint(g);
+			for(int i = 0; i < items.size(); i++) {
+				items.get(i).paint(g);
+				if(items.get(i).collided(-globalX+380, -globalY+250, 50, 200)) {
+					System.out.println("COLLIDED");
+				}
 			}
 		}
 	}
@@ -331,7 +334,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		waveTimer++;
+		//waveTimer++;
 		
 		if(waveTimer == 20) {
 			spawnEnemies(1, sSlimes, "small slimes");
@@ -393,6 +396,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		    }
 		  }	
 	}
+	
 	public void drawTiles(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect(-globalX+380, -globalY+250, 50, 200);
@@ -422,23 +426,31 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					}
 					
 					if(tiles[r][c].getType() == 2) {
-						if (starter.collidedWithEnemy(tiles[r][c])) {
+					
+						if (starter.collidedGeneral((r*75)-400,(c*75)-350,75,75)) {
 							((BreakableTile) tiles[r][c]).takeDamage(starter.getDmg(), g);
-			                System.out.println("tile hit");
+			                
 			         }
 						if(((BreakableTile) tiles[r][c]).getHp()<=0) {
-							int rand = (int)(Math.random() * 4) + 1;
+							int rand = (int)(Math.random() * 5) + 1;
 							if(rand == 1) {
-								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
-								items.add(i);
+								player.addXp(5);
 							}else if(rand == 2) {
-								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 0);
+								i.setX((r*75)-400);
+					    		i.setY((c*75)-350);
 								items.add(i);
 							}else if(rand == 3) {
 							Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
+							i.setX((r*75)-400);
+				    		i.setY((c*75)-350);
 							items.add(i);
 							}else if(rand == 4) {
-								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								player.addXp(20);
+							}else if(rand == 5) {
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 0);
+								i.setX((r*75)-400);
+					    		i.setY((c*75)-350);
 								items.add(i);
 							}
 							tiles[r][c] = null;

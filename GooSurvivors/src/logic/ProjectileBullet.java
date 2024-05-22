@@ -76,7 +76,8 @@ public class ProjectileBullet{
 	public int getY() {
 		return y;
 	}
-	//should be in frame
+	//should be in frame yea
+	//should be in shoot method and not a new method
 	public void setprojectileDirection(int getShooterX, int getShooterY, int index) {
 		double xDirection = ((-globalX+380) - getShooterX);
 		double yDirection = ((-globalY+250) - getShooterY);

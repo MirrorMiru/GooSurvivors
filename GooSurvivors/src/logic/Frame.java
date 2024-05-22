@@ -429,7 +429,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 						if(((BreakableTile) tiles[r][c]).getHp()<=0) {
 							int rand = (int)(Math.random() * 4) + 1;
 							if(rand == 1) {
-								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
 								items.add(i);
 							}else if(rand == 2) {
 								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 2);

@@ -78,15 +78,7 @@ public class ProjectileBullet{
 	}
 	//should be in frame yea
 	//should be in shoot method and not a new method
-	public void setprojectileDirection(int getShooterX, int getShooterY, int index) {
-		double xDirection = ((-globalX+380) - getShooterX);
-		double yDirection = ((-globalY+250) - getShooterY);
-		int length = (int) (Math.sqrt(Math.pow(yDirection, 2.0) + Math.pow(xDirection, 2.0)) );
-		
-		bullet[index].setVx( getSpeed() * (int)(xDirection / length) );
-		bullet[index].setVy( getSpeed() * (int)(yDirection / length) );)
-		
-	}
+	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;

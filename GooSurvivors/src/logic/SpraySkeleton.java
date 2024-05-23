@@ -70,7 +70,7 @@ public class SpraySkeleton extends Enemy{
 			timer2 = 0;
 		}
 		
-		if( shootingTimer % 41 == 0) {
+		if( shootingTimer % 121 == 0) {
 			shootingTimer = 0;
 		}
 		
@@ -120,6 +120,9 @@ public class SpraySkeleton extends Enemy{
 				dir = 1;
 			}
 		}
+	private int getDir() {
+		return dir;
+	}
 }	
 	
 	//image code

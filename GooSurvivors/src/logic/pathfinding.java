@@ -10,23 +10,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 public class pathfinding {
 	private ArrayList<Tile> enemy;
 	private ArrayList<Position> map;
+	private Queue<Position> sol;
 	private boolean[][] board;
 	private String[][] xBoard;
 	private int startX;
 	private int startY;
 	private char[] types = {0, 1, 2, 3};
-	private int rows = 27;
-	private int cols = 27;
+	public int rows = 27;
+	public int cols = 27;
 	Position goal = new Position(13,13, "4");
 	private int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	
 	
-	public pathfinding() {
+	public pathfinding(String s) throws Exception {
 		// TODO Auto-generated constructor stub
 		enemy = new ArrayList<Tile>();
 		board = new boolean[27][27];
@@ -60,18 +62,25 @@ public class pathfinding {
 				board[startX][startY] = true;
 			}
 		}
-	}
-	public void addTile(Tile e) {
-		enemy.add(e);
-	}
-	public void finder() throws Exception {
-		String filename = "map1.txt";
+		String filename = s;
     	ClassLoader classLoader = Frame.class.getClassLoader();
 		InputStream inputStream = ClassLoader.getSystemResourceAsStream(filename);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 		System.out.println(inputStream != null);
 		String[] dimensions = reader.readLine().split(" ");
 		map = loadMaze(reader,rows,cols);
+		System.out.print(map.size());
+	}
+	public void addTile(Tile e) {
+		enemy.add(e);
+	}
+	public void finder() throws Exception {
+		Scanner userInput = new Scanner(System.in);
+		String c = userInput.nextLine().toLowerCase();
+		pathfinding p = new pathfinding(c);
+		sol = p.findPath(goal, null);
+		
+		
 	}
 	public Queue<Position> findPath(Position start, Player p) {
 		Queue<Position> queue = new LinkedList<>();
@@ -117,10 +126,10 @@ public class pathfinding {
         return path;
     }
     private boolean isValid(int row, int col, int numRows, int numCols) {
-        return row >= 0 && row < numRows && col >= 0 && col < numCols;
+        return row >= 0 && row <= numRows && col >= 0 && col <= numCols;
     }
 
-    private ArrayList<Position> loadMaze(BufferedReader reader, int rows, int cols) throws Exception {
+    public ArrayList<Position> loadMaze(BufferedReader reader, int rows, int cols) throws Exception {
     	map = new ArrayList<Position>();
     	for (int i = 0; i < rows; i++) {
 			String line = reader.readLine();
@@ -142,5 +151,14 @@ public class pathfinding {
     		Tile t = new Tile(map.get(i).row, map.get(i).col, Integer.parseInt(map.get(i).type));
     		t.paint(g);
     	}
+    }  
+    public int[][] returnBoard() {
+    	int[][] board = new int[27][27];
+    	int s = sol.size();
+    	for (int i = 0; i < s; i++) {
+    		board[sol.peek().row][sol.peek().col] = 1;
+    		sol.remove();
+    	}
+    	return board;
     }
 }

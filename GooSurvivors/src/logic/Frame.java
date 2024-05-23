@@ -324,7 +324,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			for(int i = 0; i < items.size(); i++) {
 				items.get(i).paint(g);
 				if(items.get(i).collided(-globalX+380, -globalY+250, 50, 200)) {
-					System.out.println("COLLIDED");
+					if(items.get(i).getType() == 0) {
+						starter.setDmg(starter.getDmg() + 5);
+					}else {
+						player.getHurt(-10);
+					}
+					items.remove(i);
 				}
 			}
 		}
@@ -436,7 +441,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 							if(rand == 1) {
 								player.addXp(5);
 							}else if(rand == 2) {
-								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 0);
+								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
 								i.setX((r*75)-400);
 					    		i.setY((c*75)-350);
 								items.add(i);

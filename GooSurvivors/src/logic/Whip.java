@@ -114,6 +114,9 @@ public class Whip{
 	    return rect.intersects(this.x, this.y, this.width, this.height);
 	}
 	
+	public void setDmg(int d) {
+		this.dmg = d;
+	}
 	
 	public int getWidth() {
 		return width;

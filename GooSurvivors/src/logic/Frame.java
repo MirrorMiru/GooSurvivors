@@ -66,6 +66,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
 	
+	Sprite[] over = {new Sprite("/img/go1.png",0,0,800,700), new Sprite("/img/go2.png",0,0,800,700),new Sprite("/img/go3.png",0,0,800,700),new Sprite("/img/go4.png",0,0,800,700)};
+	
 	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
@@ -203,15 +205,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				  
 		}else if(gamestate == 4) {
 			
-		//	over.paint(g);//display game over image
+			//game over
+			titleAnim++;
+			
+			if(titleAnim % 8 == 0) {
+				titleAnim2++;
+			}
+			if(titleAnim2 > 3) {
+				titleAnim = 0;
+				titleAnim2 = 0;
+			}
+			
+			over[titleAnim2].paint(g);
+			
+			g.setColor(Color.green);
+			g.setFont(myFont.deriveFont(40.0f));
+			g.drawString(Integer.toString(player.getXp()), 370, 240);
 		
 		}else if(gamestate == 5) {
 			
-		//	win.paint(g);//win screen
-			
-			//display score at end of game
-			g.setFont(myFont.deriveFont(40.0f));
-			g.drawString(Integer.toString(score), 250, 140);
+		//THERES NOTHING
 		}
 	}
 	/**
@@ -368,7 +381,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		//waveTimer++;
+		waveTimer++;
 		
 		if(waveTimer == 20) {
 			spawnEnemies(1, sSlimes, "small slimes");
@@ -510,10 +523,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*
 	* @param none
 	*/
-	public void getHurt() {
-		if(lives > 1) {
-			//playSfx("hit.wav");
-			player.getHurt(1);
+	public void getHurt(int dmg) {
+		if(player.getHp() > 1) {
+			playSfx("hit.wav");
+			player.getHurt(dmg);
 		}else {
 			gamestate = 4;
 		}

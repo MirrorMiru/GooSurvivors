@@ -93,7 +93,7 @@ public class ProjectileBullet{
 		
 		//if scaling images with scale var, make sure w/h reflect what we see on screen
 		Rectangle otherObj = new Rectangle(x,y,width,height);
-		Rectangle thisObj = new Rectangle(this.x+55,this.y+55, getWidth(),getHeight());
+		Rectangle thisObj = new Rectangle(this.x,this.y, getWidth(),getHeight());
 
 		return thisObj.intersects(otherObj);
 	}

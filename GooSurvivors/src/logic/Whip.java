@@ -109,10 +109,14 @@ public class Whip{
 	    return enemy.collided(this.x, this.y, this.width, this.height);
 	}
 	
-	public boolean collidedWithEnemy(Tile tile) {
-	    return tile.collided(this.x, this.y, this.width, this.height);
+	public boolean collidedGeneral(int x, int y, int width, int height) {
+		Rectangle rect = new Rectangle(x,y,width,height);
+	    return rect.intersects(this.x, this.y, this.width, this.height);
 	}
 	
+	public void setDmg(int d) {
+		this.dmg = d;
+	}
 	
 	public int getWidth() {
 		return width;

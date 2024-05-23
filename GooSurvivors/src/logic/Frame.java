@@ -102,7 +102,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
-
+	ArrayList<Enemy> shootSkells = new ArrayList<Enemy>();
+	ArrayList<ProjectileBullet> bullets = new ArrayList<ProjectileBullet>();
 	ArrayList<Item> items = new ArrayList<Item>();
 
 	GameLoader load = new GameLoader();
@@ -166,7 +167,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
-
+			enemyLogic(shootSkells, g);
+			shoot(shootSkells);
+			for(ProjectileBullet bull : bullets) {
+				bull.paint(g);
+			}
 			itemLogic(g);
 
 
@@ -273,6 +278,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				enemies.add(new bigSlime());
 			}else if(who.toLowerCase().equals("small slimes")) {
 				enemies.add(new smallSlime());
+			}else if(who.toLowerCase().equals("shooting skeletons")) {
+				enemies.add(new ShootingSkeleton());
 			}
 		}
 	}
@@ -318,6 +325,28 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		}
 	}
+	
+	private void shoot(ArrayList<Enemy> something) { //really want to take out the 
+		for( Enemy ss : something) {
+			if( ss instanceof ShootingSkeleton ) {
+				if( ((ShootingSkeleton) ss).getShootingTimer() == 40) {
+					ProjectileBullet b = new ProjectileBullet( 10, 20, 20, ((ShootingSkeleton) ss).getX() + 90, ((ShootingSkeleton) ss).getY() + 100, 15);
+					bullets.add( b );
+					double xDirection = -((globalX-380) - ((ShootingSkeleton) ss).getX() + 90);
+					System.out.println(xDirection);
+					double yDirection = ((globalY-200) - ((ShootingSkeleton) ss).getY() + 50);
+					System.out.println(yDirection);
+					int length = (int) Math.sqrt(yDirection*yDirection + xDirection*xDirection );
+					System.out.println(length);
+				b.setVx((int) (b.getSpeed() * (double)(xDirection / length)) );
+				b.setVy((int) (b.getSpeed() * (double)(yDirection / length)) );
+				System.out.println(b.Vx);
+				System.out.println(b.Vy);
+			}
+		}//this is to be put in frame
+		
+		}
+	}
 
 	private void itemLogic(Graphics g) {
 		if(items.size() >0) {
@@ -349,6 +378,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		if(waveTimer == 500) {
 			spawnEnemies(1, skells, "skeletons");
+		}
+		if(waveTimer == 700) {
+			spawnEnemies(1, shootSkells, "shooting skeletons");
 		}
 	}
 	

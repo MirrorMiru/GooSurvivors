@@ -100,6 +100,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int globalX = 300;
 	int globalY = 200;
 	
+	private int iFrames = 0;
+	
 	//enemy arraylists
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
@@ -322,10 +324,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}else {
 				s.setVy(-1*s.getSpeed());
 			}
+			
 			if (starter.collidedWithEnemy(s)) {
 	                s.takeDamage(starter.getDmg(), g);
 	               
 	         }
+			
+			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
+				
+				getHurt(s.getDamage());
+				//sfxProtection = true;
+			}else {
+				//sfxProtection = false;
+			}
+			
 			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
 			
 		}
@@ -370,6 +382,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 						starter.setDmg(starter.getDmg() + 5);
 					}else {
 						player.getHurt(-10);
+					
 					}
 					items.remove(i);
 				}
@@ -525,7 +538,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	public void getHurt(int dmg) {
 		if(player.getHp() > 1) {
+			//if(!sfxProtection) {
 			playSfx("hit.wav");
+			//}
 			player.getHurt(dmg);
 		}else {
 			gamestate = 4;

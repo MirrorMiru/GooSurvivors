@@ -22,8 +22,8 @@ public class pathfinding {
 	private int startX;
 	private int startY;
 	private char[] types = {0, 1, 2, 3};
-	private int rows = 27;
-	private int cols = 27;
+	public int rows = 27;
+	public int cols = 27;
 	Position goal = new Position(13,13, "4");
 	private int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	
@@ -129,7 +129,7 @@ public class pathfinding {
         return row >= 0 && row <= numRows && col >= 0 && col <= numCols;
     }
 
-    private ArrayList<Position> loadMaze(BufferedReader reader, int rows, int cols) throws Exception {
+    public ArrayList<Position> loadMaze(BufferedReader reader, int rows, int cols) throws Exception {
     	map = new ArrayList<Position>();
     	for (int i = 0; i < rows; i++) {
 			String line = reader.readLine();

@@ -22,6 +22,10 @@ public class Tile{
 	double scaleWidth = 0.25;		//scaled to half of original sprite
 	double scaleHeight = 0.25; 		
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://github.com/MirrorMiru/GooSurvivors.git
 	
 	public Tile(int x, int y, int type) {
 		if(type == 1) {
@@ -33,8 +37,14 @@ public class Tile{
 		}else {
 			System.out.println("oops");//shoudl neevr happen
 		}
+<<<<<<< HEAD
 
 		this.type = type;
+=======
+		
+		this.type = type;
+
+>>>>>>> branch 'main' of https://github.com/MirrorMiru/GooSurvivors.git
 
 		width = 75;
 		height = 75;

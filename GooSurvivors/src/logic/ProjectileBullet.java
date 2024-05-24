@@ -32,7 +32,7 @@ public class ProjectileBullet{
 		this.y = y;
 		speed = s;
 	}
-	//new annoyitng thing
+	
 	
 	public int getWidth() {
 		return width;
@@ -76,6 +76,8 @@ public class ProjectileBullet{
 	public int getY() {
 		return y;
 	}
+	//should be in frame yea
+	//should be in shoot method and not a new method
 	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
@@ -91,7 +93,7 @@ public class ProjectileBullet{
 		
 		//if scaling images with scale var, make sure w/h reflect what we see on screen
 		Rectangle otherObj = new Rectangle(x,y,width,height);
-		Rectangle thisObj = new Rectangle(this.x+55,this.y+55, getWidth(),getHeight());
+		Rectangle thisObj = new Rectangle(this.x,this.y, getWidth(),getHeight());
 
 		return thisObj.intersects(otherObj);
 	}

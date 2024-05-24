@@ -66,6 +66,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite bg = new Sprite("/img/permabg.png",0,0,800,700);
 	
+	Sprite[] over = {new Sprite("/img/go1.png",0,0,800,700), new Sprite("/img/go2.png",0,0,800,700),new Sprite("/img/go3.png",0,0,800,700),new Sprite("/img/go4.png",0,0,800,700)};
+	
 	
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
@@ -98,11 +100,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int globalX = 300;
 	int globalY = 200;
 	
+	private int iFrames = 0;
+	
 	//enemy arraylists
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
-
+	ArrayList<Enemy> shootSkells = new ArrayList<Enemy>();
+	ArrayList<ProjectileBullet> bullets = new ArrayList<ProjectileBullet>();
 	ArrayList<Item> items = new ArrayList<Item>();
 
 	GameLoader load = new GameLoader();
@@ -166,7 +171,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
-
+			enemyLogic(shootSkells, g);
+			shoot(shootSkells);
+			for(ProjectileBullet bull : bullets) {
+				bull.paint(g);
+			}
 			itemLogic(g);
 
 
@@ -198,15 +207,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				  
 		}else if(gamestate == 4) {
 			
-		//	over.paint(g);//display game over image
+			//game over
+			titleAnim++;
+			
+			if(titleAnim % 8 == 0) {
+				titleAnim2++;
+			}
+			if(titleAnim2 > 3) {
+				titleAnim = 0;
+				titleAnim2 = 0;
+			}
+			
+			over[titleAnim2].paint(g);
+			
+			g.setColor(Color.green);
+			g.setFont(myFont.deriveFont(40.0f));
+			g.drawString(Integer.toString(player.getXp()), 370, 240);
 		
 		}else if(gamestate == 5) {
 			
-		//	win.paint(g);//win screen
-			
-			//display score at end of game
-			g.setFont(myFont.deriveFont(40.0f));
-			g.drawString(Integer.toString(score), 250, 140);
+		//THERES NOTHING
 		}
 	}
 	/**
@@ -273,6 +293,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				enemies.add(new bigSlime());
 			}else if(who.toLowerCase().equals("small slimes")) {
 				enemies.add(new smallSlime());
+			}else if(who.toLowerCase().equals("shooting skeletons")) {
+				enemies.add(new ShootingSkeleton());
 			}
 		}
 	}
@@ -302,10 +324,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}else {
 				s.setVy(-1*s.getSpeed());
 			}
+			
 			if (starter.collidedWithEnemy(s)) {
 	                s.takeDamage(starter.getDmg(), g);
 	               
 	         }
+			
+			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
+				
+				getHurt(s.getDamage());
+				//sfxProtection = true;
+			}else {
+				//sfxProtection = false;
+			}
+			
 			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
 			
 		}
@@ -318,6 +350,28 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		}
 	}
+	
+	private void shoot(ArrayList<Enemy> something) { //really want to take out the 
+		for( Enemy ss : something) {
+			if( ss instanceof ShootingSkeleton ) {
+				if( ((ShootingSkeleton) ss).getShootingTimer() == 40) {
+					ProjectileBullet b = new ProjectileBullet( 10, 20, 20, ((ShootingSkeleton) ss).getX() + 90, ((ShootingSkeleton) ss).getY() + 100, 15);
+					bullets.add( b );
+					double xDirection = -((globalX-380) - ((ShootingSkeleton) ss).getX() + 90);
+					System.out.println(xDirection);
+					double yDirection = ((globalY-200) - ((ShootingSkeleton) ss).getY() + 50);
+					System.out.println(yDirection);
+					int length = (int) Math.sqrt(yDirection*yDirection + xDirection*xDirection );
+					System.out.println(length);
+				b.setVx((int) (b.getSpeed() * (double)(xDirection / length)) );
+				b.setVy((int) (b.getSpeed() * (double)(yDirection / length)) );
+				System.out.println(b.Vx);
+				System.out.println(b.Vy);
+			}
+		}//this is to be put in frame
+		
+		}
+	}
 
 	private void itemLogic(Graphics g) {
 		if(items.size() >0) {
@@ -328,6 +382,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 						starter.setDmg(starter.getDmg() + 5);
 					}else {
 						player.getHurt(-10);
+					
 					}
 					items.remove(i);
 				}
@@ -339,7 +394,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		//waveTimer++;
+		waveTimer++;
 		
 		if(waveTimer == 20) {
 			spawnEnemies(1, sSlimes, "small slimes");
@@ -349,6 +404,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		if(waveTimer == 500) {
 			spawnEnemies(1, skells, "skeletons");
+		}
+		if(waveTimer == 700) {
+			spawnEnemies(1, shootSkells, "shooting skeletons");
 		}
 	}
 	
@@ -478,10 +536,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*
 	* @param none
 	*/
-	public void getHurt() {
-		if(lives > 1) {
-			//playSfx("hit.wav");
-			player.getHurt(1);
+	public void getHurt(int dmg) {
+		if(player.getHp() > 1) {
+			//if(!sfxProtection) {
+			playSfx("hit.wav");
+			//}
+			player.getHurt(dmg);
 		}else {
 			gamestate = 4;
 		}

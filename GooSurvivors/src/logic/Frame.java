@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
@@ -61,6 +63,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	Sprite[] GUI = {new Sprite("/img/gui1.png",0,0,800,700), new Sprite("/img/gui2.png",0,0,800,700),new Sprite("/img/gui3.png",0,0,800,700),new Sprite("/img/gui4.png",0,0,800,700),new Sprite("/img/gui5.png",0,0,800,700)};
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
+	
 	
 	Sprite map = new Sprite("/img/map.png",-400,-350,2000,2000);
 	
@@ -119,6 +122,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	Whip starter = new Whip(10,1);
 	boolean invunrebility = false; //player cannot die when true
 	
+	 
+	
 	
 	/**
 	* Runs once per frame, executes all of the game logic. 
@@ -127,7 +132,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	* @param graphics g
 	*/
 	public void paint(Graphics g) {
-		
+		 
 		super.paintComponent(g);//no clue what this dose
 		if(gamestate == 0) {
 			titleAnim++;
@@ -470,19 +475,17 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					
 				
 					
-					
-					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
-					
-						
-						if(globalX < 0) {
-						globalX++;
-						}else {
-							globalX--;
+					System.out.println(globalX + " , " +globalY);
+					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){	
+						if(player.getVx() > 0) {
+						globalX= globalX - 5;
+						}else if(player.getVx() != 0){
+						globalX = globalX + 5;
 						}
-						if(globalY < 0) {
-						globalY ++;
-						}else {
-							globalY--;
+						else if(player.getVy() > 0) {
+							globalY= globalY - 5;
+						}else if(player.getVy() != 0){
+							globalY= globalX - 5;
 						}
 						player.setVx(0);
 						player.setVy(0);
@@ -539,9 +542,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	public void getHurt(int dmg) {
 		if(player.getHp() > 1) {
 			//if(!sfxProtection) {
-			playSfx("hit.wav");
+			//playSfx("hit.wav");
 			//}
-			player.getHurt(dmg);
+			//player.getHurt(dmg);
 		}else {
 			gamestate = 4;
 		}

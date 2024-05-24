@@ -33,7 +33,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 /******************************************************************
- * Program: Corporate Mandated Holliday                           *
+ * Program: GOO SURVIVORS                                         *
  ******************************************************************
  * Author:  Nikolas Pautov                                        *
  * Purpose: game innit                                            *

@@ -60,8 +60,7 @@ public class SurroundWeapon{
 		y = (int) (Math.sin(angle) * 250) + 400;
 		g.setColor(Color.blue);
 		g.fillOval( x, y, width, height);
-		System.out.println(x + " and " + y);
-			
+		//dont forget ot implement the paint method and others into main	
 			
 	}
 	

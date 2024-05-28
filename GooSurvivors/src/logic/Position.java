@@ -11,7 +11,7 @@ public class Position {
 	}
 
 	public String toString() {
-		return "[row =  " + row + ", col = " + col + "type = " + type + "]";
+		return "[row =  " + row + ", col = " + col + ", type = " + type + "]";
 	}
 
 	public boolean equals(Position pos) {

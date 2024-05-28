@@ -472,21 +472,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			for(int c = 0; c<tiles[0].length; c++) {
 				if(tiles[r][c] != null) {
 					tiles[r][c].paint(g);
-					
-				
-					
-					System.out.println(globalX + " , " +globalY);
 					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){	
-						if(player.getVx() > 0) {
-						globalX= globalX - 5;
-						}else if(player.getVx() != 0){
-						globalX = globalX + 5;
+						if(tiles[r][c].getX() + (75/2) > -globalX+380) {
+							globalX+=2;
+						}else {
+							globalX-=2;
 						}
-						else if(player.getVy() > 0) {
-							globalY= globalY - 5;
-						}else if(player.getVy() != 0){
-							globalY= globalX - 5;
+						
+						if(tiles[r][c].getY() + (75/2) > -globalY+250) {
+							globalY+=2;
+						}else {
+							globalY-=2;
 						}
+						
+						
 						player.setVx(0);
 						player.setVy(0);
 					}

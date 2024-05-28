@@ -25,6 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
@@ -105,6 +108,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	private int iFrames = 0;
 	
+	int stucktimer = 0;
+	
 	//enemy arraylists
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
@@ -119,11 +124,49 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
 	
+	 //only using this because i have to
+	static Queue<String> instructions1 = new LinkedList<>();
+	static Queue<String> instructions2 = new LinkedList<>();
+	static Queue<String> instructions3 = new LinkedList<>();
+	static Queue<String> instructions4 = new LinkedList<>();
+	
+	
 	Whip starter = new Whip(10,1);
 	boolean invunrebility = false; //player cannot die when true
 	
 	 
+	/**
+	* main function 
+	* runs and updates Jframe
+	*
+	* @param String arg (i have no idea what this dose)
+	*/
+	public static void main(String[] arg) throws IOException {
+		Frame f = new Frame();
+		
+		instructions1.add("WELCOME TO GOO SURVIVORS!");
+		instructions2.add("use ARROW KEYS to move");
+		instructions3.add("your WEAPON fires automatically!");
+		instructions4.add("it's that simple!");
+		
+		instructions1.add("break BROWN BOXES with your WEAPON");
+		instructions2.add("GREEN VIAL = DAMAGE UP");
+		instructions3.add("RED VIAL = HEALTH UP");
+		instructions4.add("you can also get EXPEREINCE");
+		
+
+		instructions1.add("the more EXPEREINCE, the BETTER");
+		instructions2.add("LEVEL UP = NEW WEAPONS");
+		instructions3.add("SURVIVE as long as you can");
+		instructions4.add("don't foget to SAVE");
+		
+		instructions1.add("use F1 to save your game");
+		instructions2.add("LOAD from the main menu");
+		instructions3.add("");
+		instructions4.add("good luck soldier!");
 	
+	
+	}
 	
 	/**
 	* Runs once per frame, executes all of the game logic. 
@@ -150,6 +193,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		
 		}else if(gamestate == 2) {
 			
+
 		//optional story images or game controlls
 			titleAnim++;
 			
@@ -162,6 +206,16 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 			
 			inst[titleAnim2].paint(g);
+			
+			g.setColor(Color.green);
+			g.setFont(myFont.deriveFont(30.0f));
+			g.drawString(instructions1.element(), 90, 230);
+			g.drawString(instructions2.element(), 90, 280);
+			g.drawString(instructions3.element(), 90, 330);
+			g.drawString(instructions4.element(), 90, 380);
+			g.drawString("press SPACE to continue", 90, 480);
+			g.drawString("press ENTER to exit", 90, 520);
+			
 			
 		}else if(gamestate == 1) {
 				
@@ -234,15 +288,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		//THERES NOTHING
 		}
 	}
-	/**
-	* main function 
-	* runs and updates Jframe
-	*
-	* @param String arg (i have no idea what this dose)
-	*/
-	public static void main(String[] arg) throws IOException {
-		Frame f = new Frame();		
-	}
+
 	
 	
 	/**
@@ -472,18 +518,21 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			for(int c = 0; c<tiles[0].length; c++) {
 				if(tiles[r][c] != null) {
 					tiles[r][c].paint(g);
-					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){	
+					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
+						
+						
 						if(tiles[r][c].getX() + (75/2) > -globalX+380) {
-							globalX+=2;
+							globalX++;
 						}else {
-							globalX-=2;
+							globalX--;
 						}
 						
-						if(tiles[r][c].getY() + (75/2) > -globalY+250) {
-							globalY+=2;
+						if(tiles[r][c].getY() + (75/2) >= -globalY+250) {
+							globalY++;
 						}else {
-							globalY-=2;
+							globalY--;
 						}
+						
 						
 						
 						player.setVx(0);
@@ -556,6 +605,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	* @param none
 	*/
 	public void reset(){
+		player.setHp(100);
+		player.setXp(0);
+		starter.setDmg(1);
 		gamestate = 0;
 	}
 	
@@ -644,10 +696,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		
 		if(arg0.getKeyCode() == 112) {//right
 			if(gamestate == 1) {
-				ArrayList<Integer> TEMP = new ArrayList<Integer>();
-				TEMP.add(1);
-				TEMP.add(2);
-				load.save(player.getHp(),wave,player.getXp(),TEMP);
+				load.save(player.getHp(),wave,player.getXp());
 				System.out.println("save");
 			}
 		}
@@ -668,8 +717,18 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleAnim2 = 0;
 				}
 				initTiles(tilemap);
+		 	}else if(gamestate == 2) {
+		 		instructions1.add(instructions1.poll());
+		 		instructions2.add(instructions2.poll());
+		 		instructions3.add(instructions3.poll());
+		 		instructions4.add(instructions4.poll());
 		 	}
 	 	}
+	 
+	 if(arg0.getKeyCode() == 10 && gamestate == 2) {
+		 gamestate = 0;
+	 }
+	 //System.out.println(arg0.getKeyCode());
 	}
 	
 	

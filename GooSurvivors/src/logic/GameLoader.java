@@ -38,7 +38,7 @@ public class GameLoader {
 		  
 		  }
 	
-	public void save(int hp, int w, int xp, ArrayList<Integer> items) {
+	public void save(int hp, int w, int xp) {
 		 
 		    try {
 		    	this.clear();

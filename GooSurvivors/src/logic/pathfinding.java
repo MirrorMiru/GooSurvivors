@@ -69,6 +69,24 @@ public class pathfinding {
 		}
 	}
 	
+	public static Queue<Position> findPath(ArrayList<Position> maze) {
+        
+
+        Position start = null, goal = null;
+        Queue<Position> path = new LinkedList<Position>(); 
+        	Queue<Position> p = p.findPath(maze, start, goal);
+        	if (p.isEmpty()) {
+        		// even if one level is not solved, maze is not solved
+        		return null;
+        	}
+        	while (!p.isEmpty()) {
+                Position q = p.poll();
+                path.offer(q);
+            }
+        return path;
+	
+}
+	
 	public ArrayList<Position> findPath(ArrayList<Position> maze, Position start, Position goal) {
 		Queue<Position> queue = new LinkedList<>();
 		queue.offer(start);
@@ -141,7 +159,9 @@ public class pathfinding {
 		return maze;
 	}
     
-    public void paint(Graphics g) {
+    public void paint(Graphics g, int i) {
+    	Tile t = new Tile(sol.get(i).row, sol.get(i).col, 4);
+    	t.paint(g);
     	
     }  
     public int[][] returnBoard() {

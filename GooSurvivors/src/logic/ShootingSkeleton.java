@@ -20,9 +20,9 @@ public class ShootingSkeleton extends Enemy{
 	int dir = 0;
 	
 	
-	Sprite[] left = {new Sprite("/img/SK1L.png",x,y,300,200,0.2),new Sprite("/img/SK2L.png",x,y,300,200,0.2)};
+	Sprite[] left = {new Sprite("/img/bigskell1l.png",x,y,300,200,0.2),new Sprite("/img/bigskell2l.png",x,y,300,200,0.2)};
 	
-	Sprite[] right = {new Sprite("/img/SK1R.png",x,y,300,200,0.2),new Sprite("/img/SK2R.png",x,y,300,200,0.2)};
+	Sprite[] right = {new Sprite("/img/bigskell1r.png",x,y,300,200,0.2),new Sprite("/img/bigskell2r.png",x,y,300,200,0.2)};
 	
 	
 	public ShootingSkeleton() {

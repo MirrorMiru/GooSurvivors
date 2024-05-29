@@ -114,9 +114,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
 	ArrayList<Enemy> bSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> sSlimes = new ArrayList<Enemy>();
+	ArrayList<Enemy> hSlimes = new ArrayList<Enemy>();
 	ArrayList<Enemy> shootSkells = new ArrayList<Enemy>();
 	ArrayList<ProjectileBullet> bullets = new ArrayList<ProjectileBullet>();
 	ArrayList<Item> items = new ArrayList<Item>();
+	
+	deathWall wall = new deathWall();
 
 	GameLoader load = new GameLoader();
 
@@ -165,6 +168,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		instructions3.add("");
 		instructions4.add("good luck soldier!");
 	
+		
+		
 	
 	}
 	
@@ -230,8 +235,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(skells, g);
 			enemyLogic(bSlimes, g);
 			enemyLogic(sSlimes, g);
+			enemyLogic(hSlimes, g);
 			enemyLogic(shootSkells, g);
 			shoot(shootSkells);
+			
+			wall.paint(g);
+			g.fillRect(wall.getX(),wall.getY(),wall.getWidth(),wall.getHeight());
+			
 			for(ProjectileBullet bull : bullets) {
 				bull.paint(g);
 			}
@@ -346,6 +356,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				enemies.add(new smallSlime());
 			}else if(who.toLowerCase().equals("shooting skeletons")) {
 				enemies.add(new ShootingSkeleton());
+			}else if(who.toLowerCase().equals("huge slimes")) {
+				enemies.add(new megaSlime());
 			}
 		}
 	}
@@ -360,7 +372,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		g.drawRect(-globalX+430, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+430);
 		}
-		
 		
 		if(enemies.size() > 0) {
 		for(Enemy s : enemies) {
@@ -401,6 +412,17 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}
 		}
 	}
+	
+	private void wallLogic() {
+		
+		wall.setVy(2);
+		if(wall.getY() > 1000) {
+			wall.setY(-400);
+		}
+		
+	}
+	
+	
 	
 	private void shoot(ArrayList<Enemy> something) { //really want to take out the 
 		for( Enemy ss : something) {
@@ -448,7 +470,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		waveTimer++;
 		
 		if(waveTimer == 20) {
-			spawnEnemies(1, sSlimes, "small slimes");
+			spawnEnemies(1, hSlimes, "huge slimes");
 		}
 		if(waveTimer == 220) {
 			spawnEnemies(1, bSlimes, "big slimes");
@@ -457,6 +479,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			spawnEnemies(1, skells, "skeletons");
 		}
 		if(waveTimer == 700) {
+			spawnEnemies(1, shootSkells, "shooting skeletons");
+		}
+		if(waveTimer == 1000) {
 			spawnEnemies(1, shootSkells, "shooting skeletons");
 		}
 	}

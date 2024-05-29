@@ -16,29 +16,29 @@ public class SurroundWeapon{
 	
 
 	private int width, height;
-	private int x = 220;
-	private int y = 400;						//position of the object
+	private int x = 30;
+	private int y = 200;						//position of the object
 
 	
 
 	private double angle;
 	private int dmg;
-	
+	private int amount;
 	boolean dir = true;
-	
+	private boolean setup = false;
 	Sprite image1 = new Sprite("/img/flame.png",x,y,width,height,0.5);
 	Sprite image2 = new Sprite("/img/flame2.png",x+220,y,width,height,0.5);
 	
 
 	
-	public SurroundWeapon(int cooldown, int damage) {
+	public SurroundWeapon(int damage, int count) {
 		
 		
-		width = 20;
-		height = 20;
+		width = 50;
+		height = 50;
 	
 		this.dmg = damage;
-		
+		amount = count;
 	
 	}
 
@@ -52,15 +52,30 @@ public class SurroundWeapon{
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.blue);
+		if(setup == false) {
+			for( int i = 1; i <= amount; i++) {
+				angle = 360/i;
+				x = (int) (Math.cos(angle) * 250) + 380;
+				y = (int) (Math.sin(angle) * 250) + 400;
+				g.fillOval(x, y, width, height);
+			}
+			angle = 0;
+			setup = true;
+		}
 		angle += 0.1;
 		if(angle > 360.0) {
 			angle = 0;
 		}
-		x = (int) (Math.cos(angle) * 250) + 380;
-		y = (int) (Math.sin(angle) * 250) + 400;
-		g.setColor(Color.blue);
-		g.fillOval( x, y, width, height);
-		//dont forget ot implement the paint method and others into main	
+		for( int i = 1; i <= amount; i++) {
+			x = (int) (Math.cos( (360 / i) + angle) * 250) + 380;
+			y = (int) (Math.sin( (360 / i) + angle) * 250) + 400;
+			g.fillOval( x, y, width, height);
+			g.drawRect(x, y, width, height);
+		}
+		
+
+			
 			
 	}
 	

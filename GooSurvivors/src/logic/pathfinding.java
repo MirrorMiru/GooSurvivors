@@ -25,7 +25,7 @@ public class pathfinding {
 	public int rows = 27;
 	public int cols = 27;
 	public String filename;
-	public Position goal = new Position(13,13, "4");
+	public Position goal = new Position(14,14, "4");
 	public Position start;
 	private int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	
@@ -69,19 +69,17 @@ public class pathfinding {
 		}
 	}
 	
-	public static Queue<Position> findPath(ArrayList<Position> maze) {
-        
-
-        Position start = null, goal = null;
-        Queue<Position> path = new LinkedList<Position>(); 
-        	Queue<Position> p = p.findPath(maze, start, goal);
-        	if (p.isEmpty()) {
+	public ArrayList<Position> findtotalPath(ArrayList<Position> maze) {
+        ArrayList<Position> path = new ArrayList<Position>(); 
+        	path = findPath(maze,start,goal);
+        	System.out.println(path);
+        	if (path.isEmpty()) {
         		// even if one level is not solved, maze is not solved
         		return null;
         	}
-        	while (!p.isEmpty()) {
-                Position q = p.poll();
-                path.offer(q);
+        	while (!path.isEmpty()) {
+                Position q = path.remove(0);
+                path.add(q);
             }
         return path;
 	
@@ -93,7 +91,7 @@ public class pathfinding {
 
         Map<Position,Position> parentMap = new HashMap<>();
         parentMap.put(start, null);
-        
+        System.out.println(queue);
         
         while (!queue.isEmpty()) {
             Position current = queue.poll(); // Dequeue a cell
@@ -107,6 +105,10 @@ public class pathfinding {
             for(int[] dir : dirs) {
             	int newX = current.row + dir[0];
             	int newY = current.col + dir[1];
+            	System.out.println(newX);
+            	System.out.println(newY);
+            	
+            	System.out.println(isValid(newX, newY, goal.row, goal.col));
             	
             	if (isValid(newX, newY, goal.row, goal.col)) {
                     Position neighbor = maze.get(newX * cols + newY);

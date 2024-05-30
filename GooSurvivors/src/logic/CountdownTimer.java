@@ -9,7 +9,7 @@ public class CountdownTimer {
     private Timer timer;
 
     public CountdownTimer() {
-        this.minutes = 15;
+        this.minutes = 6;
         this.seconds = 0;
         this.timer = new Timer();
     }

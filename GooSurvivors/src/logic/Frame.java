@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 import javax.swing.Timer;
 import java.util.TimerTask;
@@ -129,13 +130,18 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 	Tile[][] tiles = new Tile[27][27];
 	
-	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
+	String name = "map"+ (int)((Math.random() * 3) + 1) +".txt";
+	
+	File tilemap = new File(name);
 	
 	 //only using this because i have to
 	static Queue<String> instructions1 = new LinkedList<>();
 	static Queue<String> instructions2 = new LinkedList<>();
 	static Queue<String> instructions3 = new LinkedList<>();
 	static Queue<String> instructions4 = new LinkedList<>();
+	
+	static Stack<int[]> upcomingWaves = new Stack<>();
+	static Stack<int[]> completedWaves = new Stack<>();
 	
 	
 	Whip starter = new Whip(10,1);
@@ -158,22 +164,41 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		instructions3.add("your WEAPON fires automatically!");
 		instructions4.add("it's that simple!");
 		
+		instructions1.add("starting weapon = FIRE WHIP");
+		instructions2.add("it deals 1 damage");
+		instructions3.add("Level up to unlock BALLS");
+		instructions4.add("more XP = MORE BALLS");
+		
 		instructions1.add("break BROWN BOXES with your WEAPON");
 		instructions2.add("GREEN VIAL = DAMAGE UP");
 		instructions3.add("RED VIAL = HEALTH UP");
-		instructions4.add("you can also get EXPEREINCE");
+		instructions4.add("sometimes boxes give EXPEREINCE");
 		
 
-		instructions1.add("the more EXPEREINCE, the BETTER");
-		instructions2.add("LEVEL UP = NEW WEAPONS");
-		instructions3.add("SURVIVE as long as you can");
-		instructions4.add("don't foget to SAVE");
+		instructions1.add("the vials you collect SAVE");
+		instructions2.add("biuld them up over multiple rounds");
+		instructions3.add("dont forget to LOAD to resume");
+		instructions4.add("from where you left off");
 		
-		instructions1.add("use F1 to save your game");
-		instructions2.add("LOAD from the main menu");
+		instructions1.add("each round lasts 5 MINUTES");
+		instructions2.add("survive as long as you can");
 		instructions3.add("");
 		instructions4.add("good luck soldier!");
+		
+		int[] wave1 = {1,1,1,1,1,1};
+		int[] wave2 = {1,1,1,2,2,2};
+		int[] wave3 = {3,3,3,3,3,2};
+		int[] wave4 = {1,1,3,4,2,1};
+		int[] wave5 = {2,2,2,2,5,3};
+		
+		upcomingWaves.add(wave5);
+		upcomingWaves.add(wave4);
+		upcomingWaves.add(wave3);
+		upcomingWaves.add(wave2);
+		upcomingWaves.add(wave1);
+		
 	}
+	
 	
 	/**
 	* Runs once per frame, executes all of the game logic. 
@@ -335,6 +360,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
+		pathfinding p = new pathfinding();
+		snakeLogic(p);
 	}
 	
 	/**
@@ -482,23 +510,45 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		waveTimer++;
+		if(time.getMins() == 5 && time.getSecs() == 0) {
+			completedWaves.add(upcomingWaves.pop());
+			spawnWave(completedWaves.peek());//wave 1
+		}else if(time.getMins() == 4 && time.getSecs() == 0) {
+			completedWaves.add(upcomingWaves.pop());
+			spawnWave(completedWaves.peek());//wave 2
+		}else if(time.getMins() == 3 && time.getSecs() == 0) {
+			completedWaves.add(upcomingWaves.pop());
+			spawnWave(completedWaves.peek());//wave 3
+		}else if(time.getMins() == 2 && time.getSecs() == 0) {
+			completedWaves.add(upcomingWaves.pop());
+			spawnWave(completedWaves.peek());//wave 4
+		}else if(time.getMins() == 1 && time.getSecs() == 0) {
+			completedWaves.add(upcomingWaves.pop());
+			spawnWave(completedWaves.peek()); //wave 5
+		}
 		
-		if(waveTimer == 20) {
-			spawnEnemies(1, hSlimes, "huge slimes");
+	
+	}
+	
+	private void spawnWave(int[] wave) {
+		for(int i = 0; i< wave.length; i++) {
+			if(wave[i] == 1) {
+				spawnEnemies(1, sSlimes, "small slimes");
+			}
+			else if(wave[i] == 2) {
+				spawnEnemies(1, bSlimes, "big slimes");
+			}
+			else if(wave[i] == 3) {
+				spawnEnemies(1, skells, "skeletons");
+			}
+			else if(wave[i] == 4) {
+				spawnEnemies(1, shootSkells, "shooting skeletons");
+			}
+			else if(wave[i] == 5) {
+				spawnEnemies(1, hSlimes, "huge slimes");
+			}
 		}
-		if(waveTimer == 220) {
-			spawnEnemies(1, bSlimes, "big slimes");
-		}
-		if(waveTimer == 500) {
-			spawnEnemies(1, skells, "skeletons");
-		}
-		if(waveTimer == 700) {
-			spawnEnemies(1, shootSkells, "shooting skeletons");
-		}
-		if(waveTimer == 1000) {
-			spawnEnemies(1, shootSkells, "shooting skeletons");
-		}
+		
 	}
 	
 	/**
@@ -551,6 +601,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		  }	
 	}
 	
+	public void snakeLogic(pathfinding p) {
+			p.maze = p.loadMaze(name, p.rows, p.cols);
+			p.sol = p.findtotalPath(p.maze);
+		
+	}
 	public void drawTiles(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect(-globalX+380, -globalY+250, 50, 200);

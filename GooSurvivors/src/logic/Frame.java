@@ -129,7 +129,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 	Tile[][] tiles = new Tile[27][27];
 	
-	File tilemap = new File("map"+ (int)((Math.random() * 3) + 1) +".txt");
+	String name = "map"+ (int)((Math.random() * 3) + 1) +".txt";
+	
+	File tilemap = new File(name);
 	
 	 //only using this because i have to
 	static Queue<String> instructions1 = new LinkedList<>();
@@ -335,6 +337,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
+		pathfinding p = new pathfinding();
+		snakeLogic(p);
 	}
 	
 	/**
@@ -551,6 +556,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		  }	
 	}
 	
+	public void snakeLogic(pathfinding p) {
+			p.maze = p.loadMaze(name, p.rows, p.cols);
+			p.sol = p.findtotalPath(p.maze);
+		
+	}
 	public void drawTiles(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect(-globalX+380, -globalY+250, 50, 200);

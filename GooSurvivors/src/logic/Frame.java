@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -140,8 +141,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	static Queue<String> instructions3 = new LinkedList<>();
 	static Queue<String> instructions4 = new LinkedList<>();
 	
-	static Stack<int[]> upcomingWaves = new Stack<>();
-	static Stack<int[]> completedWaves = new Stack<>();
+	static HashMap<String, int[]> waves = new HashMap<String, int[]>();
 	
 	
 	Whip starter = new Whip(10,1);
@@ -156,46 +156,50 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	* @param String arg (i have no idea what this dose)
 	*/
 	public static void main(String[] arg) throws IOException {
-		Frame f = new Frame();
-
-		
-		instructions1.add("WELCOME TO GOO SURVIVORS!");
-		instructions2.add("use ARROW KEYS to move");
-		instructions3.add("your WEAPON fires automatically!");
-		instructions4.add("it's that simple!");
-		
-		instructions1.add("starting weapon = FIRE WHIP");
-		instructions2.add("it deals 1 damage");
-		instructions3.add("Level up to unlock BALLS");
-		instructions4.add("more XP = MORE BALLS");
-		
-		instructions1.add("break BROWN BOXES with your WEAPON");
-		instructions2.add("GREEN VIAL = DAMAGE UP");
-		instructions3.add("RED VIAL = HEALTH UP");
-		instructions4.add("sometimes boxes give EXPEREINCE");
-		
-
-		instructions1.add("the vials you collect SAVE");
-		instructions2.add("biuld them up over multiple rounds");
-		instructions3.add("dont forget to LOAD to resume");
-		instructions4.add("from where you left off");
-		
-		instructions1.add("each round lasts 5 MINUTES");
-		instructions2.add("survive as long as you can");
-		instructions3.add("");
-		instructions4.add("good luck soldier!");
 		
 		int[] wave1 = {1,1,1,1,1,1};
 		int[] wave2 = {1,1,1,2,2,2};
 		int[] wave3 = {3,3,3,3,3,2};
-		int[] wave4 = {1,1,3,4,2,1};
-		int[] wave5 = {2,2,2,2,5,3};
+		 int[] wave4 = {1,1,3,4,2,1};
+		 int[] wave5 = {2,2,2,2,5,3};
 		
-		upcomingWaves.add(wave5);
-		upcomingWaves.add(wave4);
-		upcomingWaves.add(wave3);
-		upcomingWaves.add(wave2);
-		upcomingWaves.add(wave1);
+			instructions1.add("WELCOME TO GOO SURVIVORS!");
+			instructions2.add("use ARROW KEYS to move");
+			instructions3.add("your WEAPON fires automatically!");
+			instructions4.add("it's that simple!");
+			
+			instructions1.add("starting weapon = FIRE WHIP");
+			instructions2.add("it deals 1 damage");
+			instructions3.add("Level up to unlock BALLS");
+			instructions4.add("more XP = MORE BALLS");
+			
+			instructions1.add("break BROWN BOXES with your WEAPON");
+			instructions2.add("GREEN VIAL = DAMAGE UP");
+			instructions3.add("RED VIAL = HEALTH UP");
+			instructions4.add("sometimes boxes give EXPEREINCE");
+			
+
+			instructions1.add("the vials you collect SAVE");
+			instructions2.add("biuld them up over multiple rounds");
+			instructions3.add("dont forget to LOAD to resume");
+			instructions4.add("from where you left off");
+			
+			instructions1.add("each round lasts 5 MINUTES");
+			instructions2.add("survive as long as you can");
+			instructions3.add("");
+			instructions4.add("good luck soldier!");
+		
+		waves.put("wave1",wave1);
+		waves.put("wave2",wave2);
+		waves.put("wave3",wave3);
+		waves.put("wave4",wave4);
+		waves.put("wave5",wave5);
+		
+		Frame f = new Frame();
+
+	
+
+		
 		
 	}
 	
@@ -392,15 +396,40 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	private void spawnEnemies(int amnt, ArrayList<Enemy> enemies, String who) {
 		for(int i = 0; i< amnt; i++) {
 			if(who.toLowerCase().equals("skeletons")) {
-				enemies.add(new Skeleton());
+				Skeleton s = new Skeleton();
+				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				s.setX(-globalX+380 + randomX);
+				s.setY( -globalY+300 + randomY);
+				enemies.add(s);
 			}else if(who.toLowerCase().equals("big slimes")) {
-				enemies.add(new bigSlime());
+				bigSlime s = new bigSlime();
+				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				s.setX(-globalX+380 + randomX);
+				s.setY( -globalY+300 + randomY);
+				enemies.add(s);
 			}else if(who.toLowerCase().equals("small slimes")) {
-				enemies.add(new smallSlime());
+				smallSlime s = new smallSlime();
+				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				s.setX(-globalX+380 + randomX);
+				s.setY( -globalY+300 + randomY);
+				enemies.add(s);
 			}else if(who.toLowerCase().equals("shooting skeletons")) {
-				enemies.add(new ShootingSkeleton());
+				ShootingSkeleton s = new ShootingSkeleton();
+				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				s.setX(-globalX+380 + randomX);
+				s.setY( -globalY+300 + randomY);
+				enemies.add(s);
 			}else if(who.toLowerCase().equals("huge slimes")) {
-				enemies.add(new megaSlime());
+				megaSlime s = new megaSlime();
+				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				s.setX(-globalX+380 + randomX);
+				s.setY( -globalY+300 + randomY);
+				enemies.add(s);
 			}
 		}
 	}
@@ -474,15 +503,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					ProjectileBullet b = new ProjectileBullet( 10, 20, 20, ((ShootingSkeleton) ss).getX() + 90, ((ShootingSkeleton) ss).getY() + 100, 15);
 					bullets.add( b );
 					double xDirection = -((globalX-380) - ((ShootingSkeleton) ss).getX() + 90);
-					System.out.println(xDirection);
+					
 					double yDirection = ((globalY-200) - ((ShootingSkeleton) ss).getY() + 50);
-					System.out.println(yDirection);
+					
 					int length = (int) Math.sqrt(yDirection*yDirection + xDirection*xDirection );
-					System.out.println(length);
+					
 				b.setVx((int) (b.getSpeed() * (double)(xDirection / length)) );
 				b.setVy((int) (b.getSpeed() * (double)(yDirection / length)) );
-				System.out.println(b.Vx);
-				System.out.println(b.Vy);
+			
 			}
 		}//this is to be put in frame
 		
@@ -510,21 +538,19 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		if(time.getMins() == 5 && time.getSecs() == 0) {
-			completedWaves.add(upcomingWaves.pop());
-			spawnWave(completedWaves.peek());//wave 1
+		
+		if(time.getMins() == 5 && time.getSecs() == 50) {
+			spawnWave(waves.get("wave1"));//wave 1
 		}else if(time.getMins() == 4 && time.getSecs() == 0) {
-			completedWaves.add(upcomingWaves.pop());
-			spawnWave(completedWaves.peek());//wave 2
+			spawnWave(waves.get("wave2"));//wave 2
 		}else if(time.getMins() == 3 && time.getSecs() == 0) {
-			completedWaves.add(upcomingWaves.pop());
-			spawnWave(completedWaves.peek());//wave 3
+			spawnWave(waves.get("wave3"));//wave 3
 		}else if(time.getMins() == 2 && time.getSecs() == 0) {
-			completedWaves.add(upcomingWaves.pop());
-			spawnWave(completedWaves.peek());//wave 4
+			spawnWave(waves.get("wave4"));//wave 4
 		}else if(time.getMins() == 1 && time.getSecs() == 0) {
-			completedWaves.add(upcomingWaves.pop());
-			spawnWave(completedWaves.peek()); //wave 5
+			spawnWave(waves.get("wave5")); //wave 5
+		}else if(time.getMins() <= 0 && time.getSecs() <= 0) {
+			wallLogic();
 		}
 		
 	

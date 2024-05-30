@@ -656,7 +656,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					tiles[r][c].paint(g);
 					if((tiles[r][c].collided(-globalX+380,-globalY+250,50,200))){
 						
-						
 						if(tiles[r][c].getX() + (75/2) > -globalX+380) {
 							globalX++;
 						}else {
@@ -667,6 +666,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 							globalY++;
 						}else {
 							globalY--;
+						}
+						
+						if(tiles[r][c].getType() == 2) {
+							((BreakableTile) tiles[r][c]).takeDamage(starter.getDmg(), g);
 						}
 						
 						

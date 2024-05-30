@@ -275,14 +275,14 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(hSlimes, g);
 			enemyLogic(shootSkells, g);
 			shoot(shootSkells);
-			
-			wall.paint(g);
-			g.fillRect(wall.getX(),wall.getY(),wall.getWidth(),wall.getHeight());
+		
 			
 			for(ProjectileBullet bull : bullets) {
 				bull.paint(g);
 			}
 			itemLogic(g);
+			
+			wall.paint(g);
 
 
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted

@@ -544,7 +544,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		if(time.getMins() == 5 && time.getSecs() == 50) {
+		if(time.getMins() == 5 && time.getSecs() == 0) {
 			if(waves.get("wave1") != null) {
 			spawnWave(waves.remove("wave1"));//wave 1
 			}

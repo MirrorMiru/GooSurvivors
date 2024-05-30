@@ -180,9 +180,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			instructions3.add("dont forget to LOAD to resume");
 			instructions4.add("from where you left off");
 			
-			instructions1.add("each round lasts 5 MINUTES");
-			instructions2.add("survive as long as you can");
-			instructions3.add("");
+			instructions1.add("each round lasts 6 MINUTES");
+			instructions2.add("the first minute is a grace period");
+			instructions3.add("survive as long as you can");
 			instructions4.add("good luck soldier!");
 		
 	

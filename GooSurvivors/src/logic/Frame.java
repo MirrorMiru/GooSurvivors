@@ -157,11 +157,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	public static void main(String[] arg) throws IOException {
 		
-		int[] wave1 = {1,1,1,1,1,1};
-		int[] wave2 = {1,1,1,2,2,2};
-		int[] wave3 = {3,3,3,3,3,2};
-		 int[] wave4 = {1,1,3,4,2,1};
-		 int[] wave5 = {2,2,2,2,5,3};
+			initWaves();
 		
 			instructions1.add("WELCOME TO GOO SURVIVORS!");
 			instructions2.add("use ARROW KEYS to move");
@@ -189,11 +185,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			instructions3.add("");
 			instructions4.add("good luck soldier!");
 		
-		waves.put("wave1",wave1);
-		waves.put("wave2",wave2);
-		waves.put("wave3",wave3);
-		waves.put("wave4",wave4);
-		waves.put("wave5",wave5);
+	
 		
 		Frame f = new Frame();
 
@@ -201,6 +193,20 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 		
 		
+	}
+	
+	private static void initWaves() {
+		int[] wave1 = {1,1,1,1,1,1};
+		int[] wave2 = {1,1,1,2,2,2};
+		int[] wave3 = {3,3,3,3,3,2};
+		int[] wave4 = {1,1,3,4,2,1};
+		int[] wave5 = {2,2,2,2,5,3};
+		
+		waves.put("wave1",wave1);
+		waves.put("wave2",wave2);
+		waves.put("wave3",wave3);
+		waves.put("wave4",wave4);
+		waves.put("wave5",wave5);
 	}
 	
 	
@@ -397,29 +403,29 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		for(int i = 0; i< amnt; i++) {
 			if(who.toLowerCase().equals("skeletons")) {
 				Skeleton s = new Skeleton();
-				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
-				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
+				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("big slimes")) {
 				bigSlime s = new bigSlime();
-				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
-				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
+				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("small slimes")) {
 				smallSlime s = new smallSlime();
-				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
-				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
+				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("shooting skeletons")) {
 				ShootingSkeleton s = new ShootingSkeleton();
-				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
-				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
+				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
@@ -538,17 +544,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		
 		if(time.getMins() == 5 && time.getSecs() == 50) {
-			spawnWave(waves.get("wave1"));//wave 1
+			if(waves.get("wave1") != null) {
+			spawnWave(waves.remove("wave1"));//wave 1
+			}
 		}else if(time.getMins() == 4 && time.getSecs() == 0) {
-			spawnWave(waves.get("wave2"));//wave 2
+			if(waves.get("wave2") != null) {
+			spawnWave(waves.remove("wave2"));//wave 2
+			}
 		}else if(time.getMins() == 3 && time.getSecs() == 0) {
-			spawnWave(waves.get("wave3"));//wave 3
+			if(waves.get("wave3") != null) {
+			spawnWave(waves.remove("wave3"));//wave 3
+			}
 		}else if(time.getMins() == 2 && time.getSecs() == 0) {
-			spawnWave(waves.get("wave4"));//wave 4
+			if(waves.get("wave4") != null) {
+			spawnWave(waves.remove("wave4"));//wave 4
+			}
 		}else if(time.getMins() == 1 && time.getSecs() == 0) {
-			spawnWave(waves.get("wave5")); //wave 5
+			if(waves.get("wave5") != null) {
+			spawnWave(waves.remove("wave5")); //wave 5
+			}
 		}else if(time.getMins() <= 0 && time.getSecs() <= 0) {
 			wallLogic();
 		}
@@ -728,7 +743,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	public void reset(){
 		player.setXp(0);
 		gamestate = 0;
-		
+		initWaves();
 		//saving code
 	}
 	

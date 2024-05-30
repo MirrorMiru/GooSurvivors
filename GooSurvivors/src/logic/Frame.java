@@ -29,6 +29,10 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+
+import javax.swing.Timer;
+import java.util.TimerTask;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -36,7 +40,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 /******************************************************************
  * Program: GOO SURVIVORS                                         *
  ******************************************************************
@@ -64,6 +67,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	Sprite[] inst = {new Sprite("/img/inst1.png",0,0,800,700), new Sprite("/img/inst2.png",0,0,800,700),new Sprite("/img/inst3.png",0,0,800,700),new Sprite("/img/inst4.png",0,0,800,700)};
 	
 	Sprite[] GUI = {new Sprite("/img/gui1.png",0,0,800,700), new Sprite("/img/gui2.png",0,0,800,700),new Sprite("/img/gui3.png",0,0,800,700),new Sprite("/img/gui4.png",0,0,800,700),new Sprite("/img/gui5.png",0,0,800,700)};
+	Sprite[] timeIcon = {new Sprite("/img/timer1.png",0,0,800,700), new Sprite("/img/timer2.png",0,0,800,700)};
 	//le font
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	
@@ -102,13 +106,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	int UIanim = 0;
 	int UIanim2 = 0;
+	int UIanim3 = 0;
+	int UIanim4 = 0;
 	
 	int globalX = 300;
 	int globalY = 200;
 	
-	private int iFrames = 0;
-	
-	int stucktimer = 0;
+	CountdownTimer time = new CountdownTimer();
 	
 	//enemy arraylists
 	ArrayList<Enemy> skells = new ArrayList<Enemy>();
@@ -137,6 +141,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	Whip starter = new Whip(10,1);
 	boolean invunrebility = false; //player cannot die when true
 	
+	
 	 
 	/**
 	* main function 
@@ -146,6 +151,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	public static void main(String[] arg) throws IOException {
 		Frame f = new Frame();
+
 		
 		instructions1.add("WELCOME TO GOO SURVIVORS!");
 		instructions2.add("use ARROW KEYS to move");
@@ -167,10 +173,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		instructions2.add("LOAD from the main menu");
 		instructions3.add("");
 		instructions4.add("good luck soldier!");
-	
-		
-		
-	
 	}
 	
 	/**
@@ -258,15 +260,26 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			globalY -=player.getVy();
 			g.translate(0, 100);
 			UIanim2++;
+			UIanim3++;
 			
 			if(UIanim2 % 5 == 0) {
 				UIanim++;
+			}
+			if(UIanim3 % 10 == 0) {
+				UIanim4++;
+			}
+			if(UIanim4 > 1) {
+				UIanim3 = 0;
+				UIanim4 = 0;
 			}
 			
 			if(UIanim > 4) {
 				UIanim2 = 0;
 				UIanim = 0;
 			}
+			
+			
+			timeIcon[UIanim4].paint(g);
 			GUI[UIanim].paint(g);
 	
 			drawGui(g);//le gui
@@ -318,7 +331,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	   // backgroundMusic.play();//play bgm
 	    
 		
-		Timer t = new Timer(16, this);//decrease number to make loop faster
+		Timer t = new Timer(30, this);//decrease number to make loop faster
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
@@ -337,6 +350,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	    g.setColor(Color.GREEN);
 	    g.drawString(Integer.toString(player.getHp()), 35,50);
 	    g.drawString(Integer.toString(player.getXp()), 740,50);
+	    
+	    g.drawString(Integer.toString(time.getMins())+" : "+Integer.toString(time.getSecs()), 380,85);
 	}
 	
 	/**
@@ -630,10 +645,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	* @param none
 	*/
 	public void reset(){
-		player.setHp(100);
 		player.setXp(0);
-		starter.setDmg(1);
 		gamestate = 0;
+		
+		//saving code
 	}
 	
 	/**
@@ -732,6 +747,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					gamestate = 1;
 					titleAnim = 0;
 					titleAnim2 = 0;
+					time.start();
 				}else if(titleIndex == 1) {
 					load.load();
 					player.setHp(load.getPlayerHp());

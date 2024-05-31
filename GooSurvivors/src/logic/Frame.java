@@ -124,6 +124,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> shootSkells = new ArrayList<Enemy>();
 	ArrayList<ProjectileBullet> bullets = new ArrayList<ProjectileBullet>();
 	ArrayList<Item> items = new ArrayList<Item>();
+	ArrayList<SurroundWeapon> surround = new ArrayList<SurroundWeapon>();
 	
 	deathWall wall = new deathWall();
 
@@ -275,7 +276,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(hSlimes, g);
 			enemyLogic(shootSkells, g);
 			shoot(shootSkells);
-		
+			
 			
 			for(ProjectileBullet bull : bullets) {
 				bull.paint(g);
@@ -283,7 +284,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			itemLogic(g);
 			
 			wall.paint(g);
-
+			for( SurroundWeapon ball : surround) {
+				ball.paint(g);
+			}
 
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -451,6 +454,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		starter.setX(-globalX+430);
 		}
 		
+		for( SurroundWeapon ball : surround) {
+			ball.setX( (int) (Math.cos( ball.getAngle() / (surround.indexOf(ball) + 1) ) * -(globalX + 380) ) );
+			ball.setY( (int) (Math.sin( ball.getAngle() / (surround.indexOf(ball) + 1) ) * (globalY + 250) ) );
+			//unfinished spawnlocation
+			
+		}
+		
 		if(enemies.size() > 0) {
 		for(Enemy s : enemies) {
 			s.paint(g);
@@ -469,6 +479,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	                s.takeDamage(starter.getDmg(), g);
 	               
 	         }
+			
+			for( SurroundWeapon balls : surround) {
+				if( balls.collidedWithEnemy(s) ) {
+					s.takeDamage(balls.getDmg(), g);
+				}
+			}
 			
 			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
 				
@@ -530,6 +546,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				if(items.get(i).collided(-globalX+380, -globalY+250, 50, 200)) {
 					if(items.get(i).getType() == 0) {
 						starter.setDmg(starter.getDmg() + 5);
+						surround.add(new SurroundWeapon(10));
 					}else {
 						player.getHurt(-10);
 					

@@ -84,7 +84,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite[] loadS = {new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS2.png",0,0,800,700),new Sprite("/img/loadS3.png",0,0,800,700)};
 	//bgm, starts looping immediately and never stops
-	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("bgm.wav", true);
+	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("bgm.wav", true);
 	
 	//frame width/height
 	int width = 815;

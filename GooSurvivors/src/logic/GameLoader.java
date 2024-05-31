@@ -11,9 +11,8 @@ import java.util.Scanner;
 public class GameLoader {
 
 	int playerHp;
-	int wave;
-	int playerXp;
-	ArrayList<Integer> items = new ArrayList<Integer>();
+	int weaponDamage;
+	int highScore = 0;
 	
 	public GameLoader() {
 		 
@@ -38,15 +37,15 @@ public class GameLoader {
 		  
 		  }
 	
-	public void save(int hp, int w, int xp) {
-		 
+	public void save(int health, int damage, int highscore) {
+		 	if(highscore > this.highScore) {
+		 		this.highScore = highScore;
+		 	}
+		
 		    try {
 		    	this.clear();
 		      FileWriter myWriter = new FileWriter("save.txt");
-		      myWriter.write(""+hp+","+w+","+xp+",");
-		      for(int i: items) {
-		      myWriter.write(i+",");
-		      }
+		      myWriter.write(""+health+","+damage+","+highScore);
 		      myWriter.close();
 		      System.out.println("Successfully wrote to the file.");
 		    } catch (IOException e) {
@@ -67,11 +66,8 @@ public class GameLoader {
 		            System.out.println(i);
 		            String[] vals = i.split(",");
 		            playerHp = Integer.parseInt(vals[0]);
-		            wave = Integer.parseInt(vals[1]);
-		            playerXp = Integer.parseInt(vals[2]);
-		            for(int n = 3; n < vals.length; n++) {
-		            	items.add(Integer.parseInt(vals[n]));
-		            }
+		            weaponDamage = Integer.parseInt(vals[1]);
+		            highScore = Integer.parseInt(vals[2]);
 		        }
 		        sc.close();
 		    } 
@@ -85,18 +81,13 @@ public class GameLoader {
 	}
 
 
-	public int getWave() {
-		return wave;
+	public int getDamage() {
+		return weaponDamage;
 	}
 
 
-	public int getPlayerXp() {
-		return playerXp;
-	}
-
-
-	public ArrayList<Integer> getItems() {
-		return items;
+	public int getHighScore() {
+		return highScore;
 	}
 
 

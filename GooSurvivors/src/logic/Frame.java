@@ -80,7 +80,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite[] over = {new Sprite("/img/go1.png",0,0,800,700), new Sprite("/img/go2.png",0,0,800,700),new Sprite("/img/go3.png",0,0,800,700),new Sprite("/img/go4.png",0,0,800,700)};
 	
-	
+	Sprite[] loadS = {new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS2.png",0,0,800,700),new Sprite("/img/loadS3.png",0,0,800,700)};
 	//bgm, starts looping immediately and never stops
 	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
 	
@@ -114,6 +114,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int globalX = 300;
 	int globalY = 200;
 	
+	int healthVials = 0;
+	int dmgVials = 0;
+	
 	CountdownTimer time = new CountdownTimer();
 	
 	//enemy arraylists
@@ -124,6 +127,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	ArrayList<Enemy> shootSkells = new ArrayList<Enemy>();
 	ArrayList<ProjectileBullet> bullets = new ArrayList<ProjectileBullet>();
 	ArrayList<Item> items = new ArrayList<Item>();
+	ArrayList<SurroundWeapon> surround = new ArrayList<SurroundWeapon>();
 	
 	deathWall wall = new deathWall();
 
@@ -181,7 +185,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			instructions4.add("from where you left off");
 			
 			instructions1.add("each round lasts 6 MINUTES");
-			instructions2.add("the first minute is a grace period");
+			instructions2.add("the first 30 seconds is a grace period");
 			instructions3.add("survive as long as you can");
 			instructions4.add("good luck soldier!");
 		
@@ -196,17 +200,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private static void initWaves() {
-		int[] wave1 = {1,1,1,1,1,1};
-		int[] wave2 = {1,1,1,2,2,2};
-		int[] wave3 = {3,3,3,3,3,2};
-		int[] wave4 = {1,1,3,4,2,1};
-		int[] wave5 = {2,2,2,2,5,3};
-		
-		waves.put("wave1",wave1);
-		waves.put("wave2",wave2);
-		waves.put("wave3",wave3);
-		waves.put("wave4",wave4);
-		waves.put("wave5",wave5);
+		int[][] initwaves = {{1,1,1,1,1,1}, {1,1,1,1,1,2,2,2}, {2,2,2,2,1}, {2,2,2,2,2,1,1,3},  {3,3,3,2,2,2}, {3,3,3,4,3,3,3}, {2,2,2,3,3,3,4,4,4},{1,1,1,1,1,1,1,1,1,1,2,2,2,5},{2,2,2,3,3,3,3,3,5,5,5},{5,5,5,5,2,2,2,4}};
+
+		for(int i = 1; i<=10; i++){
+			String waveName = "wave"+i;
+			waves.put(waveName,initwaves[i-1]);
+		}
 	}
 	
 	
@@ -275,15 +274,21 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(hSlimes, g);
 			enemyLogic(shootSkells, g);
 			shoot(shootSkells);
-		
+			
 			
 			for(ProjectileBullet bull : bullets) {
 				bull.paint(g);
+				if(bull.getTimer() == 120) {
+					bullets.remove( bullets.indexOf(bull) );
+				}
 			}
+			
 			itemLogic(g);
 			
 			wall.paint(g);
-
+			for( SurroundWeapon ball : surround) {
+				ball.paint(g);
+			}
 
 			g.translate(-globalX, -globalY);//translate gui and player back to stay rooted
 	
@@ -342,8 +347,23 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			g.drawString(Integer.toString(player.getXp()), 370, 240);
 		
 		}else if(gamestate == 5) {
+			//game over
+			titleAnim++;
 			
-		//THERES NOTHING
+			if(titleAnim % 10 == 0) {
+				titleAnim2++;
+			}
+			if(titleAnim2 > 3) {
+				titleAnim = 0;
+				titleAnim2 = 0;
+			}
+			
+			loadS[titleAnim2].paint(g);
+			
+			g.setColor(Color.green);
+			g.setFont(myFont.deriveFont(40.0f));
+			g.drawString("69420", 360, 210);
+			
 		}
 	}
 
@@ -403,36 +423,36 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		for(int i = 0; i< amnt; i++) {
 			if(who.toLowerCase().equals("skeletons")) {
 				Skeleton s = new Skeleton();
-				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
-				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomX = -600 + (int) (Math.random() * ((600 - (-600)) + 1));
+				int randomY = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("big slimes")) {
 				bigSlime s = new bigSlime();
-				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
-				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomX = -600 + (int) (Math.random() * ((600 - (-600)) + 1));
+				int randomY = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("small slimes")) {
 				smallSlime s = new smallSlime();
-				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
-				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomX = -600 + (int) (Math.random() * ((600 - (-600)) + 1));
+				int randomY = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("shooting skeletons")) {
 				ShootingSkeleton s = new ShootingSkeleton();
-				int randomX = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
-				int randomY = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
+				int randomX = -600 + (int) (Math.random() * ((600 - (-600)) + 1));
+				int randomY = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
 			}else if(who.toLowerCase().equals("huge slimes")) {
 				megaSlime s = new megaSlime();
-				int randomX = -400 + (int) (Math.random() * ((400 - (-400)) + 1));
-				int randomY = -300 + (int) (Math.random() * ((300 - (-300)) + 1));
+				int randomX = -600 + (int) (Math.random() * ((600 - (-600)) + 1));
+				int randomY = -500 + (int) (Math.random() * ((500 - (-500)) + 1));
 				s.setX(-globalX+380 + randomX);
 				s.setY( -globalY+300 + randomY);
 				enemies.add(s);
@@ -441,7 +461,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
-	
+		
 		if(starter.getDir()) {
 		g.drawRect(-globalX+230, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+230);
@@ -449,6 +469,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		}else {
 		g.drawRect(-globalX+430, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+430);
+		}
+		
+		for( SurroundWeapon ball : surround) {
+			ball.setX( (int) (Math.cos( ball.getAngle() / (surround.indexOf(ball) + 1) ) * -(globalX + 380) ) );
+			ball.setY( (int) (Math.sin( ball.getAngle() / (surround.indexOf(ball) + 1) ) * (globalY + 250) ) );
+			//unfinished spawnlocation
+			
 		}
 		
 		if(enemies.size() > 0) {
@@ -470,12 +497,23 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	               
 	         }
 			
+			for( SurroundWeapon balls : surround) {
+				if( balls.collidedWithEnemy(s) ) {
+					s.takeDamage(balls.getDmg(), g);
+				}
+			}
+			
+			for( ProjectileBullet bull : bullets) {
+				if( player.collided( bull.getX(), bull.getY(), bull.getWidth(), bull.getHeight() ) ) {
+					player.getHurt( bull.getDamage() );
+				}
+			}
+			
 			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
-				
+
 				getHurt(s.getDamage());
-				//sfxProtection = true;
-			}else {
-				//sfxProtection = false;
+				
+				
 			}
 			
 			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
@@ -544,27 +582,48 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 
 	private void startWaves() {
-		if(time.getMins() == 5 && time.getSecs() == 0) {
+		if(time.getMins() == 5 && time.getSecs() == 30) {
 			if(waves.get("wave1") != null) {
-			spawnWave(waves.remove("wave1"));//wave 1
+				spawnWave(waves.remove("wave1"));//wave 1
 			}
-		}else if(time.getMins() == 4 && time.getSecs() == 0) {
+		}else if(time.getMins() == 5 && time.getSecs() == 0) {
 			if(waves.get("wave2") != null) {
 			spawnWave(waves.remove("wave2"));//wave 2
 			}
-		}else if(time.getMins() == 3 && time.getSecs() == 0) {
+		}else if(time.getMins() == 4 && time.getSecs() == 30) {
 			if(waves.get("wave3") != null) {
 			spawnWave(waves.remove("wave3"));//wave 3
 			}
-		}else if(time.getMins() == 2 && time.getSecs() == 0) {
+		}else if(time.getMins() == 4 && time.getSecs() == 0) {
 			if(waves.get("wave4") != null) {
 			spawnWave(waves.remove("wave4"));//wave 4
 			}
-		}else if(time.getMins() == 1 && time.getSecs() == 0) {
+		}else if(time.getMins() == 3 && time.getSecs() == 30) {
 			if(waves.get("wave5") != null) {
 			spawnWave(waves.remove("wave5")); //wave 5
 			}
-		}else if(time.getMins() <= 0 && time.getSecs() <= 0) {
+		}else if(time.getMins() == 3 && time.getSecs() == 00) {
+			if(waves.get("wave6") != null) {
+			spawnWave(waves.remove("wave6")); //wave 5
+			}
+		}else if(time.getMins() == 2 && time.getSecs() == 30) {
+			if(waves.get("wave7") != null) {
+			spawnWave(waves.remove("wave7")); //wave 5
+			}
+		}else if(time.getMins() == 2 && time.getSecs() == 00) {
+				if(waves.get("wave8") != null) {
+				spawnWave(waves.remove("wave8")); //wave 5
+				}
+		}else if(time.getMins() == 1 && time.getSecs() == 30) {
+			if(waves.get("wave9") != null) {
+			spawnWave(waves.remove("wave9")); //wave 5
+			}
+		}else if(time.getMins() == 1 && time.getSecs() == 0) {
+			if(waves.get("wave10") != null) {
+			spawnWave(waves.remove("wave10")); //wave 5
+			}
+		}
+		else if(time.getMins() <= 0 && time.getSecs() <= 0) {
 			wallLogic();
 		}
 		
@@ -692,11 +751,13 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
 								i.setX((r*75)-400);
 					    		i.setY((c*75)-350);
+					    		healthVials++;
 								items.add(i);
 							}else if(rand == 3) {
 							Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 1);
 							i.setX((r*75)-400);
 				    		i.setY((c*75)-350);
+				    		healthVials++;
 							items.add(i);
 							}else if(rand == 4) {
 								player.addXp(20);
@@ -704,6 +765,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 								Item i = new Item( tiles[r][c].getX(),  tiles[r][c].getY(), 0);
 								i.setX((r*75)-400);
 					    		i.setY((c*75)-350);
+					    		dmgVials++;
 								items.add(i);
 							}
 							tiles[r][c] = null;
@@ -728,11 +790,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	public void getHurt(int dmg) {
 		if(player.getHp() > 1) {
-			//if(!sfxProtection) {
-			//playSfx("hit.wav");
-			//}
-			//player.getHurt(dmg);
+			playSfx("hit.wav");
+			player.getHurt(dmg);
 		}else {
+			//save code
 			gamestate = 4;
 		}
 	}
@@ -848,9 +909,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleAnim2 = 0;
 					time.start();
 				}else if(titleIndex == 1) {
-					load.load();
-					player.setHp(load.getPlayerHp());
-					player.setXp(load.getPlayerXp());
+					gamestate = 5;
 				}else if(titleIndex == 2) {
 					gamestate = 2;
 					titleAnim = 0;
@@ -862,11 +921,19 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		 		instructions2.add(instructions2.poll());
 		 		instructions3.add(instructions3.poll());
 		 		instructions4.add(instructions4.poll());
-		 	}
+		 	}else if(gamestate == 5) {
+				 load.clear();
+				 gamestate = 0;
+			 }
 	 	}
 	 
-	 if(arg0.getKeyCode() == 10 && gamestate == 2) {
+	 if(arg0.getKeyCode() == 10) {
+		 if(gamestate ==2) {
 		 gamestate = 0;
+		 }else if(gamestate ==5) {
+			 load.load();
+			 gamestate = 0;
+		 }
 	 }
 	 //System.out.println(arg0.getKeyCode());
 	}

@@ -280,7 +280,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 			for(ProjectileBullet bull : bullets) {
 				bull.paint(g);
+				if(bull.getTimer() == 120) {
+					bullets.remove( bullets.indexOf(bull) );
+				}
 			}
+			
 			itemLogic(g);
 			
 			wall.paint(g);
@@ -483,6 +487,12 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			for( SurroundWeapon balls : surround) {
 				if( balls.collidedWithEnemy(s) ) {
 					s.takeDamage(balls.getDmg(), g);
+				}
+			}
+			
+			for( ProjectileBullet bull : bullets) {
+				if( player.collided( bull.getX(), bull.getY(), bull.getWidth(), bull.getHeight() ) ) {
+					player.getHurt( bull.getDamage() );
 				}
 			}
 			

@@ -43,8 +43,6 @@ public class BreakableTile extends Tile{
 		init(x,y);
 
 			g2.drawImage(super.image, tx, null);
-			g.setColor(Color.GREEN);
-			g.drawRect(x, y, width, height);
 	}
 	
 	public void takeDamage(int dmg, Graphics g) {

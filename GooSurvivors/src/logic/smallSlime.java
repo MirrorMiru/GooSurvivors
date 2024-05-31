@@ -71,8 +71,7 @@ public class smallSlime extends Enemy{
 			timer2 = 0;
 		}
 		
-		//System.out.println("vx: "+super.getVx()+" vy: "+super.getVy());
-		g.drawRect(this.x, this.y, super.getWidth(), super.getHeight());
+	
 		
 	
 			anim[timer2].setX(x);

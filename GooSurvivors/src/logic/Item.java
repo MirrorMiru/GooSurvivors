@@ -46,8 +46,6 @@ public class Item{
 
 		g2.drawImage(image, tx, null);
 		
-		g.setColor(Color.cyan);
-		g.drawRect(x, y, width, height);
 
 	}
 	

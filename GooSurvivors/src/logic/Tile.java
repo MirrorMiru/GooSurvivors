@@ -56,8 +56,7 @@ public class Tile{
 		init(x,y);
 
 			g2.drawImage(image, tx, null);
-			g.setColor(Color.BLUE);
-			g.drawRect(x, y, width, height);
+	
 	}
 	
 	//getters and setters

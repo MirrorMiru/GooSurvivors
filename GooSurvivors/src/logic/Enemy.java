@@ -103,8 +103,7 @@ public class Enemy {
 		
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-		g.setColor(Color.green);
-		//g.drawRect(x, y, width, height);
+
 		
 	}
 	public int getHp() {

@@ -456,11 +456,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	private void enemyLogic( ArrayList<Enemy> enemies, Graphics g) {
 		
 		if(starter.getDir()) {
-		g.drawRect(-globalX+230, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+230);
 		starter.setY(-globalY+300);
 		}else {
-		g.drawRect(-globalX+430, -globalY+300, starter.getWidth(), starter.getHeight());
 		starter.setX(-globalX+430);
 		}
 		
@@ -509,7 +507,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				
 			}
 			
-			g.drawRect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
 			
 		}
 		for(int i = 0; i< enemies.size(); i++) {
@@ -701,8 +698,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		
 	}
 	public void drawTiles(Graphics g) {
-		g.setColor(Color.RED);
-		g.drawRect(-globalX+380, -globalY+250, 50, 200);
 		for(int r = 0; r < tiles.length; r++) {
 			for(int c = 0; c<tiles[0].length; c++) {
 				if(tiles[r][c] != null) {

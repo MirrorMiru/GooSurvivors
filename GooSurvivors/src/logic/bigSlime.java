@@ -4,130 +4,125 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+public class bigSlime extends Enemy {
 
-public class bigSlime extends Enemy{
-	
-	private int timer = 0;
-	private int timer2 = 0;
-	
-	private int x, y;
-	private int Vx, Vy;
-	
-	int dir = 0;
-	
-	
-	Sprite[] anim = {new Sprite("/img/BS1.png",x,y,300,200,0.2),new Sprite("/img/BS2.png",x,y,300,200,0.2)};
+    // Timers for animation
+    private int timer = 0;
+    private int timer2 = 0;
 
-	
-	public bigSlime() {
-		super(200,5,100,80,1);
-		this.x = 0;
-		this.y = 0;
-	}
+    // Coordinates and velocities
+    private int x, y;
+    private int Vx, Vy;
 
-	/**
-	* return true if an object represented by x, y , w , h occupies 
-	* any space occupied by object
-	*
-	* @param none
-	* @returns boolean- if rectanges collide
-	*/
-	public boolean collided(int x, int y, int width, int height) {
+    // Direction indicator
+    int dir = 0;
 
-	//if scaling images with scale var, make sure w/h reflect what we see on screen
-	Rectangle otherObj = new Rectangle(x,y,width,height);
-	Rectangle thisObj = new Rectangle(this.x,this.y,super.getWidth(),super.getHeight());
+    // Array of Sprite objects for animation
+    Sprite[] anim = {
+        new Sprite("/img/BS1.png", x, y, 300, 200, 0.2),
+        new Sprite("/img/BS2.png", x, y, 300, 200, 0.2)
+    };
 
-	return thisObj.intersects(otherObj);
-	}
-	
+    // Constructor to initialize bigSlime object with default position and superclass properties
+    public bigSlime() {
+        super(200, 5, 100, 80, 1);
+        this.x = 0;
+        this.y = 0;
+    }
 
-	//draw player image and apply physics
-	public void paint(Graphics g) {
-		//these are the 2 lines of code needed draw an image on the screen
-		Graphics2D g2 = (Graphics2D) g;
-		
-		//super.logic();
-		//this.x += super.getVx();
-		
-		super.x = this.x;
-		super.y = this.y;
-		
-		//this.y -= super.getVy();
-		x+=Vx;
-		y+=Vy;
-		
-		timer++;
-		
-		if(timer % 10 == 0) {
-			timer2++;
-		}
-		if(timer2 > 1) {
-			timer = 0;
-			timer2 = 0;
-		}
-		
-		//System.out.println("vx: "+super.getVx()+" vy: "+super.getVy());
-		
-		
-	
-			anim[timer2].setX(x);
-			anim[timer2].setY(y);
-			anim[timer2].paint(g);
-	}
-	
-	
-	
-	public int getX() {
-		return x;
-	}
+    /**
+     * Checks if this object collides with another rectangular object.
+     *
+     * @param x      X-coordinate of the other object
+     * @param y      Y-coordinate of the other object
+     * @param width  Width of the other object
+     * @param height Height of the other object
+     * @returns boolean - true if the rectangles collide, false otherwise
+     */
+    public boolean collided(int x, int y, int width, int height) {
+        // Create rectangles representing this object and the other object
+        Rectangle otherObj = new Rectangle(x, y, width, height);
+        Rectangle thisObj = new Rectangle(this.x, this.y, super.getWidth(), super.getHeight());
 
-	public void setX(int x) {
-		this.x = x;
-	}
+        // Check for intersection
+        return thisObj.intersects(otherObj);
+    }
 
-	public int getY() {
-		return y;
-	}
+    // Draw the bigSlime object and handle its animation and physics
+    public void paint(Graphics g) {
+        // Cast Graphics to Graphics2D for better control
+        Graphics2D g2 = (Graphics2D) g;
 
-	public void setY(int y) {
-		this.y = y;
-	}
+        // Update position with velocities
+        x += Vx;
+        y += Vy;
 
-	public int getVx() {
-		return Vx;
-	}
+        // Increment animation timer
+        timer++;
 
-	public void setVx(int vx) {
-		Vx = vx;
-	}
+        // Update frame every 10 ticks
+        if (timer % 10 == 0) {
+            timer2++;
+        }
+        // Reset timers if necessary
+        if (timer2 > 1) {
+            timer = 0;
+            timer2 = 0;
+        }
 
-	public int getVy() {
-		return Vy;
-	}
+        // Set animation frame positions
+        anim[timer2].setX(x);
+        anim[timer2].setY(y);
+        // Draw the current frame
+        anim[timer2].paint(g);
+    }
 
-	public void setVy(int vy) {
-		Vy = vy;
-	}
+    // Getter and setter methods for position and velocities
+    public int getX() {
+        return x;
+    }
 
-	private void direction() {
-			if(Vx < 0 ) {
-				dir = 0;
-			} 
-			else if(Vx > 0 ) {
-				dir = 1;
-			}else if(Vy > 0){
-				dir = 0;
-			}else {
-				dir = 1;
-			}
-		}
-	
-	
-	//image code
+    public void setX(int x) {
+        this.x = x;
+    }
 
+    public int getY() {
+        return y;
+    }
 
+    public void setY(int y) {
+        this.y = y;
+    }
 
+    public int getVx() {
+        return Vx;
+    }
+
+    public void setVx(int vx) {
+        Vx = vx;
+    }
+
+    public int getVy() {
+        return Vy;
+    }
+
+    public void setVy(int vy) {
+        Vy = vy;
+    }
+
+    // Determine the direction based on velocities
+    private void direction() {
+        if (Vx < 0) {
+            dir = 0;
+        } else if (Vx > 0) {
+            dir = 1;
+        } else if (Vy > 0) {
+            dir = 0;
+        } else {
+            dir = 1;
+        }
+    }
+
+    // Additional image handling code can be added here
 
 }
-

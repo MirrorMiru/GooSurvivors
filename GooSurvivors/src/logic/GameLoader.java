@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 public class GameLoader {
 
-	int playerHp;
-	int weaponDamage;
-	int highScore = 0;
+	private int playerHp;
+	private int weaponDamage;
+	private int highScore = 0;
 	
 	public GameLoader() {
 		 
@@ -39,7 +39,7 @@ public class GameLoader {
 	
 	public void save(int health, int damage, int highscore) {
 		 	if(highscore > this.highScore) {
-		 		this.highScore = highScore;
+		 		this.highScore = highscore;
 		 	}
 		
 		    try {

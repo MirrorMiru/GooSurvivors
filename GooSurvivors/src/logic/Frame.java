@@ -88,19 +88,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	int width = 815;
 	int height = 735;	
 	
-	int waveTimer = 0;
-	int wave = 0;
-	
-	
-	int score = 0;//game score, this should be self explanatory
 	int lives = 3;//lives
 	
 	int gamestate = 0;//gamestate
-	//0 = main menu
-	//2 = how to play
-	//1 = gameplay
-	//4 = game over
-	//5 = victory screen
 	
 	int titleIndex = 0; //array index used for title screen cursor
 	int titleAnim = 0;
@@ -116,6 +106,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	int healthVials = 0;
 	int dmgVials = 0;
+	int highScore = 0;
 	
 	CountdownTimer time = new CountdownTimer();
 	
@@ -149,7 +140,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	
 	Whip starter = new Whip(10,1);
-	boolean invunrebility = false; //player cannot die when true
 	
 	
 	 
@@ -200,6 +190,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	}
 	
 	private static void initWaves() {
+		waves.clear();
 		int[][] initwaves = {{1,1,1,1,1,1}, {1,1,1,1,1,2,2,2}, {2,2,2,2,1}, {2,2,2,2,2,1,1,3},  {3,3,3,2,2,2}, {3,3,3,4,3,3,3}, {2,2,2,3,3,3,4,4,4},{1,1,1,1,1,1,1,1,1,1,2,2,2,5},{2,2,2,3,3,3,3,3,5,5,5},{5,5,5,5,2,2,2,4}};
 
 		for(int i = 1; i<=10; i++){
@@ -362,7 +353,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 			g.setColor(Color.green);
 			g.setFont(myFont.deriveFont(40.0f));
-			g.drawString("69420", 360, 210);
+			g.drawString(Integer.toString(highScore), 360, 210);
 			
 		}
 	}
@@ -794,7 +785,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			playSfx("hit.wav");
 			player.getHurt(dmg);
 		}else {
-			//save code
+			load.save(healthVials, dmgVials, player.getXp());
 			gamestate = 4;
 		}
 	}
@@ -806,10 +797,45 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	* @param none
 	*/
 	public void reset(){
-		player.setXp(0);
+		
+		
+		
+		skells.clear();
+		bSlimes.clear();
+		sSlimes.clear();
+		hSlimes.clear();
+		shootSkells.clear();
+		bullets.clear();
+		items.clear();
+		surround.clear();
+	
+		globalX = 300;
+		globalY = 200;
+		
+		healthVials = load.getPlayerHp();
+		dmgVials = load.getDamage();
+		
 		gamestate = 0;
+		
+		time = new CountdownTimer();
+		
+		for(int r = 0; r < tiles.length; r++) {
+			for(int c = 0; c < tiles[0].length; c++) {
+				tiles[r][c] = null;
+			}
+		}
+		name = "map"+ (int)((Math.random() * 3) + 1) +".txt";
+		tilemap = new File(name);
+		
+		initTiles(tilemap);
+		
+		player.setXp(0);
 		initWaves();
-		//saving code
+		load.load();
+		player.setHp(100+load.getPlayerHp()*10);
+		starter.setDmg(1+load.getDamage()*10);
+		highScore = load.getHighScore();
+		
 	}
 	
 	/**
@@ -895,12 +921,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 		}
 		
-		if(arg0.getKeyCode() == 112) {//right
-			if(gamestate == 1) {
-				load.save(player.getHp(),wave,player.getXp());
-				System.out.println("save");
-			}
-		}
 	 if(arg0.getKeyCode() == 32) {//spacebar
 		//select button
 		 if(gamestate == 0) {
@@ -925,6 +945,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		 	}else if(gamestate == 5) {
 				 load.clear();
 				 gamestate = 0;
+			 }else if(gamestate == 4) {
+				 reset();
 			 }
 	 	}
 	 
@@ -933,6 +955,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		 gamestate = 0;
 		 }else if(gamestate ==5) {
 			 load.load();
+			 player.setHp(100+load.getPlayerHp()*10);
+			 starter.setDmg(1+load.getDamage()*10);	
+			healthVials = load.getPlayerHp();
+			dmgVials = load.getDamage();
+			 highScore = load.getHighScore();
 			 gamestate = 0;
 		 }
 	 }

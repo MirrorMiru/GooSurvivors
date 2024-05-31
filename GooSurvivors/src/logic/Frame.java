@@ -696,43 +696,34 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 			return;
 		}
 
-		// the first is created in 10 seconds. The next will be created soon. After that
-		// periodicty is maintained.
-		if (lastSnakePosition == null) {
-			if (time.getMins() == 5 && time.getSecs() <= 10) {
-				lastSnakePosition = snakeMovesToDo.remove(0);
-				currentSnakeMovesIndex++;
-				Tile tile = tiles[lastSnakePosition.row][lastSnakePosition.col];
-				if (tile == null) {
-					tile = new Tile(0, 0, 3);
-					tile.setX((lastSnakePosition.row * 75) - 400);
-					tile.setY((lastSnakePosition.col * 75) - 350);
-					tiles[lastSnakePosition.row][lastSnakePosition.col] = tile;
-				}
-				tile.setType(3);
-				System.out.println("First Snake Tile Created");
-			
-			}
-		} else {
 			int expectedElapsedSeconds = currentSnakeMovesIndex * snakeMovePeriod;
 			int actualElapsedTime = (5 - time.getMins()) * 60 + 60 - time.getSecs();
 			if (expectedElapsedSeconds < actualElapsedTime) {
 				lastSnakePosition = snakeMovesToDo.remove(0);
-				currentSnakeMovesIndex++;
+				
 
+				int row = lastSnakePosition.row;
+				int col = lastSnakePosition.col;
 				// row column are inverted on frame.
-				Tile tile = tiles[lastSnakePosition.col][lastSnakePosition.row];
+				if(currentSnakeMovesIndex>0) {
+					row = lastSnakePosition.col;
+					col = lastSnakePosition.row;
+				}
+				currentSnakeMovesIndex++;
+				
+				
+				Tile tile = tiles[row][col];
+				
 				if (tile == null) {
 					tile = new Tile(0, 0, 3);
-					tile.setX((lastSnakePosition.col * 75) - 400);
-					tile.setY((lastSnakePosition.row * 75) - 350);
+					tile.setX((row * 75) - 400);
+					tile.setY((col * 75) - 350);
 					// TODO need to global translate
-					tiles[lastSnakePosition.col][lastSnakePosition.row] = tile;
+					tiles[row][col] = tile;
 				}
 				tile.setType(3);
 				System.out.println(" Snake Tile Created");
 			}
-		}
 	}
 
 	public void drawTiles(Graphics g) {

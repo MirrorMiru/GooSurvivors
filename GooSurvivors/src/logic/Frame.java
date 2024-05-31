@@ -162,8 +162,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 			instructions1.add("starting weapon = FIRE WHIP");
 			instructions2.add("it deals 1 damage");
-			instructions3.add("Level up to unlock BALLS");
-			instructions4.add("more XP = MORE BALLS");
+			instructions3.add("progress to unlock BALLS");
+			instructions4.add("more progress = MORE BALLS");
 			
 			instructions1.add("break BROWN BOXES with your WEAPON");
 			instructions2.add("GREEN VIAL = DAMAGE UP");
@@ -173,8 +173,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 			instructions1.add("the vials you collect SAVE");
 			instructions2.add("biuld them up over multiple rounds");
-			instructions3.add("dont forget to LOAD to resume");
-			instructions4.add("from where you left off");
+			instructions3.add("your balls DONT save though");
+			instructions4.add("dont forget to LOAD your game!");
 			
 			instructions1.add("each round lasts 6 MINUTES");
 			instructions2.add("the first 30 seconds is a grace period");

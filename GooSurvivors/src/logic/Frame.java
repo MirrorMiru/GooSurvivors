@@ -568,6 +568,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				if(items.get(i).collided(-globalX+380, -globalY+250, 50, 200)) {
 					if(items.get(i).getType() == 0) {
 						starter.setDmg(starter.getDmg() + 5);
+						surround.add(new SurroundWeapon(10));
 					}else {
 						player.getHurt(-10);
 					

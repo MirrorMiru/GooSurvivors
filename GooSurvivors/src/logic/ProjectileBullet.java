@@ -14,7 +14,7 @@ public class ProjectileBullet{
 	protected int Vy;
 	private int x;
 	private int y; //these initial positions are so that (with some help), it'll spawn on the enemy
-
+	private int timer;
 	private int speed;
 	
 	public ProjectileBullet() {
@@ -22,6 +22,7 @@ public class ProjectileBullet{
 		width = 0;
 		height = 0;
 		speed = 0;
+		timer = 0;
 	}
 	
 	public ProjectileBullet(int dmg, int w, int h, int x, int y, int s) {
@@ -31,9 +32,12 @@ public class ProjectileBullet{
 		this.x = x;
 		this.y = y;
 		speed = s;
+		timer = 0;
 	}
 	
-	
+	public int getTimer() {
+		return timer;
+	}
 	public int getWidth() {
 		return width;
 	}
@@ -87,6 +91,7 @@ public class ProjectileBullet{
 		this.x += getVx();
 		this.y -= getVy();
 		g.fillOval(this.x, this.y, width, height);
+		timer++;
 	}
 	
 	public boolean collided(int x, int y, int width, int height) {
@@ -97,5 +102,7 @@ public class ProjectileBullet{
 
 		return thisObj.intersects(otherObj);
 	}
+
+	
 }
 

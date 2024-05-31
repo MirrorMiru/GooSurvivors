@@ -416,7 +416,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 	 * @param none
 	 */
 	private void spawnEnemies(int amnt, ArrayList<Enemy> enemies, String who) {
-/*
+
 		for (int i = 0; i < amnt; i++) {
 			if (who.toLowerCase().equals("skeletons")) {
 				Skeleton s = new Skeleton();
@@ -454,7 +454,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				s.setY(-globalY + 300 + randomY);
 				enemies.add(s);
 			}
-		}*/
+		}
 
 	}
 
@@ -711,6 +711,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener {
 				}
 				tile.setType(3);
 				System.out.println("First Snake Tile Created");
+			
 			}
 		} else {
 			int expectedElapsedSeconds = currentSnakeMovesIndex * snakeMovePeriod;

@@ -30,6 +30,8 @@ public class Tile{
 			image 	= getImage("/img/crate.png");
 		}else if(type == 3) {
 			image 	= getImage("/img/snake.png");
+		}else if(type == 0){
+			//do nothing
 		}else {
 			System.out.println("oops");//shoudl neevr happen
 		}
@@ -66,6 +68,21 @@ public class Tile{
 	
 	public int getType() {
 		return type;
+	}
+	
+	public void setType(int type) {
+		this.type = type;
+		if(type == 1) {
+			image 	= getImage("/img/tile"+((int)(Math.random()*9+1))+".png"); //load the image for tile based on comstructor
+		}else if(type == 2) {
+			image 	= getImage("/img/crate.png");
+		}else if(type == 3) {
+			image 	= getImage("/img/snake.png");
+		}else if(type == 0){
+			//do nothing
+		}else {
+			System.out.println("oops");//shoudl neevr happen
+		}
 	}
 
 	public void setX(int x) {

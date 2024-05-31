@@ -84,7 +84,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	Sprite[] loadS = {new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS1.png",0,0,800,700),new Sprite("/img/loadS2.png",0,0,800,700),new Sprite("/img/loadS3.png",0,0,800,700)};
 	//bgm, starts looping immediately and never stops
-	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("LabyrinthFight.wav", true);
+	//SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("bgm.wav", true);
 	
 	//frame width/height
 	int width = 815;
@@ -402,7 +402,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	    g.drawString(Integer.toString(player.getHp()), 35,50);
 	    g.drawString(Integer.toString(player.getXp()), 740,50);
 	    
+	    if(time.getMins() < 1) {
+	    	 g.setColor(Color.RED);
+	    }
 	    g.drawString(Integer.toString(time.getMins())+" : "+Integer.toString(time.getSecs()), 380,85);
+	    
 	}
 	
 	/**
@@ -469,6 +473,10 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 		}
 		
+		if(wall.collided(-globalX+380, -globalY+250, 50, 200)) {
+			getHurt(wall.getDamage());
+		}
+		
 		if(enemies.size() > 0) {
 		for(Enemy s : enemies) {
 			s.paint(g);
@@ -501,10 +509,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			}
 			
 			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
-
 				getHurt(s.getDamage());
-				
-				
 			}
 			
 			
@@ -779,7 +784,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	*/
 	public void getHurt(int dmg) {
 		if(player.getHp() > 1) {
-			playSfx("hit.wav");
 			player.getHurt(dmg);
 		}else {
 			load.save(healthVials, dmgVials, player.getXp());
@@ -814,6 +818,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		
 		gamestate = 0;
 		
+		wall.setVy(0);
 		wall.setY(-1200);
 		
 		time = new CountdownTimer();

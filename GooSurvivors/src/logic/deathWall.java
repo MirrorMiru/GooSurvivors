@@ -25,7 +25,7 @@ public class deathWall extends Enemy{
 
 	
 	public deathWall() {
-		super(-1,200,20000,900,3);// hp, dmg, w, h, s
+		super(-1,400,20000,900,3);// hp, dmg, w, h, s
 		this.x = -450;
 		this.y = -1200;
 	}

@@ -27,7 +27,7 @@ public class Skeleton extends Enemy{
 
 	
 	public Skeleton() {
-		super(100,10,180,240,1);
+		super(500,5,180,240,2);//hp, dmg, w, h, s
 		this.x = 0;
 		this.y = 0;
 	}

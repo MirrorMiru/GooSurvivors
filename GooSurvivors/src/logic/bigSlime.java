@@ -25,7 +25,7 @@ public class bigSlime extends Enemy {
 
     // Constructor to initialize bigSlime object with default position and superclass properties
     public bigSlime() {
-        super(200, 5, 100, 80, 1);
+        super(200, 1, 100, 80, 2);//hp, dmg, w, h, s
         this.x = 0;
         this.y = 0;
     }

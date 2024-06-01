@@ -101,6 +101,7 @@ public class GameLoader {
         try {
             PrintWriter writer = new PrintWriter(file);
             writer.print(""); // Clear the content
+            writer.print("0,0,0"); 
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

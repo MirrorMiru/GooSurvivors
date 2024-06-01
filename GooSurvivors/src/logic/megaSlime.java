@@ -25,7 +25,7 @@ public class megaSlime extends Enemy{
 
 	
 	public megaSlime() {
-		super(500,10,210,140,1);// hp, dmg, w, h, s
+		super(1200,2,210,140,1);// hp, dmg, w, h, s
 		this.x = 0;
 		this.y = 0;
 	}

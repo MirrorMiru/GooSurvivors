@@ -162,8 +162,8 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			
 			instructions1.add("starting weapon = FIRE WHIP");
 			instructions2.add("it deals 1 damage");
-			instructions3.add("progress to unlock BALLS");
-			instructions4.add("more progress = MORE BALLS");
+			instructions3.add("it only hits to the left / right");
+			instructions4.add("work around your weapon's limitations!");
 			
 			instructions1.add("break BROWN BOXES with your WEAPON");
 			instructions2.add("GREEN VIAL = DAMAGE UP");
@@ -173,7 +173,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 
 			instructions1.add("the vials you collect SAVE");
 			instructions2.add("biuld them up over multiple rounds");
-			instructions3.add("your balls DONT save though");
+			instructions3.add("get stronger the more you play");
 			instructions4.add("dont forget to LOAD your game!");
 			
 			instructions1.add("each round lasts 6 MINUTES");
@@ -193,7 +193,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 	
 	private static void initWaves() {
 		waves.clear();
-		int[][] initwaves = {{1,1,1,1,1,1}, {1,1,1,1,1,2,2,2}, {2,2,2,2,1}, {2,2,2,2,2,1,1,3},  {3,3,3,2,2,2}, {3,3,3,4,3,3,3}, {2,2,2,3,3,3,4,4,4},{1,1,1,1,1,1,1,1,1,1,2,2,2,5},{2,2,2,3,3,3,3,3,5,5,5},{5,5,5,5,2,2,2,4}};
+		int[][] initwaves = {{1,1,1,1}, {1,1,2,2,2}, {2,2,2,2,2}, {2,2,2,2,2,1,1,3},  {3,3,3,2,2,2}, {3,3,3,4,3,3,3}, {2,2,2,3,3,3,2,2,2,4},{1,1,1,1,1,1,1,1,1,1,2,2,2,5},{2,2,2,3,3,3,3,3,5,5,5},{5,5,5,5,2,2,2,4,4}};
 
 		for(int i = 1; i<=10; i++){
 			String waveName = "wave"+i;
@@ -266,15 +266,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 			enemyLogic(sSlimes, g);
 			enemyLogic(hSlimes, g);
 			enemyLogic(shootSkells, g);
-			//shoot(shootSkells);
+			shoot(shootSkells);
+			bulletLogic(g);
 			
-			
-			for(ProjectileBullet bull : bullets) {
-				//bull.paint(g);
-				if(bull.getTimer() == 120) {
-					bullets.remove( bullets.indexOf(bull) );
-				}
-			}
 			
 			itemLogic(g);
 			
@@ -502,11 +496,6 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				}
 			}
 			
-			for( ProjectileBullet bull : bullets) {
-				if( player.collided( bull.getX(), bull.getY(), bull.getWidth(), bull.getHeight() ) ) {
-					player.getHurt( bull.getDamage() );
-				}
-			}
 			
 			if(s.collided(-globalX+380, -globalY+250, 50, 200)) {
 				getHurt(s.getDamage());
@@ -539,7 +528,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		for( Enemy ss : something) {
 			if( ss instanceof ShootingSkeleton ) {
 				if( ((ShootingSkeleton) ss).getShootingTimer() == 40) {
-					ProjectileBullet b = new ProjectileBullet( 10, 20, 20, ((ShootingSkeleton) ss).getX() + 90, ((ShootingSkeleton) ss).getY() + 100, 15);
+					ProjectileBullet b = new ProjectileBullet(1, 20, 20, ((ShootingSkeleton) ss).getX() + 90, ((ShootingSkeleton) ss).getY() + 100, 15);
 					bullets.add( b );
 					double xDirection = -((globalX-380) - ((ShootingSkeleton) ss).getX() + 90);
 					
@@ -571,6 +560,24 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					items.remove(i);
 				}
 			}
+		}
+	}
+	
+	private void bulletLogic(Graphics g) {
+		if(bullets.size() > 0) {
+			for(int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).paint(g);
+					if( bullets.get(i).collided(-globalX+380, -globalY+250, 50, 200)) {
+						player.getHurt( bullets.get(i).getDamage() );
+						bullets.remove(0);
+					}
+				if(bullets.size() > 5) {
+					bullets.remove(0);
+				}
+				if(shootSkells.size() < 1) {
+					bullets.clear();
+				}
+			}	
 		}
 	}
 
@@ -813,6 +820,9 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		globalX = 300;
 		globalY = 200;
 		
+		player.setVx(0);
+		player.setVy(0);
+		
 		healthVials = load.getPlayerHp();
 		dmgVials = load.getDamage();
 		
@@ -904,7 +914,7 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 					titleIndex--;
 				}
 			}else if(gamestate == 1) {
-				player.setVy(-4);
+				player.setVy(-6);
 			}
 		}  if(arg0.getKeyCode() == 40) {//down
 			if(gamestate == 0) {
@@ -913,15 +923,15 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 				}
 	
 			}else	if(gamestate == 1) {
-				player.setVy(4);
+				player.setVy(6);
 			}
 		}  if(arg0.getKeyCode() == 37) {//left
 			if(gamestate == 1) {
-				player.setVx(-4);
+				player.setVx(-6);
 			}
 		}  if(arg0.getKeyCode() == 39) {//right
 			if(gamestate == 1) {
-				player.setVx(4);
+				player.setVx(6);
 			}
 		}
 		
@@ -948,6 +958,11 @@ public class Frame extends JPanel implements ActionListener, KeyListener  {
 		 		instructions4.add(instructions4.poll());
 		 	}else if(gamestate == 5) {
 				 load.clear();
+				 highScore = 0;
+				 dmgVials = 0;
+				 healthVials = 0;
+				 player.setHp(0);
+				 starter.setDmg(1);
 				 gamestate = 0;
 			 }else if(gamestate == 4) {
 				 reset();

@@ -91,7 +91,7 @@ public class ProjectileBullet{
 		this.x += getVx();
 		this.y -= getVy();
 		g.fillOval(this.x, this.y, width, height);
-		timer++;
+		//timer++;
 	}
 	
 	public boolean collided(int x, int y, int width, int height) {
